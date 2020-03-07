@@ -31,8 +31,7 @@ public class MainGame extends ApplicationAdapter {
 	public World world;
 	private Array<GameObject> gameObjects;
 	public Array<GameObject> toBeDeleted;
-	public Array<Body> deleteBodies;
-
+	public Array<Body> bodies;
 
 	
 	@Override
@@ -48,7 +47,7 @@ public class MainGame extends ApplicationAdapter {
 
 		gameObjects = new Array<GameObject>();
 		toBeDeleted = new Array<GameObject>();
-		deleteBodies = new Array<Body>();
+		bodies = new Array<Body>();
 		spawnDefaultObjects();
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -60,6 +59,8 @@ public class MainGame extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		world.getBodies(bodies);
 
 		checkGestures();
 		gameWorld.render(camera);
@@ -90,7 +91,6 @@ public class MainGame extends ApplicationAdapter {
 			try {
 				if (obj.body.getUserData().equals("dead")) {
 					toBeDeleted.add(obj);
-					deleteBodies.add(obj.body);
 				}
 			} catch (Exception e) {
 				System.out.println("Error adding object to be deleted, possible cause is missing userdata or typo in userdata");
@@ -100,14 +100,19 @@ public class MainGame extends ApplicationAdapter {
 	}
 	public void deleteToBeDeleted () {
 
-		// TODO body deletion not working
-		/*
-		for (Body b: deleteBodies) {
-			System.out.println("asd");
-			world.destroyBody(b);
+		Array<Body> removalBodies = new Array<Body>();
+		for (Body body : bodies) {
+			if (body.getUserData() != null) {
+				if (body.getUserData().equals("dead")) {
+					removalBodies.add(body);
+					System.out.println("remove");
+				}
+			}
+		}
+		for (Body body : removalBodies) {
+			world.destroyBody(body);
 		}
 
-		 */
 
 
 		for (GameObject obj:toBeDeleted) {
