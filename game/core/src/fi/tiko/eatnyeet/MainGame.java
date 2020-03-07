@@ -29,7 +29,7 @@ public class MainGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private GameWorld gameWorld;
 	public World world;
-	private Array<GameObject> gameObjects;
+	private ArrayList<GameObject> gameObjects;
 	public Array<GameObject> toBeDeleted;
 	public Array<Body> bodies;
 
@@ -45,7 +45,7 @@ public class MainGame extends ApplicationAdapter {
 		gameWorld = new GameWorld(this);
 
 
-		gameObjects = new Array<GameObject>();
+		gameObjects = new ArrayList<GameObject>();
 		toBeDeleted = new Array<GameObject>();
 		bodies = new Array<Body>();
 		spawnDefaultObjects();
@@ -73,6 +73,7 @@ public class MainGame extends ApplicationAdapter {
 		debugRenderer.render(world, camera.combined);
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
 		deleteToBeDeleted();
+		for ()
 	}
 
 
@@ -113,11 +114,9 @@ public class MainGame extends ApplicationAdapter {
 			world.destroyBody(body);
 		}
 
-
-
 		for (GameObject obj:toBeDeleted) {
 				//world.destroyBody(obj.body);
-			gameObjects.removeValue(obj,true);
+			gameObjects.remove(obj);
 		}
 
 	}
@@ -136,7 +135,7 @@ public class MainGame extends ApplicationAdapter {
 			gameObjects.add(new Banana(gameObjects.get(0).body.getPosition().x,gameObjects.get(0).body.getPosition().y + 0.2f,this));
 
 			// gives speed to banana based on click position, TODO fling support
-			gameObjects.get(gameObjects.size-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size-1).body.getWorldCenter(),true);
+			gameObjects.get(gameObjects.size()-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size()-1).body.getWorldCenter(),true);
 		}
 	}
 

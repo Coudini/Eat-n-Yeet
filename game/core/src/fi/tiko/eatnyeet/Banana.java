@@ -23,4 +23,10 @@ public class Banana extends GameObject implements Flingable {
         // call render as last
         super.render(batch);
     }
+
+    public void update () {
+        if (body == null) {
+            texture.dispose();
+        }
+    }
 }
