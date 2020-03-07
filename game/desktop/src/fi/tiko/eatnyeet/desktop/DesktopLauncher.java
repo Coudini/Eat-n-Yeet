@@ -1,8 +1,8 @@
-package fi.tiko.tamk.desktop;
+package fi.tiko.eatnyeet.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import fi.tiko.tamk.MainGame;
+import fi.tiko.eatnyeet.MainGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
