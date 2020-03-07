@@ -73,7 +73,6 @@ public class MainGame extends ApplicationAdapter {
 		debugRenderer.render(world, camera.combined);
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
 		deleteToBeDeleted();
-		for ()
 	}
 
 
