@@ -18,7 +18,11 @@ public class GameObject extends Sprite {
     TextureRegion currentFrameTexture;
     protected float stateTime;
     public Body body;
+    public String objectType = "default";
 
+    private float density = 0.3f;
+    private float restitution = 0f;
+    private float friction = 0f;
     private MainGame game;
 
 
@@ -30,6 +34,7 @@ public class GameObject extends Sprite {
         this.setOriginCenter();
     }
 
+    // TODO not is use yet
     public void createTextureAnimation(int cols, int rows) {
 
         // Calculate the tile width from the sheet
@@ -49,6 +54,7 @@ public class GameObject extends Sprite {
         currentFrameTexture = textureAnimation.getKeyFrame(stateTime, true);
     }
 
+    // TODO not in use yet
     public static TextureRegion[] toTextureArray( TextureRegion [][]tr, int cols, int rows ) {
         TextureRegion [] frames = new TextureRegion[cols * rows];
         int index = 0;
@@ -60,9 +66,7 @@ public class GameObject extends Sprite {
         return frames;
     }
 
-    public void update() {
 
-    }
     public void render(Batch batch) {
         if (getTexture() == null) {
             return;
@@ -103,17 +107,19 @@ public class GameObject extends Sprite {
 
         return myBodyDef;
     }
+
+
     private FixtureDef getFixtureDefinition(float radius) {
         FixtureDef playerFixtureDef = new FixtureDef();
 
         // Mass per square meter (kg^m2)
-        playerFixtureDef.density = 0.3f;
+        playerFixtureDef.density = density;
 
         // How bouncy object? Very bouncy [0,1]
-        playerFixtureDef.restitution = 0.1f;
+        playerFixtureDef.restitution = restitution;
 
         // How slipper object? [0,1]
-        playerFixtureDef.friction = 0.1f;
+        playerFixtureDef.friction = friction;
 
         // Create circle shape.
         CircleShape circleshape = new CircleShape();
@@ -123,6 +129,30 @@ public class GameObject extends Sprite {
         playerFixtureDef.shape = circleshape;
 
         return playerFixtureDef;
+    }
+
+    public float getDensity() {
+        return density;
+    }
+
+    public void setDensity(float density) {
+        this.density = density;
+    }
+
+    public float getRestitution() {
+        return restitution;
+    }
+
+    public void setRestitution(float restitution) {
+        this.restitution = restitution;
+    }
+
+    public float getFriction() {
+        return friction;
+    }
+
+    public void setFriction(float friction) {
+        this.friction = friction;
     }
 
 }

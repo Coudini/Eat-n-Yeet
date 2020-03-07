@@ -14,20 +14,17 @@ public class Character extends GameObject {
     public Character(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 1f, 1f, game);
         body = createBody(posX,posY,0.5f);
+        body.setUserData("character");
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
-
     }
-
-    @Override
-    public void update() {
-        move();
-    }
-
 
     @Override
     public void render(Batch batch) {
+        move();
+        // call render as last
         super.render(batch);
     }
+
     public void move() {
         float accY = Gdx.input.getAccelerometerY();
         float delta =  Gdx.graphics.getDeltaTime();
@@ -39,8 +36,10 @@ public class Character extends GameObject {
 
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             body.setLinearVelocity(-speed * delta,body.getLinearVelocity().y);
-        } else {
-            // mobile section
+        }
+
+        // mobile section
+        else {
             if ( degrees > DEAD_ZONE) {
                 body.setLinearVelocity(speed * delta,body.getLinearVelocity().y);
             } else if (degrees < -DEAD_ZONE) {
@@ -49,6 +48,5 @@ public class Character extends GameObject {
                 body.setLinearVelocity(0f,0f);
             }
         }
-
     }
 }

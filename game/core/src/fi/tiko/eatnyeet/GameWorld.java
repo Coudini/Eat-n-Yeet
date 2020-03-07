@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -13,6 +12,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -34,6 +37,42 @@ public class GameWorld  {
         transformWallsToBodies("wall-rectangles", "wall");
         transformWallsToBodies("compost-rectangles", "compost");
         transformWallsToBodies("field-rectangles", "field");
+
+        game.world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+                try {
+                    String userDataA = (String) (contact.getFixtureA().getBody().getUserData());
+                    String userDataB = (String) (contact.getFixtureB().getBody().getUserData());
+
+                    if(userDataA.equals("compost") && userDataB.equals("flingable")) {
+                        contact.getFixtureB().getBody().setUserData("dead");
+                    }
+                    if(userDataA.equals("flingable") && userDataB.equals("compost")) {
+                        contact.getFixtureA().getBody().setUserData("dead");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Possibly missing userdata from either contact A or contact B");
+                }
+
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
 
     }
 
@@ -123,4 +162,5 @@ public class GameWorld  {
             accumulator -= TIME_STEP;
         }
     }
+
 }
