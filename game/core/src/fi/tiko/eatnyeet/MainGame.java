@@ -57,7 +57,7 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		batch.setProjectionMatrix(camera.combined);
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		world.getBodies(bodies);
@@ -82,7 +82,7 @@ public class MainGame extends ApplicationAdapter {
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
-		gameObjects.add(new Character(WINDOW_WIDTH / 2, 1f,this));
+		gameObjects.add(new Character(WINDOW_WIDTH / 2, 4f,this));
 	}
 
 	public void renderObjects () {

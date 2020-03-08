@@ -71,6 +71,10 @@ public class GameObject extends Sprite {
         if (getTexture() == null) {
             return;
         }
+        float scale = 0.6f;
+        if (body.getUserData().equals("flingable")) {
+            scale = 0.3f;
+        }
         batch.draw(getTexture(),
                 body.getPosition().x - 1f,
                 body.getPosition().y - 1f,
@@ -78,8 +82,8 @@ public class GameObject extends Sprite {
                 1f,                   // originY
                 1f * 2,               // width
                 1f * 2,               // height
-                0.6f,                          // scaleX
-                0.6f,                          // scaleY
+                scale,                          // scaleX
+                scale,                          // scaleY
                 body.getTransform().getRotation() * MathUtils.radiansToDegrees,
                 0,                             // Start drawing from x = 0
                 0,                             // Start drawing from y = 0

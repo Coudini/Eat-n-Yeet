@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="-1" width="70" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="9">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="50" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="11">
  <tileset firstgid="1" name="tileb" tilewidth="32" tileheight="32" tilecount="256" columns="16">
   <image source="tileb.png" width="512" height="512"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="70" height="13">
+ <layer id="9" name="Tile Layer 2" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwSgYfOAOEN9Fw/cG1EWDA7wB4hdo+B1UDhZmIzGc8IULSO4MEn8kAXzh8geI/wLxv4Fx2oACmN+RMSwcfo1irBgACy1oGw==
+   eAHtVMEJgEAM65a6gW5w7iZuoHs4gy9TIU+hP42mkMvB9dGk4VpETEAT5wHzj4A6q++B86vvgfNTjzpTjzqr74Hzd/irekCdIcFlB+yAHbADduBzDuxQVEEKn4ElLy+siobsyVpvcD0+fKjrYEbUdWRGNqCq40CvYQ+cAWfAGXAG/pqBE8eLotw=
+  </data>
+ </layer>
+ <layer id="8" name="Tile Layer 1" width="50" height="30">
+  <data encoding="base64" compression="zlib">
+   eAHtkckJAkEQRScfQ/BiAi4JuCTgkoDLWRE8K4KBqRGIEaj4CqzLME6fGrvxFzyqmYaaX6+LQiUDMhDTQJvhHehCL+aPIs/uM38AQxhBrjUm+ASmMMt1CXLPYQFLWEGutSX4Gjawy3CJJpmNI+zhACdofaBlVb6Ph274QV0GZEAG/sjAmV2vEOqpK3kQ8AWhbnvYrpcS5iCFCr2D31vWW0Xge8W3X3wKvYPfWzY7P0vYW6ZQ7jvUU8hal8F9h3rdDN3JgAzIgAzIwDcDb8EWUSY=
   </data>
  </layer>
  <objectgroup id="2" name="wall-rectangles">
-  <object id="2" x="3.0303" y="381.818" width="2233.33" height="27.2727"/>
-  <object id="3" x="0" y="-3.0303" width="18.1818" height="415.152"/>
-  <object id="4" x="3.0303" y="3.0303" width="2233.33" height="24.2424"/>
-  <object id="5" x="2200" y="9.09091" width="33.3333" height="390.909"/>
+  <object id="2" x="0" y="672" width="1599" height="27.2727"/>
+  <object id="3" x="0" y="-3.0303" width="18.1818" height="931.03"/>
+  <object id="4" x="3.0303" y="3.0303" width="1596.97" height="24.2424"/>
+  <object id="10" x="1568" y="0" width="32" height="928"/>
  </objectgroup>
  <objectgroup id="4" name="compost-rectangles">
-  <object id="6" x="2.66667" y="289.333" width="91.3333" height="94.6667"/>
+  <object id="6" x="32" y="576" width="192" height="94.6667"/>
  </objectgroup>
- <objectgroup id="5" name="field-rectangles">
-  <object id="7" x="2014.67" y="221.333" width="189.333" height="162.667"/>
- </objectgroup>
+ <objectgroup id="5" name="field-rectangles"/>
 </map>
