@@ -29,8 +29,8 @@ public class MainGame extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private GameWorld gameWorld;
 	public World world;
-	private Array<GameObject> gameObjects;
-	public Array<GameObject> toBeDeleted;
+	public ArrayList<GameObject> gameObjects;
+	//public Array<GameObject> toBeDeleted;
 	public Array<Body> bodies;
 
 	
@@ -45,8 +45,8 @@ public class MainGame extends ApplicationAdapter {
 		gameWorld = new GameWorld(this);
 
 
-		gameObjects = new Array<GameObject>();
-		toBeDeleted = new Array<GameObject>();
+		gameObjects = new ArrayList<GameObject>();
+		//toBeDeleted = new Array<GameObject>();
 		bodies = new Array<Body>();
 		spawnDefaultObjects();
 
@@ -88,6 +88,8 @@ public class MainGame extends ApplicationAdapter {
 	public void renderObjects () {
 		for (GameObject obj: gameObjects) {
 			obj.render(batch);
+
+			/**
 			try {
 				if (obj.body.getUserData().equals("dead")) {
 					toBeDeleted.add(obj);
@@ -95,12 +97,15 @@ public class MainGame extends ApplicationAdapter {
 			} catch (Exception e) {
 				System.out.println("Error adding object to be deleted, possible cause is missing userdata or typo in userdata");
 			}
+			 */
 
 		}
 	}
 	public void deleteToBeDeleted () {
 
 		Array<Body> removalBodies = new Array<Body>();
+		ArrayList<GameObject> toBeDeleted = new ArrayList<>();
+
 		for (Body body : bodies) {
 			if (body.getUserData() != null) {
 				if (body.getUserData().equals("dead")) {
@@ -109,16 +114,24 @@ public class MainGame extends ApplicationAdapter {
 				}
 			}
 		}
+		for (GameObject obj: gameObjects) {
+			if (obj.body.getUserData().equals("dead")) {
+				toBeDeleted.add(obj);
+			}
+		}
 		for (Body body : removalBodies) {
 			world.destroyBody(body);
 		}
+		gameObjects.removeAll(toBeDeleted);
+		toBeDeleted.clear();
 
 
 
-		for (GameObject obj:toBeDeleted) {
-				//world.destroyBody(obj.body);
-			gameObjects.removeValue(obj,true);
-		}
+		//for (GameObject obj:toBeDeleted) {
+		//		world.destroyBody(obj.body);
+		//	gameObjects.removeValue(obj,true);
+		//}
+
 
 	}
 	public void checkGestures () {
@@ -136,7 +149,7 @@ public class MainGame extends ApplicationAdapter {
 			gameObjects.add(new Banana(gameObjects.get(0).body.getPosition().x,gameObjects.get(0).body.getPosition().y + 0.2f,this));
 
 			// gives speed to banana based on click position, TODO fling support
-			gameObjects.get(gameObjects.size-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size-1).body.getWorldCenter(),true);
+			gameObjects.get(gameObjects.size()-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size()-1).body.getWorldCenter(),true);
 		}
 	}
 

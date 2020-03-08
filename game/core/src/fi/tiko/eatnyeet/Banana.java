@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Banana extends GameObject implements Flingable {
-    private final static Texture texture = new Texture("banana.png");
+    private static Texture texture = new Texture("banana.png");
 
     public Banana(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 1f, 1f, game);
