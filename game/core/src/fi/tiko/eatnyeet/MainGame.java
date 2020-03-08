@@ -72,7 +72,7 @@ public class MainGame extends ApplicationAdapter {
 
 		debugRenderer.render(world, camera.combined);
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
-		deleteToBeDeleted();
+		deleteDeletables();
 	}
 
 
@@ -101,7 +101,7 @@ public class MainGame extends ApplicationAdapter {
 
 		}
 	}
-	public void deleteToBeDeleted () {
+	public void deleteDeletables () {
 
 		Array<Body> removalBodies = new Array<Body>();
 		ArrayList<GameObject> toBeDeleted = new ArrayList<>();
