@@ -3,16 +3,24 @@ package fi.tiko.eatnyeet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Character extends GameObject {
     private final float DEAD_ZONE = 5f;
     private final float speed = 300f;
+    boolean isRight = true;
 
-    private final static Texture texture = new Texture("farmboi_no_animation.png");
+    private final static Texture run = new Texture("farma_run.png");
+    private final static Texture idle = new Texture("farma_idle.png");
+    Animation<TextureRegion> characterIdle;
+    Animation<TextureRegion> characterRun;
+
 
     public Character(float posX, float posY, MainGame game) {
-        super(texture, posX, posY, 1f, 1f, game);
+        super(run, posX, posY, 1f, 1f, game);
+        createTextureAnimation(4,2);
         body = createBody(posX,posY,0.5f);
         body.setUserData("character");
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
@@ -21,6 +29,9 @@ public class Character extends GameObject {
     @Override
     public void render(Batch batch) {
         move();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        currentFrameTexture = this.textureAnimation.getKeyFrame(stateTime, true);
         // call render as last
         super.render(batch);
     }
@@ -33,9 +44,17 @@ public class Character extends GameObject {
         // keyboard section
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             body.setLinearVelocity(speed * delta,body.getLinearVelocity().y);
+            if (isRight == false) {
+                flip(textureAnimation);
+                isRight = true;
+            }
 
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             body.setLinearVelocity(-speed * delta,body.getLinearVelocity().y);
+            if (isRight == true) {
+                flip(textureAnimation);
+                isRight = false;
+            }
         }
 
         // mobile section

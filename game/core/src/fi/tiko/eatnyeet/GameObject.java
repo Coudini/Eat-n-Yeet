@@ -75,22 +75,29 @@ public class GameObject extends Sprite {
         if (body.getUserData().equals("flingable")) {
             scale = 0.3f;
         }
-        batch.draw(getTexture(),
-                body.getPosition().x - 1f,
-                body.getPosition().y - 1f,
-                1f,                   // originX
-                1f,                   // originY
-                1f * 2,               // width
-                1f * 2,               // height
-                scale,                          // scaleX
-                scale,                          // scaleY
-                body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                0,                             // Start drawing from x = 0
-                0,                             // Start drawing from y = 0
-                getTexture().getWidth(),       // End drawing x
-                getTexture().getHeight(),      // End drawing y
-                false,                         // flipX
-                false);
+
+        if (currentFrameTexture != null) {
+            batch.draw(currentFrameTexture, body.getPosition().x - 0.5f, body.getPosition().y - 0.5f, getWidth(), getHeight());
+
+        } else {
+
+            batch.draw(getTexture(),
+                    body.getPosition().x - 1f,
+                    body.getPosition().y - 1f,
+                    1f,                   // originX
+                    1f,                   // originY
+                    1f * 2,               // width
+                    1f * 2,               // height
+                    scale,                          // scaleX
+                    scale,                          // scaleY
+                    body.getTransform().getRotation() * MathUtils.radiansToDegrees,
+                    0,                             // Start drawing from x = 0
+                    0,                             // Start drawing from y = 0
+                    getTexture().getWidth(),       // End drawing x
+                    getTexture().getHeight(),      // End drawing y
+                    false,                         // flipX
+                    false);
+        }
     }
 
     public Body createBody(float x, float y, float radius) {
@@ -133,6 +140,12 @@ public class GameObject extends Sprite {
         playerFixtureDef.shape = circleshape;
 
         return playerFixtureDef;
+    }
+    public void flip(Animation<TextureRegion> animation) {
+        TextureRegion[] regions = animation.getKeyFrames();
+        for(TextureRegion r : regions) {
+            r.flip(true, false);
+        }
     }
 
     public float getDensity() {
