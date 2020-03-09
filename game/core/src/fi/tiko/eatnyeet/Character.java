@@ -9,7 +9,7 @@ public class Character extends GameObject {
     private final float DEAD_ZONE = 5f;
     private final float speed = 300f;
 
-    private final static Texture texture = new Texture("chad.png");
+    private final static Texture texture = new Texture("farmboi_no_animation.png");
 
     public Character(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 1f, 1f, game);
