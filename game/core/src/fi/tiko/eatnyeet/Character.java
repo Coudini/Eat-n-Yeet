@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 public class Character extends GameObject {
     // Limit for mobile accelerometer
@@ -21,11 +23,24 @@ public class Character extends GameObject {
     Animation<TextureRegion> characterIdle;
     Animation<TextureRegion> characterRun;
 
+    public static final short DEFAULT_BITS = 0x0001;
+    public static final short PLAYER_BITS = 0x0002;
+    public static final short ENEMY_CATEGORY_BITS = 0x0004;
+    public static final short FOOD_BITS = 0x0008;
+
     public Character(float posX, float posY, MainGame game) {
         super(posX, posY, 1f, 1f, game);
         characterRun = createTextureAnimation(4,2, run);
         characterIdle = createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.5f);
+        Filter filter = new Filter();
+        filter.categoryBits = PLAYER_BITS;
+        filter.maskBits = DEFAULT_BITS;
+
+        for (Fixture fix: body.getFixtureList()) {
+
+            fix.setFilterData(filter);
+        }
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 

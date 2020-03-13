@@ -107,7 +107,6 @@ public class GameWorld  {
 
             // SCALE given rectangle down if using world dimensions!
             Rectangle rectangle = scaleRect(tmp, 1 / UNIT_SCALE);
-            System.out.println(rectangleObject.getProperties().get("type"));
 
             Body body =  createStaticBody(rectangle, userData);
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("compostType")) {
