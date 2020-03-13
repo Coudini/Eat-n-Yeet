@@ -1,5 +1,6 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,14 +17,13 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class GameObject extends Sprite {
     Sound soundEffect;
-    Animation<TextureRegion> textureAnimation;
+    Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
+
 
     // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
     public Body body;
-    public String objectType = "default";
-
     private float density = 0.3f;
     private float restitution = 0f;
     private float friction = 0f;
@@ -53,7 +53,7 @@ public class GameObject extends Sprite {
         this.setOriginCenter();
     }
 
-    // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
+   /* // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
     public void createTextureAnimation(int cols, int rows) {
 
         // Calculate the tile width from the sheet
@@ -72,6 +72,8 @@ public class GameObject extends Sprite {
 
         currentFrameTexture = textureAnimation.getKeyFrame(stateTime, true);
     }
+
+    */
 
     // Use this to create many different animations for same object
     public Animation<TextureRegion> createTextureAnimation(int cols, int rows, Texture texture) {
@@ -105,22 +107,23 @@ public class GameObject extends Sprite {
         return frames;
     }
 
+    public void update () {
+
+    }
 
     public void render(Batch batch) {
-        if (getTexture() == null) {
-            return;
+        stateTime += Gdx.graphics.getDeltaTime();
+
+        if (currentAnimation != null) {
+            currentFrameTexture = currentAnimation.getKeyFrame(stateTime, true);
+            this.setRegion(currentFrameTexture);
         }
 
-        if (currentFrameTexture != null) {
-            batch.draw(currentFrameTexture, body.getPosition().x - 0.5f, body.getPosition().y - 0.5f, getWidth(), getHeight());
+        this.setCenter(body.getPosition().x,body.getPosition().y);
+        this.setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
 
-        } else {
+        draw(batch);
 
-            setCenter(body.getPosition().x,body.getPosition().y);
-            setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
-            draw(batch);
-
-        }
     }
 
     public Body createBody(float x, float y, float radius) {

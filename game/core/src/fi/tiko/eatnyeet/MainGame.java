@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -33,7 +34,8 @@ public class MainGame extends ApplicationAdapter {
 	public Array<Body> bodies;
 	Character player;
 
-	Array<Body> removalBodies;
+	// Alternate for ArrayList
+	HashSet<GameObject> toBeDeleted;
 	
 	@Override
 	public void create () {
@@ -46,11 +48,8 @@ public class MainGame extends ApplicationAdapter {
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
 
-
-
-		bodies = new Array<Body>();
 		spawnDefaultObjects();
-		removalBodies = new Array<Body>();
+		toBeDeleted = new HashSet<>();
 		debugRenderer = new Box2DDebugRenderer();
 
 	}
@@ -61,25 +60,24 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		world.getBodies(bodies);
-
 		checkGestures();
 		gameWorld.render(camera);
 		moveCamera();
+
+		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
+		updateObjects();
 
 		batch.begin();
 		renderObjects();
 		batch.end();
 
 		debugRenderer.render(world, camera.combined);
-		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
 		deleteDeletables();
 	}
 
 
 	public void moveCamera() {
 		camera.position.x = player.body.getPosition().x;
-
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
@@ -92,30 +90,17 @@ public class MainGame extends ApplicationAdapter {
 			obj.render(batch);
 		}
 	}
-	public void deleteDeletables () {
-
-		ArrayList<GameObject> toBeDeleted = new ArrayList<>();
-
-		for (Body body : bodies) {
-			if (body.getUserData() != null) {
-				if (body.getUserData().equals("dead")) {
-					removalBodies.add(body);
-					System.out.println("remove");
-				}
-			}
-		}
+	public void updateObjects () {
 		for (GameObject obj: gameObjects) {
-			if (obj.body.getUserData().equals("dead")) {
-				toBeDeleted.add(obj);
-			}
+			obj.update();
 		}
-		for (Body body : removalBodies) {
-			world.destroyBody(body);
+	}
+	public void deleteDeletables () {
+		for (GameObject obj: toBeDeleted) {
+				world.destroyBody(obj.body);
+				gameObjects.remove(obj);
 		}
-		gameObjects.removeAll(toBeDeleted);
 		toBeDeleted.clear();
-		removalBodies.clear();
-		
 	}
 	public void checkGestures () {
 		if (Gdx.input.justTouched()) {
@@ -128,11 +113,12 @@ public class MainGame extends ApplicationAdapter {
 			float speedX = (touchPos.x - player.body.getPosition().x) / 5;
 			float speedY = (touchPos.y - player.body.getPosition().y) / 5;
 
+			Banana temp = new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this);
 			// adds banana to shoot during test scenario to object list TODO not needed in final version
-			gameObjects.add(new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this));
-
+			gameObjects.add(temp);
 			// gives speed to banana based on click position, TODO fling support
-			gameObjects.get(gameObjects.size()-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size()-1).body.getWorldCenter(),true);
+			temp.body.applyLinearImpulse(new Vector2(speedX,speedY),temp.body.getWorldCenter(),true);
+			temp.body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
 		}
 	}
 

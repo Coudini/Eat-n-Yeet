@@ -1,9 +1,8 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Game;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -21,8 +20,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.Iterator;
 
 public class GameWorld  {
 
@@ -110,7 +107,6 @@ public class GameWorld  {
 
             // SCALE given rectangle down if using world dimensions!
             Rectangle rectangle = scaleRect(tmp, 1 / UNIT_SCALE);
-            System.out.println(rectangleObject.getProperties().get("type"));
 
             Body body =  createStaticBody(rectangle, userData);
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("compostType")) {
