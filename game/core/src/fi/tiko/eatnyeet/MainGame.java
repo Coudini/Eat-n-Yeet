@@ -27,11 +27,13 @@ public class MainGame extends ApplicationAdapter {
 
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
-	private GameWorld gameWorld;
+	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
 	public Array<Body> bodies;
+	Character player;
 
+	Array<Body> removalBodies;
 	
 	@Override
 	public void create () {
@@ -40,14 +42,15 @@ public class MainGame extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+		gameObjects = new ArrayList<GameObject>();
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
 
 
-		gameObjects = new ArrayList<GameObject>();
+
 		bodies = new Array<Body>();
 		spawnDefaultObjects();
-
+		removalBodies = new Array<Body>();
 		debugRenderer = new Box2DDebugRenderer();
 
 	}
@@ -75,12 +78,13 @@ public class MainGame extends ApplicationAdapter {
 
 
 	public void moveCamera() {
-		camera.position.x = gameObjects.get(0).body.getPosition().x;
+		camera.position.x = player.body.getPosition().x;
 
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
-		gameObjects.add(new Character(WINDOW_WIDTH / 2, 4f,this));
+		this.player = new Character(WINDOW_WIDTH / 2, 4f,this);
+		gameObjects.add(player);
 	}
 
 	public void renderObjects () {
@@ -90,7 +94,6 @@ public class MainGame extends ApplicationAdapter {
 	}
 	public void deleteDeletables () {
 
-		Array<Body> removalBodies = new Array<Body>();
 		ArrayList<GameObject> toBeDeleted = new ArrayList<>();
 
 		for (Body body : bodies) {
@@ -111,7 +114,8 @@ public class MainGame extends ApplicationAdapter {
 		}
 		gameObjects.removeAll(toBeDeleted);
 		toBeDeleted.clear();
-
+		removalBodies.clear();
+		
 	}
 	public void checkGestures () {
 		if (Gdx.input.justTouched()) {
@@ -121,11 +125,11 @@ public class MainGame extends ApplicationAdapter {
 			Vector3 touchPos = new Vector3(realX, realY, 0);
 			camera.unproject(touchPos);
 
-			float speedX = (touchPos.x - gameObjects.get(0).body.getPosition().x) / 5;
-			float speedY = (touchPos.y - gameObjects.get(0).body.getPosition().y) / 5;
+			float speedX = (touchPos.x - player.body.getPosition().x) / 5;
+			float speedY = (touchPos.y - player.body.getPosition().y) / 5;
 
 			// adds banana to shoot during test scenario to object list TODO not needed in final version
-			gameObjects.add(new Banana(gameObjects.get(0).body.getPosition().x,gameObjects.get(0).body.getPosition().y + 0.2f,this));
+			gameObjects.add(new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this));
 
 			// gives speed to banana based on click position, TODO fling support
 			gameObjects.get(gameObjects.size()-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size()-1).body.getWorldCenter(),true);

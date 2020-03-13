@@ -25,7 +25,6 @@ public class Character extends GameObject {
         characterRun = createTextureAnimation(4,2, run);
         characterIdle = createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.5f);
-        body.setUserData("character");
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 

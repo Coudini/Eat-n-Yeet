@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class GameObject extends Sprite {
     Sound soundEffect;
@@ -25,7 +27,7 @@ public class GameObject extends Sprite {
     private float density = 0.3f;
     private float restitution = 0f;
     private float friction = 0f;
-    private MainGame game;
+    public MainGame game;
 
 
     public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
@@ -33,6 +35,15 @@ public class GameObject extends Sprite {
         this.game = game;
         this.setSize(width,height);
         this.setCenter(x,y);
+        this.setOriginCenter();
+    }
+    public GameObject(Texture texture,float width, float height, Body body, MainGame game) {
+        super(texture);
+        this.game = game;
+        this.body = body;
+        this.body.setUserData(this);
+        this.setSize(width,height);
+        this.setCenter(body.getPosition().x,body.getPosition().y);
         this.setOriginCenter();
     }
     public GameObject( float x, float y, float width, float height, MainGame game) {
@@ -99,38 +110,23 @@ public class GameObject extends Sprite {
         if (getTexture() == null) {
             return;
         }
-        float scale = 0.6f;
-        if (body.getUserData().equals("flingable")) {
-            scale = 0.3f;
-        }
 
         if (currentFrameTexture != null) {
             batch.draw(currentFrameTexture, body.getPosition().x - 0.5f, body.getPosition().y - 0.5f, getWidth(), getHeight());
 
         } else {
 
-            batch.draw(getTexture(),
-                    body.getPosition().x - 1f,
-                    body.getPosition().y - 1f,
-                    1f,                   // originX
-                    1f,                   // originY
-                    1f * 2,               // width
-                    1f * 2,               // height
-                    scale,                          // scaleX
-                    scale,                          // scaleY
-                    body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                    0,                             // Start drawing from x = 0
-                    0,                             // Start drawing from y = 0
-                    getTexture().getWidth(),       // End drawing x
-                    getTexture().getHeight(),      // End drawing y
-                    false,                         // flipX
-                    false);
+            setCenter(body.getPosition().x,body.getPosition().y);
+            setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+            draw(batch);
+
         }
     }
 
     public Body createBody(float x, float y, float radius) {
         Body tempBody = game.world.createBody(getDefinitionOfBody(x, y));
         tempBody.createFixture(getFixtureDefinition(radius));
+        tempBody.setUserData(this);
         return tempBody;
     }
     private BodyDef getDefinitionOfBody(float x, float y) {
@@ -175,6 +171,12 @@ public class GameObject extends Sprite {
             r.flip(true, false);
         }
     }
+
+    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+
+
+    }
+
 
     public float getDensity() {
         return density;
