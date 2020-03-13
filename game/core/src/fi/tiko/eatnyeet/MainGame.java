@@ -30,7 +30,6 @@ public class MainGame extends ApplicationAdapter {
 	private GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
-	//public Array<GameObject> toBeDeleted;
 	public Array<Body> bodies;
 
 	
@@ -46,7 +45,6 @@ public class MainGame extends ApplicationAdapter {
 
 
 		gameObjects = new ArrayList<GameObject>();
-		//toBeDeleted = new Array<GameObject>();
 		bodies = new Array<Body>();
 		spawnDefaultObjects();
 
@@ -88,17 +86,6 @@ public class MainGame extends ApplicationAdapter {
 	public void renderObjects () {
 		for (GameObject obj: gameObjects) {
 			obj.render(batch);
-
-			/**
-			try {
-				if (obj.body.getUserData().equals("dead")) {
-					toBeDeleted.add(obj);
-				}
-			} catch (Exception e) {
-				System.out.println("Error adding object to be deleted, possible cause is missing userdata or typo in userdata");
-			}
-			 */
-
 		}
 	}
 	public void deleteDeletables () {
@@ -125,14 +112,6 @@ public class MainGame extends ApplicationAdapter {
 		gameObjects.removeAll(toBeDeleted);
 		toBeDeleted.clear();
 
-
-
-		//for (GameObject obj:toBeDeleted) {
-		//		world.destroyBody(obj.body);
-		//	gameObjects.removeValue(obj,true);
-		//}
-
-
 	}
 	public void checkGestures () {
 		if (Gdx.input.justTouched()) {
@@ -158,5 +137,11 @@ public class MainGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		world.dispose();
+		for (GameObject obj: gameObjects) {
+			if (obj.getTexture()!=null) {
+				obj.getTexture().dispose();
+			}
+		}
+		gameObjects.clear();
 	}
 }

@@ -16,6 +16,8 @@ public class GameObject extends Sprite {
     Sound soundEffect;
     Animation<TextureRegion> textureAnimation;
     TextureRegion currentFrameTexture;
+
+    // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
     public Body body;
     public String objectType = "default";
@@ -33,8 +35,14 @@ public class GameObject extends Sprite {
         this.setCenter(x,y);
         this.setOriginCenter();
     }
+    public GameObject( float x, float y, float width, float height, MainGame game) {
+        this.game = game;
+        this.setSize(width,height);
+        this.setCenter(x,y);
+        this.setOriginCenter();
+    }
 
-    // TODO not is use yet
+    // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
     public void createTextureAnimation(int cols, int rows) {
 
         // Calculate the tile width from the sheet
@@ -52,6 +60,26 @@ public class GameObject extends Sprite {
         textureAnimation = new Animation(6 / 60f, allFrames);
 
         currentFrameTexture = textureAnimation.getKeyFrame(stateTime, true);
+    }
+
+    // Use this to create many different animations for same object
+    public Animation<TextureRegion> createTextureAnimation(int cols, int rows, Texture texture) {
+        Animation<TextureRegion> temp;
+
+        // Calculate the tile width from the sheet
+        int tileWidth = texture.getWidth() / cols;
+
+        // Calculate the tile height from the sheet
+        int tileHeight = texture.getHeight() / rows;
+
+        // Create 2D array from the texture (REGIONS of a TEXTURE).
+        TextureRegion[][] tmp = TextureRegion.split(texture, tileWidth, tileHeight);
+
+        // Transform the 2D array to 1D
+        TextureRegion[] allFrames = toTextureArray( tmp, cols, rows );
+
+        temp = new Animation(6 / 60f, allFrames);
+        return  temp;
     }
 
     // TODO not in use yet
