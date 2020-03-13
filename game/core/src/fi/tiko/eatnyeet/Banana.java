@@ -16,22 +16,4 @@ public class Banana extends GameObject implements Flingable {
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
 
     }
-
-    @Override
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
-
-        System.out.println("homo");
-        if (other != null && other instanceof Compost) {
-            System.out.println("penis");
-            game.removalBodies.add(body);
-            game.gameObjects.remove(this);
-
-
-
-            // näillä voi viitata toisen luokan metodeihin yms muuttujiin
-            //Compost comp = (Compost) other;
-            //comp.test();
-        }
-
-    }
 }
