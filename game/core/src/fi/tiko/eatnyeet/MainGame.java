@@ -64,7 +64,7 @@ public class MainGame extends ApplicationAdapter {
 		gameWorld.render(camera);
 		moveCamera();
 
-
+		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
 		updateObjects();
 
 		batch.begin();
@@ -72,7 +72,6 @@ public class MainGame extends ApplicationAdapter {
 		batch.end();
 
 		debugRenderer.render(world, camera.combined);
-		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
 		deleteDeletables();
 	}
 
@@ -114,11 +113,12 @@ public class MainGame extends ApplicationAdapter {
 			float speedX = (touchPos.x - player.body.getPosition().x) / 5;
 			float speedY = (touchPos.y - player.body.getPosition().y) / 5;
 
+			Banana temp = new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this);
 			// adds banana to shoot during test scenario to object list TODO not needed in final version
-			gameObjects.add(new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this));
-
+			gameObjects.add(temp);
 			// gives speed to banana based on click position, TODO fling support
-			gameObjects.get(gameObjects.size()-1).body.applyLinearImpulse(new Vector2(speedX,speedY),gameObjects.get(gameObjects.size()-1).body.getWorldCenter(),true);
+			temp.body.applyLinearImpulse(new Vector2(speedX,speedY),temp.body.getWorldCenter(),true);
+			temp.body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
 		}
 	}
 
