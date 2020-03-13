@@ -5,12 +5,12 @@
  </tileset>
  <layer id="9" name="Tile Layer 2" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eAHtVMEJgEAM65a6gW5w7iZuoHs4gy9TIU+hP42mkMvB9dGk4VpETEAT5wHzj4A6q++B86vvgfNTjzpTjzqr74Hzd/irekCdIcFlB+yAHbADduBzDuxQVEEKn4ElLy+siobsyVpvcD0+fKjrYEbUdWRGNqCq40CvYQ+cAWfAGXAG/pqBE8eLotw=
+   eAHtlLERgDAMA70lbEA2CLtxbED2YAYqROE+dBF87nRqXPhlXWpErFI190X7F8nd3e+Q+7vfIfdPHndPHnd3v0PuP+mvmiV3FwKPBEiABEiABD6XwCmiHo0O3sPwzIz+3Dk2BbxL7hyHGNoLjkuziAzoAB2gA3Tgrx24AWIokww=
   </data>
  </layer>
  <layer id="8" name="Tile Layer 1" width="50" height="30">
   <data encoding="base64" compression="zlib">
-   eAHtkckJAkEQRScfQ/BiAi4JuCTgkoDLWRE8K4KBqRGIEaj4CqzLME6fGrvxFzyqmYaaX6+LQiUDMhDTQJvhHehCL+aPIs/uM38AQxhBrjUm+ASmMMt1CXLPYQFLWEGutSX4Gjawy3CJJpmNI+zhACdofaBlVb6Ph274QV0GZEAG/sjAmV2vEOqpK3kQ8AWhbnvYrpcS5iCFCr2D31vWW0Xge8W3X3wKvYPfWzY7P0vYW6ZQ7jvUU8hal8F9h3rdDN3JgAzIgAzIwDcDb8EWUSY=
+   eAHtkcsJwlAQRdOPJbhJA34aiNqASRrws1YE14pgYcFKRDyCs57VgxlyBw4TePBy73lVpZEBGShpYMblc1jAsuSPCt/dcP8K1rCBrLMleAsd9FlLkHsHezjAEbLOheAnOMM1YYkpmX884AZ3eEL9h5VqrI+FntiHtgzIgAyMyMBA1xd4O7qSNwE/4O3oPbx3sPPoPbx3sPPoPcy3t6P3MN/ejt5D+WRABmRABmIa+AKkREQw
   </data>
  </layer>
  <objectgroup id="2" name="wall-rectangles">
@@ -20,7 +20,7 @@
   <object id="10" x="1568" y="0" width="32" height="928"/>
  </objectgroup>
  <objectgroup id="4" name="compost-rectangles">
-  <object id="6" x="32" y="576" width="192" height="94.6667"/>
+  <object id="6" name="testinimi" type="compostType" x="32" y="442" width="328" height="228.667"/>
  </objectgroup>
  <objectgroup id="5" name="field-rectangles"/>
 </map>

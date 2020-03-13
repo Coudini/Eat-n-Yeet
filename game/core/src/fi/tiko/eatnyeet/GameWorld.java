@@ -1,7 +1,9 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,13 +22,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Iterator;
+
 public class GameWorld  {
 
     public TiledMap tiledMap;
     public TiledMapRenderer tiledMapRenderer;
     public float UNIT_SCALE = 100f;
     private MainGame game;
-
     public GameWorld (MainGame game) {
         this.game = game;
         game.world = new World(new Vector2(0, -9.8f), true);
@@ -37,6 +40,7 @@ public class GameWorld  {
         transformWallsToBodies("wall-rectangles", "wall");
         transformWallsToBodies("compost-rectangles", "compost");
         transformWallsToBodies("field-rectangles", "field");
+
 
         game.world.setContactListener(new ContactListener() {
             @Override
@@ -51,20 +55,29 @@ public class GameWorld  {
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
 
-                try {
-                    String userDataA = (String) (contact.getFixtureA().getBody().getUserData());
-                    String userDataB = (String) (contact.getFixtureB().getBody().getUserData());
+                GameObject userDataA = null;
+                GameObject userDataB = null;
 
-                    if(userDataA.equals("compost") && userDataB.equals("flingable")) {
-                        contact.getFixtureB().getBody().setUserData("dead");
-                    }
-                    if(userDataA.equals("flingable") && userDataB.equals("compost")) {
-                        contact.getFixtureA().getBody().setUserData("dead");
-                    }
+                try {
+                    userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
                 } catch (Exception e) {
-                    System.out.println("Possibly missing userdata from either contact A or contact B");
+
                 }
 
+                try {
+                    userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
+                } catch (Exception e) {
+
+                }
+
+
+                if (userDataA != null) {
+                    userDataA.onCollision(contact,oldManifold,userDataB);
+                }
+
+                if (userDataB != null) {
+                    userDataB.onCollision(contact,oldManifold,userDataA);
+                }
 
             }
 
@@ -76,16 +89,13 @@ public class GameWorld  {
 
     }
 
-    public void update() {
-
-    }
 
     public void render(OrthographicCamera camera) {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
     }
 
-    private void transformWallsToBodies(String layer, String userData) {
+    public void transformWallsToBodies(String layer, String userData) {
         MapLayer collisionObjectLayer = tiledMap.getLayers().get(layer);
 
         // Get all object layer rectangles
@@ -100,12 +110,16 @@ public class GameWorld  {
 
             // SCALE given rectangle down if using world dimensions!
             Rectangle rectangle = scaleRect(tmp, 1 / UNIT_SCALE);
+            System.out.println(rectangleObject.getProperties().get("type"));
 
-            createStaticBody(rectangle, userData);
+            Body body =  createStaticBody(rectangle, userData);
+            if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("compostType")) {
+                game.gameObjects.add(new Compost(rectangle.getWidth(), rectangle.getHeight(), body,game));
+            }
         }
     }
 
-    public void createStaticBody(Rectangle rect, String userData) {
+    public Body createStaticBody(Rectangle rect, String userData) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.StaticBody;
 
@@ -126,9 +140,12 @@ public class GameWorld  {
         PolygonShape groundBox = new PolygonShape();
 
         // Real width and height is 2 X this!
-        groundBox.setAsBox(width / 2 , height / 2 );
+        groundBox.setAsBox(rect.getWidth() / 2 , height / 2 );
 
         wall.createFixture(groundBox, 0.0f);
+
+        return wall;
+
     }
 
 
