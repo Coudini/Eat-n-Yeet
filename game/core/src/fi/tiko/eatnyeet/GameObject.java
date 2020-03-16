@@ -15,6 +15,8 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import java.util.concurrent.Callable;
+
 public class GameObject extends Sprite {
     Sound soundEffect;
     Animation<TextureRegion> currentAnimation;
@@ -132,7 +134,7 @@ public class GameObject extends Sprite {
         tempBody.setUserData(this);
         return tempBody;
     }
-    private BodyDef getDefinitionOfBody(float x, float y) {
+    protected BodyDef getDefinitionOfBody(float x, float y) {
         // Body Definition
         BodyDef myBodyDef = new BodyDef();
 
@@ -178,6 +180,10 @@ public class GameObject extends Sprite {
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
 
 
+    }
+
+    public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
+        game.toBeCalled.add(toBeCalled);
     }
 
 

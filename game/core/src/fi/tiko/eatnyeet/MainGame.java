@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.concurrent.Callable;
 
 public class MainGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -27,10 +28,11 @@ public class MainGame extends ApplicationAdapter {
 	private final float WINDOW_HEIGHT = 9f;
 
 	private Box2DDebugRenderer debugRenderer;
-	private OrthographicCamera camera;
+	protected OrthographicCamera camera;
 	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
+	public ArrayList <Callable<Void>> toBeCalled;
 	public Array<Body> bodies;
 	Character player;
 
@@ -45,6 +47,7 @@ public class MainGame extends ApplicationAdapter {
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		gameObjects = new ArrayList<GameObject>();
+		toBeCalled = new ArrayList<Callable<Void>>();
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
 
@@ -65,6 +68,7 @@ public class MainGame extends ApplicationAdapter {
 		moveCamera();
 
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
+		callCallables();
 		updateObjects();
 
 		batch.begin();
@@ -95,6 +99,16 @@ public class MainGame extends ApplicationAdapter {
 			obj.update();
 		}
 	}
+	public void callCallables () {
+		for (Callable<Void> callable: toBeCalled) {
+			try {
+				callable.call();
+			} catch (Exception e) {
+				System.out.println("penis");
+			}
+		}
+		toBeCalled.clear();
+	}
 	public void deleteDeletables () {
 		for (GameObject obj: toBeDeleted) {
 				world.destroyBody(obj.body);
@@ -121,7 +135,6 @@ public class MainGame extends ApplicationAdapter {
 			temp.body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
 		}
 	}
-
 
 	@Override
 	public void dispose () {
