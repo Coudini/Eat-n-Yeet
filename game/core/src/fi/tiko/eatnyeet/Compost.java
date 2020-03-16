@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import java.util.concurrent.Callable;
+
 public class Compost extends GameObject {
     private static Texture empty = new Texture("compost_empty.png");
     private static Texture fill1 = new Texture("compost_stage1.png");
@@ -13,6 +15,7 @@ public class Compost extends GameObject {
     private static Texture fill4 = new Texture("compost_stage4.png");
     float fillLevel;
     float maxFill = 10f;
+    boolean testEmpty = false;
 
     public Compost(float width, float height,Body body , MainGame game) {
         super(fill4, width,height, body, game);
@@ -33,6 +36,16 @@ public class Compost extends GameObject {
         } else {
             this.setTexture(fill4);
         }
+
+
+       /* if (testEmpty) {
+            CompostWaste temp = new CompostWaste(2f, 4f,game);
+
+            game.gameObjects.add(temp);
+            testEmpty = false;
+        }
+
+        */
     }
     @Override
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
@@ -40,6 +53,19 @@ public class Compost extends GameObject {
             game.toBeDeleted.add(other);
             fillLevel += ((Flingable) other).getFillAmount();
             System.out.println(fillLevel);
+        }
+
+        if (other != null && other instanceof Character && fillLevel > 0f) {
+            System.out.println("character detected");
+
+            // cannot add object during phsysic steps so it will be added later
+           callAfterPhysicsStep(() -> {
+               CompostWaste temp = new CompostWaste(2f, 4f,game);
+               game.gameObjects.add(temp);
+               return null;
+           });
+
+            fillLevel = 0f;
         }
     }
 }
