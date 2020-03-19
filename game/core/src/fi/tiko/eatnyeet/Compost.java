@@ -49,6 +49,7 @@ public class Compost extends GameObject {
     }
     @Override
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+
         if (other != null && other instanceof Flingable) {
             game.toBeDeleted.add(other);
             fillLevel += ((Flingable) other).getFillAmount();

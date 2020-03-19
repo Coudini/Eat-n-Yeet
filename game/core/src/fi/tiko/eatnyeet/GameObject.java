@@ -183,7 +183,7 @@ public class GameObject extends Sprite {
     }
 
     public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
-        game.toBeCalled.add(toBeCalled);
+        game.functionsToBeCalled.add(toBeCalled);
     }
 
 

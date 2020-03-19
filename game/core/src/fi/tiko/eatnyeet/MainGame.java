@@ -32,7 +32,7 @@ public class MainGame extends ApplicationAdapter {
 	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
-	public ArrayList <Callable<Void>> toBeCalled;
+	public ArrayList <Callable<Void>> functionsToBeCalled;
 	public Array<Body> bodies;
 	Character player;
 
@@ -42,12 +42,11 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		gameObjects = new ArrayList<GameObject>();
-		toBeCalled = new ArrayList<Callable<Void>>();
+		functionsToBeCalled = new ArrayList<Callable<Void>>();
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
 
@@ -81,7 +80,7 @@ public class MainGame extends ApplicationAdapter {
 
 
 	public void moveCamera() {
-		camera.position.x = player.body.getPosition().x;
+		//camera.position.x = player.body.getPosition().x;
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
@@ -100,14 +99,14 @@ public class MainGame extends ApplicationAdapter {
 		}
 	}
 	public void callCallables () {
-		for (Callable<Void> callable: toBeCalled) {
+		for (Callable<Void> callable: functionsToBeCalled) {
 			try {
 				callable.call();
 			} catch (Exception e) {
 				System.out.println("penis");
 			}
 		}
-		toBeCalled.clear();
+		functionsToBeCalled.clear();
 	}
 	public void deleteDeletables () {
 		for (GameObject obj: toBeDeleted) {
