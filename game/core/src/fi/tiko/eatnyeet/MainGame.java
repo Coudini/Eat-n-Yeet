@@ -32,7 +32,7 @@ public class MainGame extends ApplicationAdapter {
 	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
-	public ArrayList <Callable<Void>> toBeCalled;
+	public ArrayList <Callable<Void>> functionsToBeCalled;
 	public Array<Body> bodies;
 	Character player;
 
@@ -42,12 +42,11 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		gameObjects = new ArrayList<GameObject>();
-		toBeCalled = new ArrayList<Callable<Void>>();
+		functionsToBeCalled = new ArrayList<Callable<Void>>();
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
 
@@ -63,7 +62,7 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		checkGestures();
+		tempBananaSpawn();
 		gameWorld.render(camera);
 		moveCamera();
 
@@ -81,11 +80,11 @@ public class MainGame extends ApplicationAdapter {
 
 
 	public void moveCamera() {
-		camera.position.x = player.body.getPosition().x;
+		//camera.position.x = player.body.getPosition().x;
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
-		this.player = new Character(WINDOW_WIDTH / 2, 4f,this);
+		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
 		gameObjects.add(player);
 	}
 
@@ -100,14 +99,14 @@ public class MainGame extends ApplicationAdapter {
 		}
 	}
 	public void callCallables () {
-		for (Callable<Void> callable: toBeCalled) {
+		for (Callable<Void> callable: functionsToBeCalled) {
 			try {
 				callable.call();
 			} catch (Exception e) {
 				System.out.println("penis");
 			}
 		}
-		toBeCalled.clear();
+		functionsToBeCalled.clear();
 	}
 	public void deleteDeletables () {
 		for (GameObject obj: toBeDeleted) {
@@ -116,24 +115,18 @@ public class MainGame extends ApplicationAdapter {
 		}
 		toBeDeleted.clear();
 	}
-	public void checkGestures () {
-		if (Gdx.input.justTouched()) {
-
-			int realX = Gdx.input.getX();
-			int realY = Gdx.input.getY();
-			Vector3 touchPos = new Vector3(realX, realY, 0);
-			camera.unproject(touchPos);
-
-			float speedX = (touchPos.x - player.body.getPosition().x) / 5;
-			float speedY = (touchPos.y - player.body.getPosition().y) / 5;
-
-			Banana temp = new Banana(player.body.getPosition().x,player.body.getPosition().y + 0.2f,this);
-			// adds banana to shoot during test scenario to object list TODO not needed in final version
-			gameObjects.add(temp);
-			// gives speed to banana based on click position, TODO fling support
-			temp.body.applyLinearImpulse(new Vector2(speedX,speedY),temp.body.getWorldCenter(),true);
-			temp.body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+	public void tempBananaSpawn () {
+		boolean spawnBanana = false;
+		for (GameObject obj : gameObjects) {
+			if (obj instanceof Food) {
+				spawnBanana = true;
+			}
 		}
+		if (!spawnBanana) {
+		Banana temp = new Banana(WINDOW_WIDTH / 2f, WINDOW_HEIGHT -1f, this);
+			gameObjects.add(temp);
+		}
+
 	}
 
 	@Override

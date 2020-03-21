@@ -24,10 +24,7 @@ public class Character extends GameObject {
     Animation<TextureRegion> characterRun;
 
     // used for detect if object can pass through other object
-    public static final short DEFAULT_BITS = 0x0001;
-    public static final short PLAYER_BITS = 0x0002;
-    public static final short ENEMY_BITS = 0x0004;
-    public static final short FOOD_BITS = 0x0008;
+
 
     public Character(float posX, float posY, MainGame game) {
         super(posX, posY, 1f, 1f, game);
@@ -35,10 +32,9 @@ public class Character extends GameObject {
         characterIdle = createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.5f);
 
-
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
-        filter.maskBits = DEFAULT_BITS;
+        filter.maskBits = DEFAULT_BITS | COMPOST_BITS | FOOD_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
@@ -53,6 +49,7 @@ public class Character extends GameObject {
 
 
     public void move() {
+
         float accY = Gdx.input.getAccelerometerY();
         float delta =  Gdx.graphics.getDeltaTime();
         float degrees = accY / 10 * 90;
@@ -67,11 +64,11 @@ public class Character extends GameObject {
         // mobile section
         else {
             if ( degrees > DEAD_ZONE) {
-                body.setLinearVelocity(speed * delta,body.getLinearVelocity().y);
+                body.setLinearVelocity(speed * delta,body.getLinearVelocity().x);
             } else if (degrees < -DEAD_ZONE) {
-                body.setLinearVelocity(-speed * delta,body.getLinearVelocity().y);
+                body.setLinearVelocity(-speed * delta,body.getLinearVelocity().x);
             } else {
-                body.setLinearVelocity(0f,0f);
+                body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
         }
 
