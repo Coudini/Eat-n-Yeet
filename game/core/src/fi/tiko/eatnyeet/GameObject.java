@@ -203,7 +203,7 @@ public class GameObject extends Sprite {
     }
 
     protected void fling () {
-
+/**
         if (this instanceof Flingable && Gdx.input.justTouched()) {
 
             float delta = Gdx.graphics.getDeltaTime();
@@ -219,6 +219,23 @@ public class GameObject extends Sprite {
             body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
             body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
         }
+*/
+        if (this instanceof Flingable && Gdx.input.justTouched()) {
+
+            float delta = Gdx.graphics.getDeltaTime();
+            int realX = Gdx.input.getX();
+            int realY = Gdx.input.getY();
+            Vector3 touchPos = new Vector3(realX, realY, 0);
+            game.camera.unproject(touchPos);
+
+            float speedX = (touchPos.x - body.getPosition().x ) * 10f * delta;
+            float speedY = (touchPos.y - body.getPosition().y ) * 10f * delta;
+
+            // gives speed to flingable based on click position, TODO fling support
+            body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
+            body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+        }
+
     }
 
 
