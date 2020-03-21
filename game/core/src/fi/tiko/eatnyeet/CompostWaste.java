@@ -10,20 +10,19 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class CompostWaste extends GameObject {
+public class CompostWaste extends GameObject implements Flingable {
 
     private static Texture waste = new Texture("temp_compost_stuff.png");
-    protected boolean isTouchingPlayer = false;
+    protected boolean isTouchingPlayer = true;
     protected boolean isJustThrown = false;
     protected int frameCount = 0;
 
-    public static final short DEFAULT_BITS = 0x0001;
-    public static final short PLAYER_BITS = 0x0002;
-    public static final short COMPOST_BITS = 0x0004;
-    public static final short FOOD_BITS = 0x0008;
 
-    public CompostWaste(float x, float y, MainGame game) {
+    protected float fillAmount;
+
+    public CompostWaste(float x, float y,float fill, MainGame game) {
         super(waste, x,y, 1f, 1f, game);
+        this.fillAmount = fill;
         setDensity(0.2f);
         setFriction(1.5f);
         setRestitution(0.5f);
@@ -39,23 +38,13 @@ public class CompostWaste extends GameObject {
 
     @Override
     public void update() {
-        trackPlayer();
         move();
     }
 
-    private void trackPlayer() {
-
-    }
     @Override
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
 
-        if (other != null && other.body.getUserData().equals("wall") ) {
-            System.out.println("wall collision");
-        }
-
         if (other != null && other instanceof Character) {
-            System.out.println("collided with character");
-
             if (!isJustThrown) {
                 isTouchingPlayer = true;
 
@@ -74,18 +63,7 @@ public class CompostWaste extends GameObject {
 
         if (Gdx.input.justTouched() && isTouchingPlayer) {
 
-            int realX = Gdx.input.getX();
-            int realY = Gdx.input.getY();
-            Vector3 touchPos = new Vector3(realX, realY, 0);
-            game.camera.unproject(touchPos);
-
-            float speedX = (touchPos.x - body.getPosition().x) / 3;
-            float speedY = (touchPos.y - body.getPosition().y) / 3;
-
-            System.out.println(speedY);
-
-            body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
-            body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+            fling();
 
             isJustThrown = true;
             isTouchingPlayer = false;
@@ -99,19 +77,19 @@ public class CompostWaste extends GameObject {
             }
 
         } else if (isTouchingPlayer && !isJustThrown) {
-            float tempX = game.player.body.getPosition().x;
-            float tempY = game.player.body.getPosition().y + 1f;
-            float angle = body.getAngle();
-            body.setTransform(tempX,tempY,angle);
+            trackPlayer();
         }
 
-        // counts 60 frames before allowing to touch waste again
+        // counts 20 frames before allowing to touch waste again
         if (isJustThrown) {
             frameCount++;
-            if (frameCount > 60) {
+            if (frameCount > 20) {
                 frameCount = 0;
                 isJustThrown = false;
             }
         }
+    }
+    public float getFillAmount() {
+        return fillAmount;
     }
 }

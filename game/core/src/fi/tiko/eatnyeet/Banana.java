@@ -9,14 +9,15 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class Banana extends GameObject implements Flingable {
+public class Banana extends GameObject implements Flingable, Food {
     private static Texture texture = new Texture("banana.png");
 
+    protected boolean isTouchingPlayer = false;
+    protected boolean isJustThrown = false;
+    protected int frameCount = 0;
+
     // used for detect if object can pass through other object
-    public static final short DEFAULT_BITS = 0x0001;
-    public static final short PLAYER_BITS = 0x0002;
-    public static final short COMPOST_BITS = 0x0004;
-    public static final short FOOD_BITS = 0x0008;
+
 
     public Banana(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 0.5f, 0.5f, game);
@@ -27,7 +28,7 @@ public class Banana extends GameObject implements Flingable {
 
         Filter filter = new Filter();
         filter.categoryBits = FOOD_BITS;
-        filter.maskBits = DEFAULT_BITS | FOOD_BITS;
+        filter.maskBits = DEFAULT_BITS | PLAYER_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
@@ -38,24 +39,58 @@ public class Banana extends GameObject implements Flingable {
     public void update () {
         move();
     }
+
+    @Override
+    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+
+        if (other != null && other instanceof Character) {
+            if (!isJustThrown) {
+                isTouchingPlayer = true;
+
+                // when colliding mask waste to ignore player collision
+                Filter filter = new Filter();
+                filter.categoryBits = FOOD_BITS;
+                filter.maskBits = DEFAULT_BITS;
+                for (Fixture fix: body.getFixtureList()) {
+                    fix.setFilterData(filter);
+                }
+            }
+        }
+    }
+
     public void move () {
-        if (Gdx.input.justTouched()) {
 
-            int realX = Gdx.input.getX();
-            int realY = Gdx.input.getY();
-            Vector3 touchPos = new Vector3(realX, realY, 0);
-            game.camera.unproject(touchPos);
+        if (Gdx.input.justTouched() && isTouchingPlayer) {
 
-            float speedX = (touchPos.x - body.getPosition().x) / 5;
-            float speedY = (touchPos.y - body.getPosition().y) / 5;
+            fling();
 
-            // gives speed to banana based on click position, TODO fling support
-            body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
-            body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+            isJustThrown = true;
+            isTouchingPlayer = false;
+
+            // when thrown mask it to recognize player character again
+            Filter filter = new Filter();
+            filter.categoryBits = FOOD_BITS;
+            filter.maskBits = DEFAULT_BITS | PLAYER_BITS;
+            for (Fixture fix: body.getFixtureList()) {
+                fix.setFilterData(filter);
+            }
+
+        } else if (isTouchingPlayer && !isJustThrown) {
+            trackPlayer();
+        }
+
+        // counts 20 frames before allowing to touch waste again
+        if (isJustThrown) {
+            frameCount++;
+            if (frameCount > 20) {
+                frameCount = 0;
+                isJustThrown = false;
+            }
         }
     }
 
     public float getFillAmount() {
         return 1f;
     }
+
 }

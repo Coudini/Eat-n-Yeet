@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -31,6 +33,10 @@ public class GameObject extends Sprite {
     private float friction = 0f;
     public MainGame game;
 
+    protected static final short DEFAULT_BITS = 0x0001;
+    protected static final short PLAYER_BITS = 0x0002;
+    protected static final short COMPOST_BITS = 0x0004;
+    protected static final short FOOD_BITS = 0x0008;
 
     public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
         super(texture);
@@ -184,6 +190,35 @@ public class GameObject extends Sprite {
 
     public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
         game.functionsToBeCalled.add(toBeCalled);
+    }
+
+    protected void trackPlayer() {
+        float xModif = -0.5f;
+        float yModif = 0.8f;
+        if (game.player.isRight == true) {
+            xModif = 0.5f;
+        }
+        // set body location to player body location -+ x and y modifiers
+        body.setTransform(game.player.body.getPosition().x + xModif,game.player.body.getPosition().y + yModif,this.body.getAngle());
+    }
+
+    protected void fling () {
+
+        if (this instanceof Flingable && Gdx.input.justTouched()) {
+
+            float delta = Gdx.graphics.getDeltaTime();
+            int realX = Gdx.input.getX();
+            int realY = Gdx.input.getY();
+            Vector3 touchPos = new Vector3(realX, realY, 0);
+            game.camera.unproject(touchPos);
+
+            float speedX = (touchPos.x - body.getPosition().x ) * 10f * delta;
+            float speedY = (touchPos.y - body.getPosition().y ) * 10f * delta;
+
+            // gives speed to flingable based on click position, TODO fling support
+            body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
+            body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+        }
     }
 
 

@@ -84,7 +84,7 @@ public class MainGame extends ApplicationAdapter {
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
-		this.player = new Character(WINDOW_WIDTH / 2, 4f,this);
+		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
 		gameObjects.add(player);
 	}
 
@@ -118,7 +118,7 @@ public class MainGame extends ApplicationAdapter {
 	public void tempBananaSpawn () {
 		boolean spawnBanana = false;
 		for (GameObject obj : gameObjects) {
-			if (obj instanceof Flingable) {
+			if (obj instanceof Food) {
 				spawnBanana = true;
 			}
 		}

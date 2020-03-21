@@ -121,6 +121,9 @@ public class GameWorld  {
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("compostType")) {
                 game.gameObjects.add(new Compost(rectangle.getWidth(), rectangle.getHeight(), body,game));
             }
+            if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("fieldType")) {
+                game.gameObjects.add(new Field(rectangle.getWidth(), rectangle.getHeight(), body,game));
+            }
         }
     }
 

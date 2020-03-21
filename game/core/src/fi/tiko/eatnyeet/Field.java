@@ -5,7 +5,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class Compost extends GameObject {
+public class Field extends GameObject {
+
+    // temp
     private static Texture empty = new Texture("compost_empty.png");
     private static Texture fill1 = new Texture("compost_stage1.png");
     private static Texture fill2 = new Texture("compost_stage2.png");
@@ -14,7 +16,7 @@ public class Compost extends GameObject {
     float fillLevel;
     float maxFill = 10f;
 
-    public Compost(float width, float height,Body body , MainGame game) {
+    public Field(float width, float height, Body body , MainGame game) {
         super(fill4, width,height, body, game);
         fillLevel = 0f;
     }
@@ -37,34 +39,17 @@ public class Compost extends GameObject {
     @Override
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
 
-        if (other != null && other instanceof Food) {
+        if (other != null && other instanceof CompostWaste) {
             game.toBeDeleted.add(other);
-            fillLevel += ((Food) other).getFillAmount();
+            fillLevel += ((CompostWaste) other).getFillAmount();
+
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;
                 System.out.println("Field already full!!");
             }
-            System.out.println("Compost filllevel = " +  fillLevel);
+
+            System.out.println("Field fillevel = " + fillLevel);
         }
 
-        if (other != null && other instanceof Character && fillLevel > 0f) {
-            System.out.println("character detected");
-
-            // cannot add object during physics steps so it will be added later
-           callAfterPhysicsStep(() -> {
-               float posX = game.player.body.getPosition().x;
-               float posY = game.player.body.getPosition().y + 1f;
-               float fill = fillLevel;
-
-               if (fillLevel >= maxFill) {
-                   fill = maxFill;
-               }
-
-               CompostWaste temp = new CompostWaste(posX,posY,fill, game);
-               game.gameObjects.add(temp);
-               fillLevel = 0f;
-               return null;
-           });
-        }
     }
 }
