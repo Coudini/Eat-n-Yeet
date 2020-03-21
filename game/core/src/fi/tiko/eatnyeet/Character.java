@@ -26,7 +26,7 @@ public class Character extends GameObject {
     // used for detect if object can pass through other object
     public static final short DEFAULT_BITS = 0x0001;
     public static final short PLAYER_BITS = 0x0002;
-    public static final short ENEMY_BITS = 0x0004;
+    public static final short COMPOST_BITS = 0x0004;
     public static final short FOOD_BITS = 0x0008;
 
     public Character(float posX, float posY, MainGame game) {
@@ -38,7 +38,7 @@ public class Character extends GameObject {
 
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
-        filter.maskBits = DEFAULT_BITS;
+        filter.maskBits = DEFAULT_BITS | COMPOST_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }

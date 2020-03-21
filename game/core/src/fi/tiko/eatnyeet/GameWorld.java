@@ -30,7 +30,7 @@ public class GameWorld  {
     public GameWorld (MainGame game) {
         this.game = game;
         game.world = new World(new Vector2(0, -9.8f), true);
-        tiledMap = new TmxMapLoader().load("map.tmx");
+        tiledMap = new TmxMapLoader().load("map2.0.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / UNIT_SCALE);
 
 
@@ -56,13 +56,22 @@ public class GameWorld  {
                 GameObject userDataB = null;
 
                 try {
-                    userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
+                    if ((contact.getFixtureB().getBody().getUserData().equals("wall"))) {
+                        System.out.println("wall");
+                    } else {
+                        userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
+                    }
+
                 } catch (Exception e) {
 
                 }
 
                 try {
-                    userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
+                    if ((contact.getFixtureB().getBody().getUserData().equals("wall"))) {
+                        System.out.println("wall");
+                    } else {
+                        userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
+                    }
                 } catch (Exception e) {
 
                 }

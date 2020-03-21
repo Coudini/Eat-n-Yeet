@@ -59,9 +59,11 @@ public class Compost extends GameObject {
         if (other != null && other instanceof Character && fillLevel > 0f) {
             System.out.println("character detected");
 
-            // cannot add object during phsysic steps so it will be added later
+            // cannot add object during physics steps so it will be added later
            callAfterPhysicsStep(() -> {
-               CompostWaste temp = new CompostWaste(2f, 4f,game);
+               float posX = game.player.body.getPosition().x;
+               float posY = game.player.body.getPosition().y + 1f;
+               CompostWaste temp = new CompostWaste(posX, posY,game);
                game.gameObjects.add(temp);
                return null;
            });
