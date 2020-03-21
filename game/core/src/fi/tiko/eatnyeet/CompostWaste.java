@@ -17,7 +17,6 @@ public class CompostWaste extends GameObject implements Flingable {
     protected boolean isJustThrown = false;
     protected int frameCount = 0;
 
-
     protected float fillAmount;
 
     public CompostWaste(float x, float y,float fill, MainGame game) {
@@ -36,59 +35,7 @@ public class CompostWaste extends GameObject implements Flingable {
         }
     }
 
-    @Override
-    public void update() {
-        move();
-    }
 
-    @Override
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
-
-        if (other != null && other instanceof Character) {
-            if (!isJustThrown) {
-                isTouchingPlayer = true;
-
-                // when colliding mask waste to ignore player collision
-                Filter filter = new Filter();
-                filter.categoryBits = COMPOST_BITS;
-                filter.maskBits = DEFAULT_BITS;
-                for (Fixture fix: body.getFixtureList()) {
-                    fix.setFilterData(filter);
-                }
-            }
-        }
-    }
-
-    public void move () {
-
-        if (Gdx.input.justTouched() && isTouchingPlayer) {
-
-            fling();
-
-            isJustThrown = true;
-            isTouchingPlayer = false;
-
-            // when thrown mask it to recognize player character again
-            Filter filter = new Filter();
-            filter.categoryBits = COMPOST_BITS;
-            filter.maskBits = DEFAULT_BITS | PLAYER_BITS;
-            for (Fixture fix: body.getFixtureList()) {
-                fix.setFilterData(filter);
-            }
-
-        } else if (isTouchingPlayer && !isJustThrown) {
-            trackPlayer();
-        }
-
-        // counts 20 frames before allowing to touch waste again
-        if (isJustThrown) {
-            frameCount++;
-            if (frameCount > 20) {
-                frameCount = 0;
-                isJustThrown = false;
-            }
-        }
-    }
     public float getFillAmount() {
         return fillAmount;
     }

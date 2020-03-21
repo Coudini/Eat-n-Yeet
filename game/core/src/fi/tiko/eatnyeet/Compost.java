@@ -66,5 +66,6 @@ public class Compost extends GameObject {
                return null;
            });
         }
+
     }
 }
