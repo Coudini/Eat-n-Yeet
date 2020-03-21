@@ -33,8 +33,11 @@ public class Character extends GameObject {
     protected boolean isJustThrown = false;
     protected float frameCount;
 
-    Banana objectToCarry;
+    GameObject objectToCarry;
 
+    boolean startPosSet =false;
+    Vector3 touchPosDrag;
+    Vector3 endPosDrag;
     // used for detect if object can pass through other object
 
 
@@ -44,12 +47,8 @@ public class Character extends GameObject {
         characterIdle = createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.5f);
 
-        Filter filter = new Filter();
-        filter.categoryBits = PLAYER_BITS;
-        filter.maskBits = DEFAULT_BITS | COMPOST_BITS | FOOD_BITS;
-        for (Fixture fix: body.getFixtureList()) {
-            fix.setFilterData(filter);
-        }
+        allowPlayerCollision();
+
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
@@ -57,10 +56,58 @@ public class Character extends GameObject {
 
     public void update () {
         move();
+        flingListener();
         updateObjectToCarry();
-        fling();
+
     }
 
+    public void flingListener() {
+        float delta = Gdx.graphics.getDeltaTime();
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+                if (!startPosSet) {
+                    touchPosDrag = new Vector3(screenX, screenY, 0);
+                    game.camera.unproject(touchPosDrag);
+                    startPosSet = true;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                endPosDrag = new Vector3(screenX, screenY, 0);
+                game.camera.unproject(endPosDrag);
+                float speedX = 0f;
+                float speedY = 0f;
+
+                try {
+                    speedX = (touchPosDrag.x - endPosDrag.x) * 10f * delta;
+                    speedY = (touchPosDrag.y - endPosDrag.y) * 10f * delta;
+                } catch (Exception e) {
+                    System.out.println("no drag");
+                    return false;
+                }
+                System.out.println(speedX + " x");
+                System.out.println(speedY + " y");
+
+
+                if (isCarryingFlingable) {
+                    // TODO Worldcenter needs to be changed to actual world center, currently from body
+                    objectToCarry.body.applyLinearImpulse(new Vector2(speedX, speedY), objectToCarry.body.getWorldCenter(), true);
+                    objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.01f, true);
+
+                }
+
+                startPosSet = false;
+                isCarryingFlingable = false;
+                isJustThrown = true;
+                return true;
+            }
+        });
+    }
 
     public void move() {
 
@@ -113,8 +160,9 @@ public class Character extends GameObject {
         if (other != null && other instanceof Flingable) {
             if (!isJustThrown && !isCarryingFlingable) {
 
-                objectToCarry =  (Banana) other.body.getUserData();
-                objectToCarry.ignorePlayerCollision();
+                objectToCarry = other;
+
+                ignorePlayerCollision();
 
                 isCarryingFlingable = true;
                 // when colliding mask waste to ignore player collision
@@ -127,51 +175,8 @@ public class Character extends GameObject {
             }
         }
     }
-    boolean startPosSet =false;
-    Vector3 touchPosDrag;
-    Vector3 endPosDrag;
-    protected void fling () {
 
-        float delta = Gdx.graphics.getDeltaTime();
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-                if (!startPosSet) {
-                    touchPosDrag = new Vector3(screenX, screenY, 0);
-                    game.camera.unproject(touchPosDrag);
-                    startPosSet = true;
-                }
-                return true;
-            }
-
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                endPosDrag = new Vector3(screenX, screenY, 0);
-                game.camera.unproject(endPosDrag);
-                float speedX = 0f;
-                float speedY = 0f;
-
-                try {
-                     speedX = (touchPosDrag.x - endPosDrag.x) * 10f * delta;
-                     speedY = (touchPosDrag.y - endPosDrag.y) * 10f * delta;
-                } catch (Exception e) {
-                    System.out.println("no drag");
-                    return false;
-                }
-
-                // TODO Worldcenter needs to be changed to actual world center, currently from body
-                objectToCarry.body.applyLinearImpulse(new Vector2(speedX,speedY),objectToCarry.body.getWorldCenter(),true);
-                objectToCarry.body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
-
-                startPosSet = false;
-                isCarryingFlingable = false;
-                isJustThrown = true;
-                return true;
-            }
-        });
-    }
     private void updateObjectToCarry () {
 
         if (isCarryingFlingable) {
@@ -188,19 +193,27 @@ public class Character extends GameObject {
         if (isJustThrown) {
             frameCount++;
             if (frameCount > 20) {
-
-                objectToCarry.allowPlayerCollision();
-
-                Filter filter = new Filter();
-                filter.categoryBits = PLAYER_BITS;
-                filter.maskBits = DEFAULT_BITS | COMPOST_BITS | FOOD_BITS;
-                for (Fixture fix: body.getFixtureList()) {
-                    fix.setFilterData(filter);
-                }
+                allowPlayerCollision();
                 frameCount = 0;
                 isJustThrown = false;
                 isJustThrown = false;
             }
+        }
+    }
+    public void ignorePlayerCollision() {
+        Filter filter = new Filter();
+        filter.categoryBits = PLAYER_BITS;
+        filter.maskBits = DEFAULT_BITS;
+        for (Fixture fix: body.getFixtureList()) {
+            fix.setFilterData(filter);
+        }
+    }
+    public void allowPlayerCollision(){
+        Filter filter = new Filter();
+        filter.categoryBits = PLAYER_BITS;
+        filter.maskBits = DEFAULT_BITS | FOOD_BITS | COMPOST_BITS;
+        for (Fixture fix: body.getFixtureList()) {
+            fix.setFilterData(filter);
         }
     }
 
