@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-
+/*
 public class CompostWaste extends GameObject implements Flingable {
 
     private static Texture waste = new Texture("temp_compost_stuff.png");
@@ -93,3 +93,6 @@ public class CompostWaste extends GameObject implements Flingable {
         return fillAmount;
     }
 }
+
+
+ */

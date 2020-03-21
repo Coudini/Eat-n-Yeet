@@ -1,6 +1,7 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -192,6 +193,7 @@ public class GameObject extends Sprite {
         game.functionsToBeCalled.add(toBeCalled);
     }
 
+    /*
     protected void trackPlayer() {
         float xModif = -0.5f;
         float yModif = 0.8f;
@@ -202,24 +204,51 @@ public class GameObject extends Sprite {
         body.setTransform(game.player.body.getPosition().x + xModif,game.player.body.getPosition().y + yModif,this.body.getAngle());
     }
 
+
+     */
+   /* boolean startPosSet =false;
+    Vector3 touchPosDrag;
+    Vector3 endPosDrag;
     protected void fling () {
 
-        if (this instanceof Flingable && Gdx.input.justTouched()) {
+        if (this instanceof Flingable) {
 
             float delta = Gdx.graphics.getDeltaTime();
-            int realX = Gdx.input.getX();
-            int realY = Gdx.input.getY();
-            Vector3 touchPos = new Vector3(realX, realY, 0);
-            game.camera.unproject(touchPos);
 
-            float speedX = (touchPos.x - body.getPosition().x ) * 10f * delta;
-            float speedY = (touchPos.y - body.getPosition().y ) * 10f * delta;
+            Gdx.input.setInputProcessor(new InputAdapter() {
+                @Override
+                public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-            // gives speed to flingable based on click position, TODO fling support
-            body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
-            body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+                    if (!startPosSet) {
+                        touchPosDrag = new Vector3(screenX, screenY, 0);
+                        game.camera.unproject(touchPosDrag);
+                        startPosSet = true;
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                    System.out.println("vuittu");
+                    endPosDrag = new Vector3(screenX, screenY, 0);
+                    game.camera.unproject(endPosDrag);
+
+                    float speedX = (touchPosDrag.x - endPosDrag.x) * 10f * delta;
+                    float speedY = (touchPosDrag.y - endPosDrag.y) * 10f * delta;
+
+                    System.out.println(speedX + " x");
+                    System.out.println(speedY + " y");
+
+                    body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
+                    body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+                    startPosSet = false;
+                    return true;
+                }
+            });
         }
     }
+
+    */
 
 
     public float getDensity() {
@@ -247,3 +276,20 @@ public class GameObject extends Sprite {
     }
 
 }
+
+   /*
+            int realX = Gdx.input.getX();
+            int realY = Gdx.input.getY();
+            Vector3 touchPos = new Vector3(realX, realY, 0);
+            game.camera.unproject(touchPos);
+
+                    float speedX = (touchPos.x - body.getPosition().x ) * 10f * delta;
+                    float speedY = (touchPos.y - body.getPosition().y ) * 10f * delta;
+
+                    body.applyLinearImpulse(new Vector2(speedX,speedY),body.getWorldCenter(),true);
+                    body.applyAngularImpulse(Math.signum(speedX)*-0.01f,true);
+
+             */
+
+
+// gives speed to flingable based on click position, TODO fling support

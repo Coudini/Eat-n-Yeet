@@ -47,7 +47,7 @@ public class Compost extends GameObject {
             System.out.println("Compost filllevel = " +  fillLevel);
         }
 
-        if (other != null && other instanceof Character && fillLevel > 0f) {
+       /* if (other != null && other instanceof Character && fillLevel > 0f) {
             System.out.println("character detected");
 
             // cannot add object during physics steps so it will be added later
@@ -66,5 +66,7 @@ public class Compost extends GameObject {
                return null;
            });
         }
+
+        */
     }
 }

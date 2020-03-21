@@ -39,7 +39,7 @@ public class Field extends GameObject {
     @Override
     public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
 
-        if (other != null && other instanceof CompostWaste) {
+       /* if (other != null && other instanceof CompostWaste) {
             game.toBeDeleted.add(other);
             fillLevel += ((CompostWaste) other).getFillAmount();
 
@@ -50,6 +50,8 @@ public class Field extends GameObject {
 
             System.out.println("Field fillevel = " + fillLevel);
         }
+
+        */
 
     }
 }

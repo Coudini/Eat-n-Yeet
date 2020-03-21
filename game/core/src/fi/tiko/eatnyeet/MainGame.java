@@ -2,6 +2,7 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -54,6 +55,7 @@ public class MainGame extends ApplicationAdapter {
 		toBeDeleted = new HashSet<>();
 		debugRenderer = new Box2DDebugRenderer();
 
+
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
