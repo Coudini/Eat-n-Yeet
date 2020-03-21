@@ -62,7 +62,6 @@ public class Character extends GameObject {
     }
 
     public void flingListener() {
-        float delta = Gdx.graphics.getDeltaTime();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -72,6 +71,7 @@ public class Character extends GameObject {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     game.camera.unproject(touchPosDrag);
                     startPosSet = true;
+                    System.out.println("homo");
                 }
                 return true;
             }
@@ -84,8 +84,8 @@ public class Character extends GameObject {
                 float speedY = 0f;
 
                 try {
-                    speedX = (touchPosDrag.x - endPosDrag.x) * 10f * delta;
-                    speedY = (touchPosDrag.y - endPosDrag.y) * 10f * delta;
+                    speedX = (touchPosDrag.x - endPosDrag.x) * 5;
+                    speedY = (touchPosDrag.y - endPosDrag.y) * 5;
                 } catch (Exception e) {
                     System.out.println("no drag");
                     return false;
@@ -94,16 +94,17 @@ public class Character extends GameObject {
                 System.out.println(speedY + " y");
 
 
-                if (isCarryingFlingable) {
+                if (isCarryingFlingable && startPosSet) {
                     // TODO Worldcenter needs to be changed to actual world center, currently from body
-                    objectToCarry.body.applyLinearImpulse(new Vector2(speedX, speedY), objectToCarry.body.getWorldCenter(), true);
+                    //objectToCarry.body.applyLinearImpulse(new Vector2(speedX, speedY), objectToCarry.body.getWorldCenter(), true);
+                    objectToCarry.body.setLinearVelocity(speedX, speedY);
                     objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.01f, true);
 
-                }
+                    startPosSet = false;
+                    isCarryingFlingable = false;
+                    isJustThrown = true;
 
-                startPosSet = false;
-                isCarryingFlingable = false;
-                isJustThrown = true;
+                }
                 return true;
             }
         });
@@ -125,9 +126,9 @@ public class Character extends GameObject {
         // mobile section
         else {
             if ( degrees > DEAD_ZONE) {
-                body.setLinearVelocity(speed * delta,body.getLinearVelocity().x);
+                body.setLinearVelocity(speed * delta,body.getLinearVelocity().y);
             } else if (degrees < -DEAD_ZONE) {
-                body.setLinearVelocity(-speed * delta,body.getLinearVelocity().x);
+                body.setLinearVelocity(-speed * delta,body.getLinearVelocity().y);
             } else {
                 body.setLinearVelocity(0f,body.getLinearVelocity().y);
             }
@@ -166,12 +167,7 @@ public class Character extends GameObject {
 
                 isCarryingFlingable = true;
                 // when colliding mask waste to ignore player collision
-                Filter filter = new Filter();
-                filter.categoryBits = PLAYER_BITS;
-                filter.maskBits = DEFAULT_BITS;
-                for (Fixture fix: body.getFixtureList()) {
-                    fix.setFilterData(filter);
-                }
+                ignorePlayerCollision();
             }
         }
     }
