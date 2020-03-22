@@ -7,4 +7,5 @@ import com.badlogic.gdx.math.Vector3;
 public interface Flingable {
     // TODO add common needed methods that flingable objects has
     public float getFillAmount();
+
 }

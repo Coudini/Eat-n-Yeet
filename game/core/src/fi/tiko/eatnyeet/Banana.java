@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 
 public class Banana extends GameObject implements Flingable, Food {
     private static Texture texture = new Texture("banana.png");
+    private float fillAmount = 1f;
 
     public Banana(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 0.5f, 0.5f, game);
@@ -35,6 +36,10 @@ public class Banana extends GameObject implements Flingable, Food {
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
+    }
+
+    public void setFillAmount (float fillAmount) {
+        this.fillAmount = fillAmount;
     }
     public float getFillAmount() {
         return 1f;

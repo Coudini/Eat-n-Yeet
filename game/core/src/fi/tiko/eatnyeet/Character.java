@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Character extends GameObject {
     // Limit for mobile accelerometer
-    private final float DEAD_ZONE = 5f;
+    private final float DEAD_ZONE = 10f;
     private final float speed = 300f;
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
@@ -33,7 +33,7 @@ public class Character extends GameObject {
     protected boolean isJustThrown = false;
     protected float frameCount;
 
-    GameObject objectToCarry;
+    protected GameObject objectToCarry;
 
     boolean startPosSet =false;
     Vector3 touchPosDrag;
@@ -55,6 +55,7 @@ public class Character extends GameObject {
 
 
     public void update () {
+        super.update();
         move();
         flingListener();
         updateObjectToCarry();
@@ -71,7 +72,6 @@ public class Character extends GameObject {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     game.camera.unproject(touchPosDrag);
                     startPosSet = true;
-                    System.out.println("homo");
                 }
                 return true;
             }
@@ -104,6 +104,9 @@ public class Character extends GameObject {
                     isCarryingFlingable = false;
                     isJustThrown = true;
 
+
+                    objectToCarry.isBeingCarried = false;
+
                 }
                 return true;
             }
@@ -130,7 +133,13 @@ public class Character extends GameObject {
             } else if (degrees < -DEAD_ZONE) {
                 body.setLinearVelocity(-speed * delta,body.getLinearVelocity().y);
             } else {
-                body.setLinearVelocity(0f,body.getLinearVelocity().y);
+                // reduce the x velocity step by step
+                float xVel = body.getLinearVelocity().x;
+                if (xVel > 0.4f || xVel < -0.4f) {
+                    body.setLinearVelocity(xVel * 0.7f,body.getLinearVelocity().y);
+                } else {
+                    body.setLinearVelocity(0f,body.getLinearVelocity().y);
+                }
             }
         }
 
@@ -157,11 +166,12 @@ public class Character extends GameObject {
      }
 
     @Override
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+    public void onCollision(Contact contact, GameObject other) {
         if (other != null && other instanceof Flingable) {
             if (!isJustThrown && !isCarryingFlingable) {
 
                 objectToCarry = other;
+                objectToCarry.isBeingCarried = true;
 
                 ignorePlayerCollision();
 
@@ -176,11 +186,12 @@ public class Character extends GameObject {
     private void updateObjectToCarry () {
 
         if (isCarryingFlingable) {
-            float xModif = -0.5f;
+            float xModif = -0.4f;
             float yModif = 0.8f;
             if (isRight) {
                 xModif = 0.5f;
             }
+
             // set body location to player body location -+ x and y modifiers
             objectToCarry.body.setTransform(this.body.getPosition().x + xModif,this.body.getPosition().y + yModif,0f);
         }
@@ -188,6 +199,8 @@ public class Character extends GameObject {
         // after set time allow character to interact with the object again
         if (isJustThrown) {
             frameCount++;
+
+            // TODO may refer to next object instead of the throwed one
             if (frameCount > 20) {
                 allowPlayerCollision();
                 frameCount = 0;
@@ -212,5 +225,10 @@ public class Character extends GameObject {
             fix.setFilterData(filter);
         }
     }
-
+    protected void resetObjectToCarry() {
+       isCarryingFlingable = false;
+       isJustThrown = false;
+       objectToCarry = null;
+       allowPlayerCollision();
+    }
 }

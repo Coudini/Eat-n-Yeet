@@ -21,6 +21,7 @@ public class Compost extends GameObject {
 
     @Override
     public void update () {
+        super.update();
         float currentPercent = fillLevel / maxFill;
         if (currentPercent < 0.05) {
             this.setTexture(empty);
@@ -35,10 +36,20 @@ public class Compost extends GameObject {
         }
     }
     @Override
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+    public void onCollision(Contact contact, GameObject other) {
 
         if (other != null && other instanceof Food) {
             game.toBeDeleted.add(other);
+
+            // if character carries the object to compost this will reset character object reference and booleans
+            if (other.isBeingCarried) {
+                callAfterPhysicsStep(() -> {
+                    other.isBeingCarried = false;
+                    game.player.resetObjectToCarry();
+                    return null;
+                });
+            }
+
             fillLevel += ((Food) other).getFillAmount();
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;

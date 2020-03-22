@@ -29,7 +29,7 @@ public class GameWorld  {
     private MainGame game;
     public GameWorld (MainGame game) {
         this.game = game;
-        game.world = new World(new Vector2(0, -9.8f), true);
+        game.world = new World(new Vector2(0f, -9.8f), true);
         tiledMap = new TmxMapLoader().load("map2.0.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / UNIT_SCALE);
 
@@ -42,6 +42,32 @@ public class GameWorld  {
         game.world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
+                GameObject userDataA = null;
+                GameObject userDataB = null;
+
+                try {
+                    userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
+
+                } catch (Exception e) {
+
+                }
+
+                try {
+                    userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
+
+                } catch (Exception e) {
+
+                }
+
+
+                if (userDataA != null) {
+                    userDataA.onCollision(contact,userDataB);
+                }
+
+                if (userDataB != null) {
+                    userDataB.onCollision(contact,userDataA);
+                }
+
             }
 
             @Override
@@ -52,38 +78,6 @@ public class GameWorld  {
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
 
-                GameObject userDataA = null;
-                GameObject userDataB = null;
-
-                try {
-                    if ((contact.getFixtureB().getBody().getUserData().equals("wall"))) {
-                        System.out.println("wall");
-                    } else {
-                        userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
-                    }
-
-                } catch (Exception e) {
-
-                }
-
-                try {
-                    if ((contact.getFixtureB().getBody().getUserData().equals("wall"))) {
-                        System.out.println("wall");
-                    } else {
-                        userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
-                    }
-                } catch (Exception e) {
-
-                }
-
-
-                if (userDataA != null) {
-                    userDataA.onCollision(contact,oldManifold,userDataB);
-                }
-
-                if (userDataB != null) {
-                    userDataB.onCollision(contact,oldManifold,userDataA);
-                }
 
             }
 
