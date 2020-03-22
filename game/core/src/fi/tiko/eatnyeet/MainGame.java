@@ -39,9 +39,23 @@ public class MainGame extends ApplicationAdapter {
 
 	// Alternate for ArrayList
 	HashSet<GameObject> toBeDeleted;
-	
+
 	@Override
 	public void create () {
+		Banana.texture = new Texture("banana.png");
+		CompostWaste.texture = new Texture("temp_compost_stuff.png");
+		Character.run = new Texture("farma_run.png");
+		Character.idle  = new Texture("farma_idle.png");
+		Compost.empty = new Texture("compost_empty.png");
+		Compost.fill1 = new Texture("compost_stage1.png");
+		Compost.fill2 = new Texture("compost_stage2.png");
+		Compost.fill3 = new Texture("compost_stage3.png");
+		Compost.fill4 = new Texture("compost_stage4.png");
+		Field.empty = new Texture("compost_empty.png");
+		Field.fill1 = new Texture("compost_stage1.png");
+		Field.fill2 = new Texture("compost_stage2.png");
+		Field.fill3 = new Texture("compost_stage3.png");
+		Field.fill4 = new Texture("compost_stage4.png");
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -130,6 +144,14 @@ public class MainGame extends ApplicationAdapter {
 		}
 
 	}
+	@Override
+	public void pause () {
+
+	}
+	@Override
+    public void resume () {
+
+    }
 
 	@Override
 	public void dispose () {

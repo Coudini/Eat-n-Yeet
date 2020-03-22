@@ -25,6 +25,7 @@ public class GameObject extends Sprite {
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
 
+
     // TODO change this to flingable class or something like that
     protected boolean isBeingCarried = false;
 

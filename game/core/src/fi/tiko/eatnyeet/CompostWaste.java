@@ -12,7 +12,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class CompostWaste extends GameObject implements Flingable {
 
-    private static Texture waste = new Texture("temp_compost_stuff.png");
+    public static Texture texture;
+
     protected boolean isTouchingPlayer = true;
     protected boolean isJustThrown = false;
     protected int frameCount = 0;
@@ -20,7 +21,7 @@ public class CompostWaste extends GameObject implements Flingable {
     protected float fillAmount;
 
     public CompostWaste(float x, float y,float fill, MainGame game) {
-        super(waste, x,y, 1f, 1f, game);
+        super(texture, x,y, 1f, 1f, game);
         this.fillAmount = fill;
         setDensity(0.2f);
         setFriction(1.5f);

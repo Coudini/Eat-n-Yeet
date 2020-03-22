@@ -6,8 +6,10 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
 
+
 public class Banana extends GameObject implements Flingable, Food {
-    private static Texture texture = new Texture("banana.png");
+    public static Texture texture;
+
     private float fillAmount = 1f;
 
     public Banana(float posX, float posY, MainGame game) {

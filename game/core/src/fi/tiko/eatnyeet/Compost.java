@@ -6,11 +6,11 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Compost extends GameObject {
-    private static Texture empty = new Texture("compost_empty.png");
-    private static Texture fill1 = new Texture("compost_stage1.png");
-    private static Texture fill2 = new Texture("compost_stage2.png");
-    private static Texture fill3 = new Texture("compost_stage3.png");
-    private static Texture fill4 = new Texture("compost_stage4.png");
+    public static Texture empty;
+    public static Texture fill1;
+    public static Texture fill2;
+    public static Texture fill3;
+    public static Texture fill4;
     float fillLevel;
     float maxFill = 10f;
 

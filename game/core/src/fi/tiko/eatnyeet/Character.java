@@ -23,8 +23,8 @@ public class Character extends GameObject {
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
-    private final static Texture run = new Texture("farma_run.png");
-    private final static Texture idle = new Texture("farma_idle.png");
+    public  static Texture run;
+    public  static Texture idle;
 
     Animation<TextureRegion> characterIdle;
     Animation<TextureRegion> characterRun;
