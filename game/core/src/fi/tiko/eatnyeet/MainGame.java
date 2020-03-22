@@ -42,7 +42,7 @@ public class MainGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		Banana.texture = new Texture("banana.png");
+		Banana.texture = new Texture("carrot_no_disco.png");
 		CompostWaste.texture = new Texture("temp_compost_stuff.png");
 		Character.run = new Texture("farma_run.png");
 		Character.idle  = new Texture("farma_idle.png");
@@ -51,11 +51,16 @@ public class MainGame extends ApplicationAdapter {
 		Compost.fill2 = new Texture("compost_stage2.png");
 		Compost.fill3 = new Texture("compost_stage3.png");
 		Compost.fill4 = new Texture("compost_stage4.png");
-		Field.empty = new Texture("compost_empty.png");
-		Field.fill1 = new Texture("compost_stage1.png");
-		Field.fill2 = new Texture("compost_stage2.png");
-		Field.fill3 = new Texture("compost_stage3.png");
-		Field.fill4 = new Texture("compost_stage4.png");
+		Field.empty = new Texture("field_empty.png");
+		Field.fill1 = new Texture("field_stage1.png");
+		Field.fill2 = new Texture("field_stage2.png");
+		Field.fill3 = new Texture("field_stage3.png");
+		Field.fill4 = new Texture("field_stage4.png");
+		Field.fill5 = new Texture("field_stage5.png");
+		Field.fill6 = new Texture("field_stage6.png");
+		Field.fill7 = new Texture("field_stage7.png");
+		Field.fill8 = new Texture("field_stage8.png");
+		Field.fill9 = new Texture("field_stage9.png");
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);

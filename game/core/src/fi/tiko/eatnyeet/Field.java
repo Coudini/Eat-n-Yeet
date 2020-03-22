@@ -13,6 +13,11 @@ public class Field extends GameObject {
     public static Texture fill2;
     public static Texture fill3;
     public static Texture fill4;
+    public static Texture fill5;
+    public static Texture fill6;
+    public static Texture fill7;
+    public static Texture fill8;
+    public static Texture fill9;
     float fillLevel;
     float maxFill = 10f;
 
@@ -27,15 +32,26 @@ public class Field extends GameObject {
         float currentPercent = fillLevel / maxFill;
         if (currentPercent < 0.05) {
             this.setTexture(empty);
-        } else if (currentPercent < 0.25) {
+        } else if (currentPercent < 0.15) {
             this.setTexture(fill1);
-        } else if (currentPercent < 0.50) {
+        } else if (currentPercent < 0.25) {
             this.setTexture(fill2);
-        } else if (currentPercent < 0.75) {
+        } else if (currentPercent < 0.35) {
             this.setTexture(fill3);
-        } else {
+        } else if (currentPercent < 0.45) {
             this.setTexture(fill4);
+        }else if (currentPercent < 0.55) {
+            this.setTexture(fill5);
+        }else if (currentPercent < 0.65) {
+            this.setTexture(fill6);
+        }else if (currentPercent < 0.75) {
+            this.setTexture(fill7);
+        }else if (currentPercent < 0.85) {
+            this.setTexture(fill8);
+        } else {
+            this.setTexture(fill9);
         }
+        //System.out.println("Current% " + currentPercent + ", fill " + fillLevel + ", max " + maxFill);
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {
