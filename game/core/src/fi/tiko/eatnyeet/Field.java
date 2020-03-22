@@ -23,6 +23,7 @@ public class Field extends GameObject {
 
     @Override
     public void update () {
+        super.update();
         float currentPercent = fillLevel / maxFill;
         if (currentPercent < 0.05) {
             this.setTexture(empty);
@@ -37,12 +38,20 @@ public class Field extends GameObject {
         }
     }
     @Override
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+    public void onCollision(Contact contact, GameObject other) {
 
         if (other != null && other instanceof CompostWaste) {
             game.toBeDeleted.add(other);
             fillLevel += ((CompostWaste) other).getFillAmount();
 
+            // if character carries the object to field this will reset character object reference and booleans
+            if (other.isBeingCarried) {
+                callAfterPhysicsStep(() -> {
+                    other.isBeingCarried = false;
+                    game.player.resetObjectToCarry();
+                    return null;
+                });
+            }
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;
                 System.out.println("Field already full!!");

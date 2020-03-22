@@ -25,6 +25,8 @@ public class GameObject extends Sprite {
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
 
+    // TODO change this to flingable class or something like that
+    protected boolean isBeingCarried = false;
 
     // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
@@ -33,6 +35,8 @@ public class GameObject extends Sprite {
     private float restitution = 0f;
     private float friction = 0f;
     public MainGame game;
+
+    protected float lifeTime = 0f;
 
     protected static final short DEFAULT_BITS = 0x0001;
     protected static final short PLAYER_BITS = 0x0002;
@@ -117,7 +121,7 @@ public class GameObject extends Sprite {
     }
 
     public void update () {
-
+        lifeTime += Gdx.graphics.getDeltaTime();
     }
 
     public void render(Batch batch) {
@@ -184,7 +188,7 @@ public class GameObject extends Sprite {
         }
     }
 
-    public void onCollision(Contact contact, Manifold oldManifold, GameObject other) {
+    public void onCollision(Contact contact, GameObject other) {
 
 
     }
