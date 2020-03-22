@@ -58,6 +58,7 @@ public class MainGame extends ApplicationAdapter {
 
 	}
 
+
 	@Override
 	public void render () {
 		batch.setProjectionMatrix(camera.combined);
@@ -135,11 +136,14 @@ public class MainGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		world.dispose();
+		/*
 		for (GameObject obj: gameObjects) {
 			if (obj.getTexture()!=null) {
 				obj.getTexture().dispose();
 			}
 		}
+
+		 */
 		gameObjects.clear();
 	}
 }

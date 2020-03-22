@@ -90,5 +90,5 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tiko.tamk/fi.tiko.tamk.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tiko.eatnyeet/fi.tiko.eatnyeet.AndroidLauncher'
 }
