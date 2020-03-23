@@ -28,6 +28,8 @@ public class GameObject extends Sprite {
 
     // TODO change this to flingable class or something like that
     protected boolean isBeingCarried = false;
+    protected boolean isOnFloor = false;
+    protected float flyTime = 0f;
 
     // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
@@ -66,6 +68,11 @@ public class GameObject extends Sprite {
         this.setSize(width,height);
         this.setCenter(x,y);
         this.setOriginCenter();
+    }
+    public GameObject(float width, float height, Body body, MainGame game) {
+        this.game = game;
+        this.body = body;
+        this.body.setUserData(this);
     }
 
    /* // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
@@ -123,10 +130,21 @@ public class GameObject extends Sprite {
     }
 
     public void update () {
-        lifeTime += Gdx.graphics.getDeltaTime();
+        float delta = Gdx.graphics.getDeltaTime();
+        lifeTime += delta;
+
+    }
+    public void flyTimeUpdate() {
+        if (!isBeingCarried && !isOnFloor) {
+            flyTime += Gdx.graphics.getDeltaTime();
+        }
     }
 
     public void render(Batch batch) {
+
+        if (getTexture() == null && currentAnimation == null ) {
+            return;
+        }
         stateTime += Gdx.graphics.getDeltaTime();
 
         if (currentAnimation != null) {
@@ -198,10 +216,18 @@ public class GameObject extends Sprite {
 
     }
 
+    public void endCollision (Contact contact, GameObject other) {
+
+    }
+
     public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
         game.functionsToBeCalled.add(toBeCalled);
     }
 
+
+    public void resetGraityScale() {
+        this.body.setGravityScale(1f);
+    }
 
 
     public float getDensity() {

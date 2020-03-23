@@ -9,7 +9,7 @@
   </data>
  </layer>
  <objectgroup id="2" name="wall-rectangles">
-  <object id="2" x="4" y="852" width="1599" height="27.2727"/>
+  <object id="2" type="groundType" x="4" y="852" width="1599" height="27.2727"/>
   <object id="3" x="0" y="-3.0303" width="18.1818" height="931.03"/>
   <object id="4" x="3.0303" y="3.0303" width="1596.97" height="24.2424"/>
   <object id="10" x="1568" y="0" width="32" height="928"/>

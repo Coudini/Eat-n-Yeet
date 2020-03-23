@@ -20,6 +20,10 @@ public class Character extends GameObject {
     // Limit for mobile accelerometer
     private final float DEAD_ZONE = 10f;
     private final float speed = 300f;
+    protected int characterScore = 0;
+    private int previousScore = 0;
+    protected int characterCombo = 0;
+    private int previousCombo = 0;
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
@@ -62,9 +66,27 @@ public class Character extends GameObject {
         move();
         flingListener();
         updateObjectToCarry();
+        printScoreAndCombo();
 
     }
 
+    public void printScoreAndCombo() {
+        if (characterScore != previousScore) {
+            System.out.println("Current score = " + characterScore);
+            previousScore = characterScore;
+        }
+        if (characterCombo != previousCombo) {
+            System.out.println("Current combo = " + characterCombo);
+            previousCombo = characterCombo;
+        }
+    }
+    public void resetScoreHandlers() {
+        previousCombo = 0;
+        previousScore = 0;
+    }
+    public void resetCombo() {
+        characterCombo = 0;
+    }
     public void flingListener() {
 
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -110,9 +132,6 @@ public class Character extends GameObject {
                         startPosSet = false;
                         jump = true;
                     }
-
-                    System.out.println(speedX + " x");
-                    System.out.println(speedY + " y");
 
 
                 if (isCarryingFlingable && startPosSet) {

@@ -50,11 +50,15 @@ public class Compost extends GameObject {
                 });
             }
 
-            fillLevel += ((Food) other).getFillAmount();
             if (fillLevel >= maxFill) {
-                fillLevel = maxFill;
                 System.out.println("Field already full!!");
+            } else {
+                fillLevel += ((Food) other).getFillAmount();
+                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                game.player.characterCombo += 1;
             }
+
+
             //System.out.println("Compost filllevel = " +  fillLevel);
         }
 
