@@ -24,7 +24,7 @@ public class Field extends GameObject {
 
     public Field(float width, float height, Body body , MainGame game) {
         super(empty, width,height, body, game);
-        fillLevel = 0f;
+        fillLevel = 5f;
         reduceFill = 0f;
     }
 
@@ -68,9 +68,9 @@ public class Field extends GameObject {
 
     public void cropCrops() {
         reduceFill += lifeTime;
-        if(reduceFill > 2700f) {
+        if(reduceFill > 5000f) {
             reduceFill = 0f;
-            fillLevel -= 0.1f;
+            fillLevel -= 1f;
         }
     }
     @Override
@@ -78,7 +78,7 @@ public class Field extends GameObject {
 
         if (other != null && other instanceof CompostWaste) {
             game.toBeDeleted.add(other);
-            fillLevel += ((CompostWaste) other).getFillAmount();
+
 
             // if character carries the object to field this will reset character object reference and booleans
             if (other.isBeingCarried) {
@@ -89,8 +89,11 @@ public class Field extends GameObject {
                 });
             }
             if (fillLevel >= maxFill) {
-                fillLevel = maxFill;
                 //System.out.println("Field already full!!");
+            } else {
+                fillLevel += ((CompostWaste) other).getFillAmount();
+                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                game.player.characterCombo += 1;
             }
 
             //System.out.println("Field fillevel = " + fillLevel);

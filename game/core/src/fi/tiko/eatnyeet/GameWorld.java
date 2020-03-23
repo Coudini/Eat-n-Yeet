@@ -72,7 +72,31 @@ public class GameWorld  {
 
             @Override
             public void endContact(Contact contact) {
+                GameObject userDataA = null;
+                GameObject userDataB = null;
 
+                try {
+                    userDataA = (GameObject) (contact.getFixtureA().getBody().getUserData());
+
+                } catch (Exception e) {
+
+                }
+
+                try {
+                    userDataB = (GameObject) (contact.getFixtureB().getBody().getUserData());
+
+                } catch (Exception e) {
+
+                }
+
+
+                if (userDataA != null) {
+                    userDataA.endCollision(contact,userDataB);
+                }
+
+                if (userDataB != null) {
+                    userDataB.endCollision(contact,userDataA);
+                }
             }
 
             @Override
@@ -117,6 +141,9 @@ public class GameWorld  {
             }
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("fieldType")) {
                 game.gameObjects.add(new Field(rectangle.getWidth(), rectangle.getHeight(), body,game));
+            }
+            if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("groundType")) {
+                game.gameObjects.add(new Ground(rectangle.getWidth(), rectangle.getHeight(), body,game));
             }
         }
     }
