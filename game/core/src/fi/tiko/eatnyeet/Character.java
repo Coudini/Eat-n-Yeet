@@ -23,6 +23,9 @@ public class Character extends GameObject {
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
+    boolean jump = false;
+    private float maxStr = 10f;
+
     public  static Texture run;
     public  static Texture idle;
 
@@ -42,10 +45,10 @@ public class Character extends GameObject {
 
 
     public Character(float posX, float posY, MainGame game) {
-        super(posX, posY, 1f, 1f, game);
+        super(posX, posY, 1.9f, 1.9f, game);
         characterRun = createTextureAnimation(4,2, run);
         characterIdle = createTextureAnimation(4,1,idle);
-        body = createBody(posX,posY,0.5f);
+        body = createBody(posX,posY,0.95f);
 
         allowPlayerCollision();
 
@@ -83,22 +86,40 @@ public class Character extends GameObject {
                 float speedX = 0f;
                 float speedY = 0f;
 
-                try {
-                    speedX = (touchPosDrag.x - endPosDrag.x) * 5;
-                    speedY = (touchPosDrag.y - endPosDrag.y) * 5;
-                } catch (Exception e) {
-                    System.out.println("no drag");
-                    return false;
-                }
-                System.out.println(speedX + " x");
-                System.out.println(speedY + " y");
+
+                    try {
+                        speedX = (touchPosDrag.x - endPosDrag.x) * 4;
+                        speedY = (touchPosDrag.y - endPosDrag.y) * 4;
+                    } catch (Exception e) {
+                        System.out.println("no drag");
+                        return false;
+                    }
+                    if (speedX > maxStr) {
+                        speedX = maxStr;
+                    }
+                    if (speedX < (0f - maxStr)) {
+                        speedX = 0f - maxStr;
+                    }
+                    if (speedY > maxStr) {
+                        speedY = maxStr;
+                    }
+                    if (speedY < (0f - maxStr)) {
+                        speedY = 0f - maxStr;
+                    }
+                    if ((speedX < 1.3f && speedX > -1.3f) && (speedY < 1.3f && speedY > -1.3f)) {
+                        startPosSet = false;
+                        jump = true;
+                    }
+
+                    System.out.println(speedX + " x");
+                    System.out.println(speedY + " y");
 
 
                 if (isCarryingFlingable && startPosSet) {
                     // TODO Worldcenter needs to be changed to actual world center, currently from body
                     //objectToCarry.body.applyLinearImpulse(new Vector2(speedX, speedY), objectToCarry.body.getWorldCenter(), true);
                     objectToCarry.body.setLinearVelocity(speedX, speedY);
-                    objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.01f, true);
+                    objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
 
                     startPosSet = false;
                     isCarryingFlingable = false;
@@ -107,6 +128,11 @@ public class Character extends GameObject {
 
                     objectToCarry.isBeingCarried = false;
 
+                } else {
+                    if (jump && body.getLinearVelocity().y == 0f) {
+                        body.setLinearVelocity(0f, 5f);
+                        jump = false;
+                    }
                 }
                 return true;
             }

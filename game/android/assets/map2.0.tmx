@@ -18,6 +18,6 @@
   <object id="6" name="testinimi" type="compostType" x="38" y="700" width="184" height="136.667"/>
  </objectgroup>
  <objectgroup id="5" name="field-rectangles">
-  <object id="15" name="field" type="fieldType" x="1344" y="686" width="212" height="152"/>
+  <object id="15" name="field" type="fieldType" x="1344" y="640" width="212" height="198"/>
  </objectgroup>
 </map>

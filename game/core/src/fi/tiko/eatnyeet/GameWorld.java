@@ -29,7 +29,7 @@ public class GameWorld  {
     private MainGame game;
     public GameWorld (MainGame game) {
         this.game = game;
-        game.world = new World(new Vector2(0f, -9.8f), true);
+        game.world = new World(new Vector2(0f, -10.8f), true);
         tiledMap = new TmxMapLoader().load("map2.0.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / UNIT_SCALE);
 
@@ -144,8 +144,12 @@ public class GameWorld  {
         // Real width and height is 2 X this!
         groundBox.setAsBox(rect.getWidth() / 2 , height / 2 );
 
-        wall.createFixture(groundBox, 0.0f);
-
+        System.out.println(wall.getUserData());
+        if ((wall.getUserData().equals("compost")) || (wall.getUserData().equals("field"))) {
+            wall.createFixture(groundBox, 0.0f).setSensor(true);
+        } else {
+            wall.createFixture(groundBox, 0.0f);
+        }
         return wall;
 
     }

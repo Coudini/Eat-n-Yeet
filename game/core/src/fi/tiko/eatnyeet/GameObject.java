@@ -35,6 +35,7 @@ public class GameObject extends Sprite {
     private float density = 0.3f;
     private float restitution = 0f;
     private float friction = 0f;
+
     public MainGame game;
 
     protected float lifeTime = 0f;
@@ -142,8 +143,11 @@ public class GameObject extends Sprite {
 
     public Body createBody(float x, float y, float radius) {
         Body tempBody = game.world.createBody(getDefinitionOfBody(x, y));
+
         tempBody.createFixture(getFixtureDefinition(radius));
         tempBody.setUserData(this);
+
+
         return tempBody;
     }
     protected BodyDef getDefinitionOfBody(float x, float y) {

@@ -55,11 +55,11 @@ public class Compost extends GameObject {
                 fillLevel = maxFill;
                 System.out.println("Field already full!!");
             }
-            System.out.println("Compost filllevel = " +  fillLevel);
+            //System.out.println("Compost filllevel = " +  fillLevel);
         }
 
         if (other != null && other instanceof Character && fillLevel > 0f) {
-            System.out.println("character detected");
+            //System.out.println("character detected");
 
             // cannot add object during physics steps so it will be added later
            callAfterPhysicsStep(() -> {

@@ -124,7 +124,7 @@ public class MainGame extends ApplicationAdapter {
 			try {
 				callable.call();
 			} catch (Exception e) {
-				System.out.println("penis");
+				//System.out.println("penis");
 			}
 		}
 		functionsToBeCalled.clear();
@@ -144,7 +144,11 @@ public class MainGame extends ApplicationAdapter {
 			}
 		}
 		if (!spawnBanana) {
-		Banana temp = new Banana(WINDOW_WIDTH / 2f, WINDOW_HEIGHT -1f, this);
+			//temporally to simulate random X on food-drops
+			float tempX = MathUtils.random(3f,13f);
+			System.out.println();
+			Banana temp = new Banana(tempX, WINDOW_HEIGHT -1f, this);
+			//Banana temp = new Banana(WINDOW_WIDTH / 2f, WINDOW_HEIGHT -1f, this);
 			gameObjects.add(temp);
 		}
 

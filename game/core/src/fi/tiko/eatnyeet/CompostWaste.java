@@ -23,8 +23,8 @@ public class CompostWaste extends GameObject implements Flingable {
     public CompostWaste(float x, float y,float fill, MainGame game) {
         super(texture, x,y, 1f, 1f, game);
         this.fillAmount = fill;
-        setDensity(0.2f);
-        setFriction(1.5f);
+        setDensity(0.8f);
+        setFriction(4.5f);
         setRestitution(0.5f);
         body = createBody(x,y,0.3f);
 

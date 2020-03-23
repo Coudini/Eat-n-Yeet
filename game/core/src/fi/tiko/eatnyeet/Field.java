@@ -20,16 +20,26 @@ public class Field extends GameObject {
     public static Texture fill9;
     float fillLevel;
     float maxFill = 10f;
+    float reduceFill;
 
     public Field(float width, float height, Body body , MainGame game) {
-        super(fill4, width,height, body, game);
+        super(empty, width,height, body, game);
         fillLevel = 0f;
+        reduceFill = 0f;
     }
 
     @Override
     public void update () {
         super.update();
+
         float currentPercent = fillLevel / maxFill;
+
+
+
+        if (currentPercent > 0.05f) {
+            cropCrops();
+        }
+
         if (currentPercent < 0.05) {
             this.setTexture(empty);
         } else if (currentPercent < 0.15) {
@@ -52,6 +62,16 @@ public class Field extends GameObject {
             this.setTexture(fill9);
         }
         //System.out.println("Current% " + currentPercent + ", fill " + fillLevel + ", max " + maxFill);
+
+
+    }
+
+    public void cropCrops() {
+        reduceFill += lifeTime;
+        if(reduceFill > 2700f) {
+            reduceFill = 0f;
+            fillLevel -= 0.1f;
+        }
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {
@@ -70,10 +90,10 @@ public class Field extends GameObject {
             }
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;
-                System.out.println("Field already full!!");
+                //System.out.println("Field already full!!");
             }
 
-            System.out.println("Field fillevel = " + fillLevel);
+            //System.out.println("Field fillevel = " + fillLevel);
         }
 
 
