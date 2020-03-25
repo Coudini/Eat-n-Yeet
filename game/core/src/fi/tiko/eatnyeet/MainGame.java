@@ -110,8 +110,11 @@ public class MainGame extends ApplicationAdapter {
 		gameObjects.add(player);
 		this.meter = new ForceMeter(this);
 		gameObjects.add(meter);
+
+		//clouds ym grphx
 	}
 
+	//add grphx rendere here
 	public void renderObjects () {
 		for (GameObject obj: gameObjects) {
 			obj.render(batch);

@@ -59,8 +59,8 @@ public class Character extends GameObject {
 
     public Character(float posX, float posY, MainGame game) {
         super(posX, posY, 1.9f, 1.9f, game);
-        characterRun = createTextureAnimation(4,2, run);
-        characterIdle = createTextureAnimation(4,1,idle);
+        characterRun = Util.createTextureAnimation(4,2, run);
+        characterIdle = Util.createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.95f);
         startDrag = false;
         initial = true;
@@ -229,13 +229,13 @@ public class Character extends GameObject {
         }
 
         if (body.getLinearVelocity().x > 0 && !isRight) {
-            flip(characterIdle);
-            flip(characterRun);
+            Util.flip(characterIdle);
+            Util.flip(characterRun);
             isRight = true;
         }
         if (body.getLinearVelocity().x < 0 && isRight) {
-            flip(characterIdle);
-            flip(characterRun);
+            Util.flip(characterIdle);
+            Util.flip(characterRun);
             isRight = false;
         }
 

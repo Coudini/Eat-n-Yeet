@@ -98,37 +98,9 @@ public class GameObject extends Sprite {
 
     */
 
-    // Use this to create many different animations for same object
-    public Animation<TextureRegion> createTextureAnimation(int cols, int rows, Texture texture) {
-        Animation<TextureRegion> temp;
 
-        // Calculate the tile width from the sheet
-        int tileWidth = texture.getWidth() / cols;
 
-        // Calculate the tile height from the sheet
-        int tileHeight = texture.getHeight() / rows;
 
-        // Create 2D array from the texture (REGIONS of a TEXTURE).
-        TextureRegion[][] tmp = TextureRegion.split(texture, tileWidth, tileHeight);
-
-        // Transform the 2D array to 1D
-        TextureRegion[] allFrames = toTextureArray( tmp, cols, rows );
-
-        temp = new Animation(6 / 60f, allFrames);
-        return  temp;
-    }
-
-    // TODO not in use yet
-    public static TextureRegion[] toTextureArray( TextureRegion [][]tr, int cols, int rows ) {
-        TextureRegion [] frames = new TextureRegion[cols * rows];
-        int index = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                frames[index++] = tr[i][j];
-            }
-        }
-        return frames;
-    }
 
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
@@ -167,6 +139,7 @@ public class GameObject extends Sprite {
 
         return tempBody;
     }
+
     protected BodyDef getDefinitionOfBody(float x, float y) {
         // Body Definition
         BodyDef myBodyDef = new BodyDef();
@@ -203,12 +176,7 @@ public class GameObject extends Sprite {
 
         return playerFixtureDef;
     }
-    public void flip(Animation<TextureRegion> animation) {
-        TextureRegion[] regions = animation.getKeyFrames();
-        for(TextureRegion r : regions) {
-            r.flip(true, false);
-        }
-    }
+
 
     /**
      * Default on collision, its empty since by default you do not need to do anything.
