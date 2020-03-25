@@ -112,13 +112,10 @@ public class GameObject extends Sprite {
             this.setRegion(currentFrameTexture);
         }
 
-        if (this.body != null){
-            this.setCenter(body.getPosition().x,body.getPosition().y);
-            this.setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
-        }
+        this.setCenter(body.getPosition().x,body.getPosition().y);
+        this.setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
 
-
-            draw(batch);
+        draw(batch);
 
     }
 
@@ -127,7 +124,6 @@ public class GameObject extends Sprite {
 
         tempBody.createFixture(getFixtureDefinition(radius));
         tempBody.setUserData(this);
-
 
         return tempBody;
     }

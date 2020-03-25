@@ -15,6 +15,7 @@ public class Cloud extends GraphicObject {
     public Cloud(Texture texture, MainGame game) {
         super(texture, game);
         setX(-2f);
+        setX(MathUtils.random(-2f, WINDOW_WIDTH));
         setY(randomizeHeight());
         speed = randomizeSpeed();
     }
@@ -32,7 +33,7 @@ public class Cloud extends GraphicObject {
         }
     }
     public float randomizeSpeed() {
-        float temp = MathUtils.random(0.005f,0.025f);
+        float temp = MathUtils.random(0.005f,0.02f);
         return temp;
     }
     public float randomizeHeight() {
