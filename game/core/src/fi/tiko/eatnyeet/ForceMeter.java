@@ -13,20 +13,17 @@ public class ForceMeter extends GraphicObject {
     public static Texture texture;
     public static boolean charge;
     public float rotation;
-    float width;
-    float height;
+    public static float width = 5f;
+    public static float height = 5f;
 
 
 
 
     //<Texture texture, float x, float y, float width, float height, MainGame game
     public ForceMeter(MainGame game) {
-        super(texture, game);
-        width = texture.getWidth();
-        height = texture.getHeight();
-
+        super(texture, width, height, game);
         setOriginCenter();
-        setRotation(180);
+        //setRotation(180);
         System.out.println("meter made");
         charge = false;
     }

@@ -15,17 +15,13 @@ public class GraphicObject extends Sprite {
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
     public MainGame game;
-    public float width;
-    public float height;
 
     protected float stateTime;
     protected float lifeTime = 0f;
 
-    public GraphicObject(Texture texture, MainGame game) {
+    public GraphicObject(Texture texture,float width, float height, MainGame game) {
         super(texture);
         this.game = game;
-        width = texture.getWidth();
-        height = texture.getHeight();
         this.setSize(width,height);
         this.setOriginCenter();
     }

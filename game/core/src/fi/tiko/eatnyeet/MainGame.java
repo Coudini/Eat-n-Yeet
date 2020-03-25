@@ -110,8 +110,8 @@ public class MainGame extends ApplicationAdapter {
 	public void spawnDefaultObjects() {
 		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
 		gameObjects.add(player);
-		this.meter = new ForceMeter(this);
-		graphicObjects.add(meter);
+		//this.meter = new ForceMeter(this);
+		//graphicObjects.add(meter);
 
 		//clouds ym grphx
 	}
@@ -127,6 +127,9 @@ public class MainGame extends ApplicationAdapter {
 	}
 	public void updateObjects () {
 		for (GameObject obj: gameObjects) {
+			obj.update();
+		}
+		for (GraphicObject obj : graphicObjects) {
 			obj.update();
 		}
 	}
