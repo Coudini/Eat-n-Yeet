@@ -36,12 +36,14 @@ public class MainGame extends ApplicationAdapter {
 	public ArrayList <Callable<Void>> functionsToBeCalled;
 	public Array<Body> bodies;
 	Character player;
+	ForceMeter meter;
 
 	// Alternate for ArrayList
 	HashSet<GameObject> toBeDeleted;
 
 	@Override
 	public void create () {
+		ForceMeter.texture = new Texture("carrot_no_disco.png"); //temp grphx
 		Banana.texture = new Texture("carrot_no_disco.png");
 		CompostWaste.texture = new Texture("temp_compost_stuff.png");
 		Character.run = new Texture("farma_run.png");
@@ -107,6 +109,8 @@ public class MainGame extends ApplicationAdapter {
 	public void spawnDefaultObjects() {
 		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
 		gameObjects.add(player);
+		this.meter = new ForceMeter(this);
+		gameObjects.add(meter);
 	}
 
 	public void renderObjects () {

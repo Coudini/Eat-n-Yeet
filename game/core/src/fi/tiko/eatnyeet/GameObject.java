@@ -75,6 +75,17 @@ public class GameObject extends Sprite {
         this.body.setUserData(this);
     }
 
+
+    //forcemeter gameobject
+    public GameObject(Texture texture, MainGame game) {
+        super(texture);
+        this.game = game;
+        //temporAL
+        this.setSize(5f,5f);
+        this.setOriginCenter();
+    }
+
+
    /* // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
     public void createTextureAnimation(int cols, int rows) {
 
@@ -152,10 +163,13 @@ public class GameObject extends Sprite {
             this.setRegion(currentFrameTexture);
         }
 
-        this.setCenter(body.getPosition().x,body.getPosition().y);
-        this.setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+        if (this.body != null){
+            this.setCenter(body.getPosition().x,body.getPosition().y);
+            this.setRotation(body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+        }
 
-        draw(batch);
+
+            draw(batch);
 
     }
 
