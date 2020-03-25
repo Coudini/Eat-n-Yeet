@@ -15,7 +15,6 @@ public class CompostWaste extends FlingableObject {
         setFriction(4.5f);
         setRestitution(0.5f);
         body = createBody(x,y,0.3f);
-        body.setUserData(this);
         allowPlayerCollision();
     }
 

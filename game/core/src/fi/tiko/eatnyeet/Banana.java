@@ -12,13 +12,8 @@ public class Banana extends FlingableObject implements Food {
         super(texture, posX, posY, 0.9f, 0.9f, game);
         setDensity(0.8f);
         setFriction(4.5f);
-        setRestitution(0.2f);
+        setRestitution(0.4f);
         body = createBody(posX,posY,0.45f);
-        float randY = MathUtils.random(2f,4f);
-        float randX = MathUtils.random(-3f,3f);
-        body.setLinearVelocity(randX,randY);
-        body.setGravityScale(0.2f);
-        body.setUserData(this);
         allowPlayerCollision();
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));

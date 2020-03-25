@@ -83,7 +83,7 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		tempBananaSpawn();
+		//tempBananaSpawn();
 		gameWorld.render(camera);
 		moveCamera();
 

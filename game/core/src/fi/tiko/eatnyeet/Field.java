@@ -1,6 +1,8 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
@@ -20,12 +22,12 @@ public class Field extends GameObject {
     public static Texture fill9;
     float fillLevel;
     float maxFill = 10f;
-    float reduceFill;
+    float timeWhenPreviousCrop;
 
     public Field(float width, float height, Body body , MainGame game) {
         super(empty, width,height, body, game);
-        fillLevel = 5f;
-        reduceFill = 0f;
+        fillLevel = 10f;
+        timeWhenPreviousCrop = 0f;
     }
 
     @Override
@@ -33,8 +35,6 @@ public class Field extends GameObject {
         super.update();
 
         float currentPercent = fillLevel / maxFill;
-
-
 
         if (currentPercent > 0.05f) {
             cropCrops();
@@ -67,11 +67,26 @@ public class Field extends GameObject {
     }
 
     public void cropCrops() {
-        reduceFill += lifeTime;
-        if(reduceFill > 5000f) {
-            reduceFill = 0f;
+        
+        if (lifeTime - timeWhenPreviousCrop > 5f) {
+            timeWhenPreviousCrop = lifeTime;
             fillLevel -= 1f;
+            throwBanana();
         }
+    }
+
+    public void throwBanana() {
+        callAfterPhysicsStep(() -> {
+            float fieldPosY = body.getPosition().y + 0.4f;
+            float fieldPosX = body.getPosition().x;
+            Banana temp = new Banana(fieldPosX, fieldPosY, game);
+            float randY = MathUtils.random(4f,8f);
+            float randX = MathUtils.random(-2f,-0.5f);
+            temp.body.setLinearVelocity(randX,randY);
+            temp.body.setGravityScale(0.4f);
+            game.gameObjects.add(temp);
+            return null;
+        });
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {
