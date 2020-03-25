@@ -83,7 +83,6 @@ public class MainGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		//tempBananaSpawn();
 		gameWorld.render(camera);
 		moveCamera();
 
@@ -136,6 +135,10 @@ public class MainGame extends ApplicationAdapter {
 		}
 		toBeDeleted.clear();
 	}
+
+	/**
+	 * Not in use,could be refactored to be random nutrient spawner
+	 */
 	public void tempBananaSpawn () {
 		boolean spawnBanana = false;
 		for (GameObject obj : gameObjects) {
