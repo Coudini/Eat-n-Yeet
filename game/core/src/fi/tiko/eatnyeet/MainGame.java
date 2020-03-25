@@ -33,6 +33,7 @@ public class MainGame extends ApplicationAdapter {
 	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
+	public ArrayList<GraphicObject> graphicObjects;
 	public ArrayList <Callable<Void>> functionsToBeCalled;
 	public Array<Body> bodies;
 	Character player;
@@ -68,6 +69,7 @@ public class MainGame extends ApplicationAdapter {
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		gameObjects = new ArrayList<GameObject>();
+		graphicObjects = new ArrayList<GraphicObject>();
 		functionsToBeCalled = new ArrayList<Callable<Void>>();
 		// gameworld  must be created before spawning anything else
 		gameWorld = new GameWorld(this);
@@ -109,7 +111,7 @@ public class MainGame extends ApplicationAdapter {
 		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
 		gameObjects.add(player);
 		this.meter = new ForceMeter(this);
-		gameObjects.add(meter);
+		graphicObjects.add(meter);
 
 		//clouds ym grphx
 	}
@@ -117,6 +119,9 @@ public class MainGame extends ApplicationAdapter {
 	//add grphx rendere here
 	public void renderObjects () {
 		for (GameObject obj: gameObjects) {
+			obj.render(batch);
+		}
+		for (GraphicObject obj : graphicObjects) {
 			obj.render(batch);
 		}
 	}

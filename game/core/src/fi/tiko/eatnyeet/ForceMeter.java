@@ -8,11 +8,13 @@ import java.awt.Image;
 
 
 
-public class ForceMeter extends GameObject {
+public class ForceMeter extends GraphicObject {
 
     public static Texture texture;
     public static boolean charge;
     public float rotation;
+    float width;
+    float height;
 
 
 
@@ -20,6 +22,9 @@ public class ForceMeter extends GameObject {
     //<Texture texture, float x, float y, float width, float height, MainGame game
     public ForceMeter(MainGame game) {
         super(texture, game);
+        width = texture.getWidth();
+        height = texture.getHeight();
+
         setOriginCenter();
         setRotation(180);
         System.out.println("meter made");

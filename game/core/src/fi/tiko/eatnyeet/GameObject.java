@@ -66,14 +66,6 @@ public class GameObject extends Sprite {
     }
 
 
-    //forcemeter gameobject
-    public GameObject(Texture texture, MainGame game) {
-        super(texture);
-        this.game = game;
-        //temporAL
-        this.setSize(5f,5f);
-        this.setOriginCenter();
-    }
 
 
    /* // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
