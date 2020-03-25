@@ -1,6 +1,8 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
@@ -20,12 +22,12 @@ public class Field extends GameObject {
     public static Texture fill9;
     float fillLevel;
     float maxFill = 10f;
-    float reduceFill;
+    float timeWhenPreviousCrop;
 
     public Field(float width, float height, Body body , MainGame game) {
         super(empty, width,height, body, game);
-        fillLevel = 5f;
-        reduceFill = 0f;
+        fillLevel = 10f;
+        timeWhenPreviousCrop = 0f;
     }
 
     @Override
@@ -34,29 +36,27 @@ public class Field extends GameObject {
 
         float currentPercent = fillLevel / maxFill;
 
-
-
         if (currentPercent > 0.05f) {
             cropCrops();
         }
 
-        if (currentPercent < 0.05) {
+        if (currentPercent < 0.1) {
             this.setTexture(empty);
-        } else if (currentPercent < 0.15) {
+        } else if (currentPercent < 0.2) {
             this.setTexture(fill1);
-        } else if (currentPercent < 0.25) {
+        } else if (currentPercent < 0.3) {
             this.setTexture(fill2);
-        } else if (currentPercent < 0.35) {
+        } else if (currentPercent < 0.4) {
             this.setTexture(fill3);
-        } else if (currentPercent < 0.45) {
+        } else if (currentPercent < 0.5) {
             this.setTexture(fill4);
-        }else if (currentPercent < 0.55) {
+        }else if (currentPercent < 0.6) {
             this.setTexture(fill5);
-        }else if (currentPercent < 0.65) {
+        }else if (currentPercent < 0.7) {
             this.setTexture(fill6);
-        }else if (currentPercent < 0.75) {
+        }else if (currentPercent < 0.8) {
             this.setTexture(fill7);
-        }else if (currentPercent < 0.85) {
+        }else if (currentPercent < 0.9) {
             this.setTexture(fill8);
         } else {
             this.setTexture(fill9);
@@ -67,23 +67,38 @@ public class Field extends GameObject {
     }
 
     public void cropCrops() {
-        reduceFill += lifeTime;
-        if(reduceFill > 5000f) {
-            reduceFill = 0f;
+        
+        if (lifeTime - timeWhenPreviousCrop > 5f) {
+            timeWhenPreviousCrop = lifeTime;
             fillLevel -= 1f;
+            throwBanana();
         }
+    }
+
+    public void throwBanana() {
+        callAfterPhysicsStep(() -> {
+            float fieldPosY = body.getPosition().y + 0.4f;
+            float fieldPosX = body.getPosition().x;
+            Banana temp = new Banana(fieldPosX, fieldPosY, game);
+            float randY = MathUtils.random(4f,8f);
+            float randX = MathUtils.random(-2f,-0.5f);
+            temp.body.setLinearVelocity(randX,randY);
+            temp.body.setGravityScale(0.4f);
+            game.gameObjects.add(temp);
+            return null;
+        });
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
-        if (other != null && other instanceof CompostWaste) {
+        if (other != null && other instanceof CompostWaste && other instanceof FlingableObject) {
             game.toBeDeleted.add(other);
 
 
             // if character carries the object to field this will reset character object reference and booleans
-            if (other.isBeingCarried) {
+            if (((CompostWaste) other).isBeingCarried) {
                 callAfterPhysicsStep(() -> {
-                    other.isBeingCarried = false;
+                    ((CompostWaste) other).isBeingCarried = false;
                     game.player.resetObjectToCarry();
                     return null;
                 });
@@ -92,7 +107,7 @@ public class Field extends GameObject {
                 //System.out.println("Field already full!!");
             } else {
                 fillLevel += ((CompostWaste) other).getFillAmount();
-                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
             }
 

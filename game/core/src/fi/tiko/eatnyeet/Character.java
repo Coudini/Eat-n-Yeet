@@ -36,11 +36,8 @@ public class Character extends GameObject {
     Animation<TextureRegion> characterIdle;
     Animation<TextureRegion> characterRun;
 
+    protected FlingableObject objectToCarry;
     protected boolean isCarryingFlingable = false;
-    protected boolean isJustThrown = false;
-    protected float frameCount;
-
-    protected GameObject objectToCarry;
 
     boolean startPosSet =false;
     Vector3 touchPosDrag;
@@ -55,7 +52,6 @@ public class Character extends GameObject {
         body = createBody(posX,posY,0.95f);
 
         allowPlayerCollision();
-
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
@@ -135,17 +131,7 @@ public class Character extends GameObject {
 
 
                 if (isCarryingFlingable && startPosSet) {
-                    // TODO Worldcenter needs to be changed to actual world center, currently from body
-                    //objectToCarry.body.applyLinearImpulse(new Vector2(speedX, speedY), objectToCarry.body.getWorldCenter(), true);
-                    objectToCarry.body.setLinearVelocity(speedX, speedY);
-                    objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
-
-                    startPosSet = false;
-                    isCarryingFlingable = false;
-                    isJustThrown = true;
-
-
-                    objectToCarry.isBeingCarried = false;
+                    throwObjectToCarry(speedX,speedY);
 
                 } else {
                     if (jump && body.getLinearVelocity().y == 0f) {
@@ -156,6 +142,19 @@ public class Character extends GameObject {
                 return true;
             }
         });
+    }
+
+    public void throwObjectToCarry (float speedX,float speedY) {
+        objectToCarry.body.setLinearVelocity(speedX, speedY);
+        objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
+
+        startPosSet = false;
+        isCarryingFlingable = false;
+        allowPlayerCollision();
+
+        objectToCarry.timeWhenThrown = objectToCarry.lifeTime;
+        objectToCarry.isBeingCarried = false;
+        objectToCarry.isJustThrown = true;
     }
 
     public void move() {
@@ -212,17 +211,15 @@ public class Character extends GameObject {
 
     @Override
     public void onCollision(Contact contact, GameObject other) {
-        if (other != null && other instanceof Flingable) {
-            if (!isJustThrown && !isCarryingFlingable) {
+        if (other != null && other instanceof FlingableObject) {
+            if (!isCarryingFlingable) {
 
-                objectToCarry = other;
+                objectToCarry = (FlingableObject) other;
                 objectToCarry.isBeingCarried = true;
-
-                ignorePlayerCollision();
-
                 isCarryingFlingable = true;
                 // when colliding mask waste to ignore player collision
                 ignorePlayerCollision();
+                objectToCarry.ignorePlayerCollision();
             }
         }
     }
@@ -240,19 +237,6 @@ public class Character extends GameObject {
             // set body location to player body location -+ x and y modifiers
             objectToCarry.body.setTransform(this.body.getPosition().x + xModif,this.body.getPosition().y + yModif,0f);
         }
-
-        // after set time allow character to interact with the object again
-        if (isJustThrown) {
-            frameCount++;
-
-            // TODO may refer to next object instead of the throwed one
-            if (frameCount > 20) {
-                allowPlayerCollision();
-                frameCount = 0;
-                isJustThrown = false;
-                isJustThrown = false;
-            }
-        }
     }
     public void ignorePlayerCollision() {
         Filter filter = new Filter();
@@ -265,14 +249,17 @@ public class Character extends GameObject {
     public void allowPlayerCollision(){
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
-        filter.maskBits = DEFAULT_BITS | FOOD_BITS | COMPOST_BITS;
+        filter.maskBits = DEFAULT_BITS | FLINGABLE_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
     }
+
+    /**
+     * called when manually carrying objects to compost
+     */
     protected void resetObjectToCarry() {
        isCarryingFlingable = false;
-       isJustThrown = false;
        objectToCarry = null;
        allowPlayerCollision();
     }

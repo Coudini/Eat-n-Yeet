@@ -1,7 +1,6 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,14 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 import java.util.concurrent.Callable;
 
@@ -25,11 +21,6 @@ public class GameObject extends Sprite {
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
 
-
-    // TODO change this to flingable class or something like that
-    protected boolean isBeingCarried = false;
-    protected boolean isOnFloor = false;
-    protected float flyTime = 0f;
 
     // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
@@ -44,8 +35,7 @@ public class GameObject extends Sprite {
 
     protected static final short DEFAULT_BITS = 0x0001;
     protected static final short PLAYER_BITS = 0x0002;
-    protected static final short COMPOST_BITS = 0x0004;
-    protected static final short FOOD_BITS = 0x0008;
+    protected static final short FLINGABLE_BITS = 0x0004;
 
     public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
         super(texture);
@@ -132,13 +122,8 @@ public class GameObject extends Sprite {
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
+    }
 
-    }
-    public void flyTimeUpdate() {
-        if (!isBeingCarried && !isOnFloor) {
-            flyTime += Gdx.graphics.getDeltaTime();
-        }
-    }
 
     public void render(Batch batch) {
 
@@ -211,22 +196,28 @@ public class GameObject extends Sprite {
         }
     }
 
+    /**
+     * Default on collision, its empty since by default you do not need to do anything.
+     * Overwrite this method on subclass to define what object should do when colliding with other object
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     public void onCollision(Contact contact, GameObject other) {
-
 
     }
 
+    /**
+     * Default end collision, its empty since by default you do not need to do anything.
+     * Overwrite this method on subclass to define what object should do when colliding ends with other object
+     * @param contact
+     * @param other can be used to check what class it was colliding with
+     */
     public void endCollision (Contact contact, GameObject other) {
 
     }
 
     public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
         game.functionsToBeCalled.add(toBeCalled);
-    }
-
-
-    public void resetGraityScale() {
-        this.body.setGravityScale(1f);
     }
 
 

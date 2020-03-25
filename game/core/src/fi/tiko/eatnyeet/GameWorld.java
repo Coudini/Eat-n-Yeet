@@ -171,7 +171,6 @@ public class GameWorld  {
         // Real width and height is 2 X this!
         groundBox.setAsBox(rect.getWidth() / 2 , height / 2 );
 
-        System.out.println(wall.getUserData());
         if ((wall.getUserData().equals("compost")) || (wall.getUserData().equals("field"))) {
             wall.createFixture(groundBox, 0.0f).setSensor(true);
         } else {

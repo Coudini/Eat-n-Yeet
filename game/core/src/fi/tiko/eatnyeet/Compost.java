@@ -3,7 +3,6 @@ package fi.tiko.eatnyeet;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Compost extends GameObject {
     public static Texture empty;
@@ -35,16 +34,24 @@ public class Compost extends GameObject {
             this.setTexture(fill4);
         }
     }
+
+    /**
+     * When two bodies collides first time onCollision will be called. Many if checkers to do spesifc tasks based on two colliding classes.
+     *
+     * When colliding with food which is also flingable object, compost tries to get filled by the object fill amount and the colliding object will be added to delete list.
+     * When colliding with Character, compost releases all the compost waste and creates compostWaste object.
+     * @param contact
+     * @param other is gameObject gotten from body userdata, can check from this if the object is also flingableObject
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
-        if (other != null && other instanceof Food) {
+        if (other != null && other instanceof Food && other instanceof FlingableObject) {
             game.toBeDeleted.add(other);
-
             // if character carries the object to compost this will reset character object reference and booleans
-            if (other.isBeingCarried) {
+            if (((FlingableObject) other).isBeingCarried) {
                 callAfterPhysicsStep(() -> {
-                    other.isBeingCarried = false;
+                    ((FlingableObject) other).isBeingCarried = false;
                     game.player.resetObjectToCarry();
                     return null;
                 });
@@ -53,8 +60,8 @@ public class Compost extends GameObject {
             if (fillLevel >= maxFill) {
                 System.out.println("Field already full!!");
             } else {
-                fillLevel += ((Food) other).getFillAmount();
-                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                fillLevel += ((FlingableObject) other).getFillAmount();
+                game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
             }
 
@@ -81,6 +88,5 @@ public class Compost extends GameObject {
                return null;
            });
         }
-
     }
 }
