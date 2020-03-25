@@ -27,7 +27,7 @@ public class Character extends GameObject {
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
-    boolean jump = false;
+    //boolean jump = false;
     private float maxStr = 10f;
 
     public  static Texture run;
@@ -39,10 +39,22 @@ public class Character extends GameObject {
     protected FlingableObject objectToCarry;
     protected boolean isCarryingFlingable = false;
 
-    boolean startPosSet =false;
+    public static boolean startPosSet =false;
     Vector3 touchPosDrag;
     Vector3 endPosDrag;
     // used for detect if object can pass through other object
+
+
+    // for force-meter
+    public static float pX;
+    public static boolean carry;
+    public static boolean startDrag;
+    public static boolean initial;
+    public static float meter1x;
+    public static float meter1y;
+    public static float meter2x;
+    public static float meter2y;
+    public static float angle;
 
 
     public Character(float posX, float posY, MainGame game) {
@@ -50,7 +62,8 @@ public class Character extends GameObject {
         characterRun = createTextureAnimation(4,2, run);
         characterIdle = createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.95f);
-
+        startDrag = false;
+        initial = true;
         allowPlayerCollision();
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
@@ -63,6 +76,17 @@ public class Character extends GameObject {
         flingListener();
         updateObjectToCarry();
         printScoreAndCombo();
+        if(isCarryingFlingable) {
+            upX();
+            upAngle();
+        }
+        carry = isCarryingFlingable;
+    }
+
+    public void upX() {
+        pX = getX();
+    }
+    public void upAngle() {
 
     }
 
@@ -93,7 +117,22 @@ public class Character extends GameObject {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     game.camera.unproject(touchPosDrag);
                     startPosSet = true;
+
+                    startDrag = true;
+                    if (startDrag && initial) {
+                        meter1x = screenX;
+                        meter1y = screenY;
+                        //System.out.println("1x:                " + meter1x);
+                        //System.out.println("1y:                " + meter1y);
+                        startDrag = false;
+                        initial = false;
+                    }
                 }
+                meter2x = screenX;
+                meter2y = screenY;
+                angle = meter2y;
+                //System.out.println("2x: " + meter2y);
+                //System.out.println("2y: " + meter2y);
                 return true;
             }
 
@@ -124,20 +163,22 @@ public class Character extends GameObject {
                     if (speedY < (0f - maxStr)) {
                         speedY = 0f - maxStr;
                     }
-                    if ((speedX < 1.3f && speedX > -1.3f) && (speedY < 1.3f && speedY > -1.3f)) {
-                        startPosSet = false;
-                        jump = true;
-                    }
+                    //if ((speedX < 1.3f && speedX > -1.3f) && (speedY < 1.3f && speedY > -1.3f)) {
+                    //    startPosSet = false;
+                    //    jump = true;
+                    //}
 
 
                 if (isCarryingFlingable && startPosSet) {
                     throwObjectToCarry(speedX,speedY);
 
-                } else {
-                    if (jump && body.getLinearVelocity().y == 0f) {
-                        body.setLinearVelocity(0f, 5f);
-                        jump = false;
-                    }
+                    initial = true;
+
+                //} else {
+                //    if (jump && body.getLinearVelocity().y == 0f) {
+                //        body.setLinearVelocity(0f, 5f);
+                //        jump = false;
+                //    }
                 }
                 return true;
             }
