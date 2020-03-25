@@ -214,11 +214,6 @@ public class GameObject extends Sprite {
     }
 
 
-    public void resetGraityScale() {
-        this.body.setGravityScale(1f);
-    }
-
-
     public float getDensity() {
         return density;
     }

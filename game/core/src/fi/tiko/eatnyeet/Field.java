@@ -40,23 +40,23 @@ public class Field extends GameObject {
             cropCrops();
         }
 
-        if (currentPercent < 0.05) {
+        if (currentPercent < 0.1) {
             this.setTexture(empty);
-        } else if (currentPercent < 0.15) {
+        } else if (currentPercent < 0.2) {
             this.setTexture(fill1);
-        } else if (currentPercent < 0.25) {
+        } else if (currentPercent < 0.3) {
             this.setTexture(fill2);
-        } else if (currentPercent < 0.35) {
+        } else if (currentPercent < 0.4) {
             this.setTexture(fill3);
-        } else if (currentPercent < 0.45) {
+        } else if (currentPercent < 0.5) {
             this.setTexture(fill4);
-        }else if (currentPercent < 0.55) {
+        }else if (currentPercent < 0.6) {
             this.setTexture(fill5);
-        }else if (currentPercent < 0.65) {
+        }else if (currentPercent < 0.7) {
             this.setTexture(fill6);
-        }else if (currentPercent < 0.75) {
+        }else if (currentPercent < 0.8) {
             this.setTexture(fill7);
-        }else if (currentPercent < 0.85) {
+        }else if (currentPercent < 0.9) {
             this.setTexture(fill8);
         } else {
             this.setTexture(fill9);

@@ -53,4 +53,8 @@ public class FlingableObject extends GameObject {
             flyTime += Gdx.graphics.getDeltaTime();
         }
     }
+    public void resetGraityScale() {
+        this.body.setGravityScale(1f);
+    }
+
 }
