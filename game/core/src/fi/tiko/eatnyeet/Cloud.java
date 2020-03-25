@@ -1,6 +1,7 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Cloud extends GraphicObject {
 
@@ -9,27 +10,33 @@ public class Cloud extends GraphicObject {
     public static Texture texture1;
     public static Texture texture2;
     public static Texture texture3;
-    //public static float width;
-    //public static float height;
-    public static float speed;
+    public float speed;
 
     public Cloud(Texture texture, MainGame game) {
         super(texture, game);
-        setX(4f);
-        setY(4f);
-        System.out.println("Cloud constructor");
+        setX(-2f);
+        setY(randomizeHeight());
+        speed = randomizeSpeed();
     }
 
     public void update() {
         super.update();
+        move();
     }
     public void move() {
-
+        setX(getX() + speed);
+        if (getX() > WINDOW_WIDTH) {
+            setX(-2f);
+            speed = randomizeSpeed();
+            setY(randomizeHeight());
+        }
     }
-    public void randomizeSpeed() {
-
+    public float randomizeSpeed() {
+        float temp = MathUtils.random(0.005f,0.025f);
+        return temp;
     }
-    public void randomizeHeight() {
-
+    public float randomizeHeight() {
+        float temp = MathUtils.random(4f,7.4f);
+        return temp;
     }
 }

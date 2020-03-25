@@ -122,24 +122,28 @@ public class MainGame extends ApplicationAdapter {
 			System.out.println(i);
 			if (i==0) {
 				this.cloud = new Cloud(Cloud.texture1, this);
+				graphicObjects.add(cloud);
 			}
 			if (i==1) {
 				this.cloud = new Cloud(Cloud.texture2, this);
+				graphicObjects.add(cloud);
 			}
 			if (i==2) {
 				this.cloud = new Cloud(Cloud.texture3, this);
+				graphicObjects.add(cloud);
 			}
 		}
 	}
 
 	//add grphx rendere here
 	public void renderObjects () {
-		for (GameObject obj: gameObjects) {
-			obj.render(batch);
-		}
 		for (GraphicObject obj : graphicObjects) {
 			obj.render(batch);
 		}
+		for (GameObject obj: gameObjects) {
+			obj.render(batch);
+		}
+
 	}
 	public void updateObjects () {
 		for (GameObject obj: gameObjects) {
