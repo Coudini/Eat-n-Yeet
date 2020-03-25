@@ -1,7 +1,6 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,14 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 import java.util.concurrent.Callable;
 
@@ -200,11 +196,22 @@ public class GameObject extends Sprite {
         }
     }
 
+    /**
+     * Default on collision, its empty since by default you do not need to do anything.
+     * Overwrite this method on subclass to define what object should do when colliding with other object
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     public void onCollision(Contact contact, GameObject other) {
-
 
     }
 
+    /**
+     * Default end collision, its empty since by default you do not need to do anything.
+     * Overwrite this method on subclass to define what object should do when colliding ends with other object
+     * @param contact
+     * @param other can be used to check what class it was colliding with
+     */
     public void endCollision (Contact contact, GameObject other) {
 
     }

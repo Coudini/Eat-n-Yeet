@@ -37,8 +37,9 @@ public class Character extends GameObject {
     Animation<TextureRegion> characterRun;
 
     protected boolean isCarryingFlingable = false;
-    protected boolean isJustThrown = false;
-    protected float frameCount;
+    //protected boolean isJustThrown = false;
+    //protected float frameCount;
+    //protected float timeWhenThrown;
 
     protected FlingableObject objectToCarry;
 
@@ -142,10 +143,11 @@ public class Character extends GameObject {
 
                     startPosSet = false;
                     isCarryingFlingable = false;
-                    isJustThrown = true;
-
-
+                    //isJustThrown = true;
+                    objectToCarry.timeWhenThrown = objectToCarry.lifeTime;
                     objectToCarry.isBeingCarried = false;
+                    objectToCarry.isJustThrown = true;
+                    allowPlayerCollision();
 
                 } else {
                     if (jump && body.getLinearVelocity().y == 0f) {
@@ -213,16 +215,14 @@ public class Character extends GameObject {
     @Override
     public void onCollision(Contact contact, GameObject other) {
         if (other != null && other instanceof FlingableObject) {
-            if (!isJustThrown && !isCarryingFlingable) {
+            if (!isCarryingFlingable) {
 
                 objectToCarry = (FlingableObject) other;
                 objectToCarry.isBeingCarried = true;
-
-                ignorePlayerCollision();
-
                 isCarryingFlingable = true;
                 // when colliding mask waste to ignore player collision
                 ignorePlayerCollision();
+                objectToCarry.ignorePlayerCollision();
             }
         }
     }
@@ -242,17 +242,26 @@ public class Character extends GameObject {
         }
 
         // after set time allow character to interact with the object again
-        if (isJustThrown) {
-            frameCount++;
+      /*  if (isJustThrown) {
+            //frameCount++;
+
+            if (lifeTime - timeWhenThrown > 0.5f) {
+                allowPlayerCollision();
+                isJustThrown = false;
+            }
+
+       */
 
             // TODO may refer to next object instead of the throwed one
-            if (frameCount > 20) {
+           /* if (frameCount > 20) {
                 allowPlayerCollision();
                 frameCount = 0;
                 isJustThrown = false;
                 isJustThrown = false;
             }
-        }
+
+            */
+        //}
     }
     public void ignorePlayerCollision() {
         Filter filter = new Filter();
@@ -272,7 +281,7 @@ public class Character extends GameObject {
     }
     protected void resetObjectToCarry() {
        isCarryingFlingable = false;
-       isJustThrown = false;
+       //isJustThrown = false;
        objectToCarry = null;
        allowPlayerCollision();
     }
