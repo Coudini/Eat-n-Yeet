@@ -26,11 +26,6 @@ public class GameObject extends Sprite {
     TextureRegion currentFrameTexture;
 
 
-    // TODO change this to flingable class or something like that
-    protected boolean isBeingCarried = false;
-    protected boolean isOnFloor = false;
-    protected float flyTime = 0f;
-
     // used for animation, this must be refreshed with deltatime before calling draw method
     protected float stateTime;
     public Body body;
@@ -44,8 +39,7 @@ public class GameObject extends Sprite {
 
     protected static final short DEFAULT_BITS = 0x0001;
     protected static final short PLAYER_BITS = 0x0002;
-    protected static final short COMPOST_BITS = 0x0004;
-    protected static final short FOOD_BITS = 0x0008;
+    protected static final short FLINGABLE_BITS = 0x0004;
 
     public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
         super(texture);
@@ -132,13 +126,8 @@ public class GameObject extends Sprite {
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
+    }
 
-    }
-    public void flyTimeUpdate() {
-        if (!isBeingCarried && !isOnFloor) {
-            flyTime += Gdx.graphics.getDeltaTime();
-        }
-    }
 
     public void render(Batch batch) {
 

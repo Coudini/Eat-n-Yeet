@@ -95,7 +95,7 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 

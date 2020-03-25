@@ -16,18 +16,18 @@ public class Ground extends GameObject {
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
-        if (other != null && other instanceof Flingable) {
-            other.flyTime = 0f;
-            other.isOnFloor = true;
+        if (other != null && other instanceof FlingableObject) {
+            ((FlingableObject) other).flyTime = 0f;
+            ((FlingableObject) other).isOnFloor = true;
             game.player.resetCombo();
             game.player.resetScoreHandlers();
         }
     }
     @Override
     public void endCollision (Contact contact, GameObject other) {
-        if (other != null && other instanceof Food) {
-            other.flyTime = 0f;
-            other.isOnFloor = false;
+        if (other != null && other instanceof FlingableObject) {
+            ((FlingableObject) other).flyTime = 0f;
+            ((FlingableObject) other).isOnFloor = false;
         }
     }
 }

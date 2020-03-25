@@ -76,14 +76,14 @@ public class Field extends GameObject {
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
-        if (other != null && other instanceof CompostWaste) {
+        if (other != null && other instanceof CompostWaste && other instanceof FlingableObject) {
             game.toBeDeleted.add(other);
 
 
             // if character carries the object to field this will reset character object reference and booleans
-            if (other.isBeingCarried) {
+            if (((CompostWaste) other).isBeingCarried) {
                 callAfterPhysicsStep(() -> {
-                    other.isBeingCarried = false;
+                    ((CompostWaste) other).isBeingCarried = false;
                     game.player.resetObjectToCarry();
                     return null;
                 });
@@ -92,7 +92,7 @@ public class Field extends GameObject {
                 //System.out.println("Field already full!!");
             } else {
                 fillLevel += ((CompostWaste) other).getFillAmount();
-                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
             }
 

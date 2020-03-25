@@ -40,7 +40,7 @@ public class Character extends GameObject {
     protected boolean isJustThrown = false;
     protected float frameCount;
 
-    protected GameObject objectToCarry;
+    protected FlingableObject objectToCarry;
 
     boolean startPosSet =false;
     Vector3 touchPosDrag;
@@ -212,10 +212,10 @@ public class Character extends GameObject {
 
     @Override
     public void onCollision(Contact contact, GameObject other) {
-        if (other != null && other instanceof Flingable) {
+        if (other != null && other instanceof FlingableObject) {
             if (!isJustThrown && !isCarryingFlingable) {
 
-                objectToCarry = other;
+                objectToCarry = (FlingableObject) other;
                 objectToCarry.isBeingCarried = true;
 
                 ignorePlayerCollision();
@@ -265,7 +265,7 @@ public class Character extends GameObject {
     public void allowPlayerCollision(){
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
-        filter.maskBits = DEFAULT_BITS | FOOD_BITS | COMPOST_BITS;
+        filter.maskBits = DEFAULT_BITS | FLINGABLE_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }

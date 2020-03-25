@@ -38,13 +38,12 @@ public class Compost extends GameObject {
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
-        if (other != null && other instanceof Food) {
+        if (other != null && other instanceof Food && other instanceof FlingableObject) {
             game.toBeDeleted.add(other);
-
             // if character carries the object to compost this will reset character object reference and booleans
-            if (other.isBeingCarried) {
+            if (((FlingableObject) other).isBeingCarried) {
                 callAfterPhysicsStep(() -> {
-                    other.isBeingCarried = false;
+                    ((FlingableObject) other).isBeingCarried = false;
                     game.player.resetObjectToCarry();
                     return null;
                 });
@@ -54,7 +53,7 @@ public class Compost extends GameObject {
                 System.out.println("Field already full!!");
             } else {
                 fillLevel += ((Food) other).getFillAmount();
-                game.player.characterScore += (int) other.flyTime * game.player.characterCombo;
+                game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
             }
 
