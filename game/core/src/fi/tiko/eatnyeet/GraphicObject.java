@@ -19,12 +19,23 @@ public class GraphicObject extends Sprite {
     protected float stateTime;
     protected float lifeTime = 0f;
 
+    //froceMeter
     public GraphicObject(Texture texture,float width, float height, MainGame game) {
         super(texture);
         this.game = game;
         this.setSize(width,height);
         this.setOriginCenter();
     }
+
+    //for clouds
+    public GraphicObject(Texture texture, MainGame game) {
+        super(texture);
+        this.game = game;
+        this.setSize(5f, 5f);
+        this.setOriginCenter();
+        System.out.println("Graphic Object cloud constructor. size height= " + this.getHeight() + " width = " + this.getWidth());
+    }
+
 
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();

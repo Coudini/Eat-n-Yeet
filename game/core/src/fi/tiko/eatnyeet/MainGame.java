@@ -38,6 +38,7 @@ public class MainGame extends ApplicationAdapter {
 	public Array<Body> bodies;
 	Character player;
 	ForceMeter meter;
+	Cloud cloud;
 
 	// Alternate for ArrayList
 	HashSet<GameObject> toBeDeleted;
@@ -45,6 +46,9 @@ public class MainGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		ForceMeter.texture = new Texture("carrot_no_disco.png"); //temp grphx
+		Cloud.texture1 = new Texture("cloud1.png");
+		Cloud.texture2 = new Texture("cloud2.png");
+		Cloud.texture3 = new Texture("cloud3.png");
 		Banana.texture = new Texture("carrot_no_disco.png");
 		CompostWaste.texture = new Texture("temp_compost_stuff.png");
 		Character.run = new Texture("farma_run.png");
@@ -108,12 +112,24 @@ public class MainGame extends ApplicationAdapter {
 		camera.update();
 	}
 	public void spawnDefaultObjects() {
-		this.player = new Character(WINDOW_WIDTH / 2, 2f,this);
+		this.player = new Character(WINDOW_WIDTH / 2, 2f, this);
 		gameObjects.add(player);
 		//this.meter = new ForceMeter(this);
 		//graphicObjects.add(meter);
 
 		//clouds ym grphx
+		for (int i = 0; i < 3; i++) {
+			System.out.println(i);
+			if (i==0) {
+				this.cloud = new Cloud(Cloud.texture1, this);
+			}
+			if (i==1) {
+				this.cloud = new Cloud(Cloud.texture2, this);
+			}
+			if (i==2) {
+				this.cloud = new Cloud(Cloud.texture3, this);
+			}
+		}
 	}
 
 	//add grphx rendere here
