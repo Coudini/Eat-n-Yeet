@@ -31,7 +31,6 @@ public class GraphicObject extends Sprite {
     public GraphicObject(Texture texture, MainGame game) {
         super(texture);
         this.game = game;
-        this.setSize(this.getWidth()/50, this.getHeight()/50);
         this.setOriginCenter();
     }
 

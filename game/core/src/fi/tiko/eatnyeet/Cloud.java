@@ -14,6 +14,7 @@ public class Cloud extends GraphicObject {
 
     public Cloud(Texture texture, MainGame game) {
         super(texture, game);
+        setSize(this.getWidth()/50, this.getHeight()/50);
         setX(-2f);
         setX(MathUtils.random(-2f, WINDOW_WIDTH));
         setY(randomizeHeight());

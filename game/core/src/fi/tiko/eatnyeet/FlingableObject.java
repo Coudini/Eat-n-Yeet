@@ -79,7 +79,7 @@ public class FlingableObject extends GameObject {
             }
         }
     }
-    public void resetGraityScale() {
+    public void resetGravityScale() {
         this.body.setGravityScale(1f);
     }
 

@@ -1,14 +1,14 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 
-public class Banana extends FlingableObject implements Food {
+public class Tomato extends FlingableObject implements Food {
+
     public static Texture texture;
 
     private boolean spawnComplete = false;
 
-    public Banana(float posX, float posY, MainGame game) {
+    public Tomato(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 0.9f, 0.9f, game);
         setDensity(0.8f);
         setFriction(4.5f);
@@ -17,7 +17,6 @@ public class Banana extends FlingableObject implements Food {
         allowPlayerCollision();
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
-
 
     @Override
     public void update() {
@@ -30,5 +29,4 @@ public class Banana extends FlingableObject implements Food {
             }
         }
     }
-
 }

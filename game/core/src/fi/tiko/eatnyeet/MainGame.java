@@ -39,20 +39,26 @@ public class MainGame extends ApplicationAdapter {
 	Character player;
 	ForceMeter meter;
 	Cloud cloud;
+	Sun sun;
 
 	// Alternate for ArrayList
 	HashSet<GameObject> toBeDeleted;
 
 	@Override
 	public void create () {
+		Sun.texture1 = new Texture("sunboi_NoDisco.png");
+		Sun.texture2 = new Texture("sunboi_YesDisco.png");
 		ForceMeter.texture = new Texture("carrot_no_disco.png"); //temp grphx
 		Cloud.texture1 = new Texture("cloud1.png");
 		Cloud.texture2 = new Texture("cloud2.png");
 		Cloud.texture3 = new Texture("cloud3.png");
-		Banana.texture = new Texture("carrot_no_disco.png");
-		CompostWaste.texture = new Texture("temp_compost_stuff.png");
+		Banana.texture = new Texture("banana.png");
+		Carrot.texture = new Texture("carrotboi.png");
+		Tomato.texture = new Texture("tomatoboi_NoShadow.png");
+		CompostWaste.texture = new Texture("compostcube.png");
 		Character.run = new Texture("farma_run.png");
 		Character.idle  = new Texture("farma_idle.png");
+		Rat.run = new Texture("ratboi_run.png");
 		Compost.empty = new Texture("compost_empty.png");
 		Compost.fill1 = new Texture("compost_stage1.png");
 		Compost.fill2 = new Texture("compost_stage2.png");
@@ -116,6 +122,10 @@ public class MainGame extends ApplicationAdapter {
 		gameObjects.add(player);
 		//this.meter = new ForceMeter(this);
 		//graphicObjects.add(meter);
+
+		//sun
+		this.sun = new Sun(Sun.texture1, this);
+		graphicObjects.add(sun);
 
 		//clouds ym grphx
 		for (int i = 0; i < 3; i++) {

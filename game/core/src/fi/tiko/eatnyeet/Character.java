@@ -269,10 +269,10 @@ public class Character extends GameObject {
     private void updateObjectToCarry () {
 
         if (isCarryingFlingable) {
-            float xModif = -0.4f;
-            float yModif = 0.8f;
+            float xModif = -0.37f;
+            float yModif = 0.045f;
             if (isRight) {
-                xModif = 0.5f;
+                xModif = 0.37f;
             }
 
             // set body location to player body location -+ x and y modifiers

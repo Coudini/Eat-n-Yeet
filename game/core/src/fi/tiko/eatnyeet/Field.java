@@ -72,19 +72,60 @@ public class Field extends GameObject {
             timeWhenPreviousCrop = lifeTime;
             fillLevel -= 1f;
             throwBanana();
+System.out.println(fillLevel);
+            //temporal rat spawn
+            if (fillLevel % 6 == 0.0f) {
+                spawnRat();
+            }
         }
+    }
+    public void spawnRat() {
+        System.out.println("RAT");
+        callAfterPhysicsStep(() -> {
+            float posY = 1f;
+            float posX = 2f;
+
+
+            Rat temp = new Rat(posX, posY, game);
+            //temp.body.setLinearVelocity(randX,randY);
+            temp.body.setGravityScale(0.4f);
+            game.gameObjects.add(temp);
+
+            return null;
+        });
     }
 
     public void throwBanana() {
         callAfterPhysicsStep(() -> {
             float fieldPosY = body.getPosition().y + 0.4f;
             float fieldPosX = body.getPosition().x;
-            Banana temp = new Banana(fieldPosX, fieldPosY, game);
+
             float randY = MathUtils.random(4f,8f);
             float randX = MathUtils.random(-2f,-0.5f);
-            temp.body.setLinearVelocity(randX,randY);
-            temp.body.setGravityScale(0.4f);
-            game.gameObjects.add(temp);
+
+            int tempN = MathUtils.random(1,3);
+            if (tempN == 1) {
+                Banana temp = new Banana(fieldPosX, fieldPosY, game);
+                temp.body.setLinearVelocity(randX,randY);
+                temp.body.setGravityScale(0.4f);
+                game.gameObjects.add(temp);
+            }
+            else if (tempN == 2) {
+                Tomato temp = new Tomato(fieldPosX, fieldPosY, game);
+                temp.body.setLinearVelocity(randX,randY);
+                temp.body.setGravityScale(0.4f);
+                game.gameObjects.add(temp);
+            }
+            else if (tempN == 3) {
+                Carrot temp = new Carrot(fieldPosX, fieldPosY, game);
+                temp.body.setLinearVelocity(randX,randY);
+                temp.body.setGravityScale(0.4f);
+                game.gameObjects.add(temp);
+            }
+            //Banana temp = new Banana(fieldPosX, fieldPosY, game);
+
+
+
             return null;
         });
     }
