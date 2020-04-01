@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Field extends GameObject {
@@ -27,7 +28,7 @@ public class Field extends GameObject {
     float maxFill = 9f;
     float timeWhenPreviousCrop;
 
-    protected ArrayList<GameObject> fieldObjectList;
+    protected GameObject [] fieldObjectArray;
 
     private float [] fieldPosX;
     private float [] fieldPosY;
@@ -37,7 +38,7 @@ public class Field extends GameObject {
         super(empty, width,height, body, game);
         fillLevel = 10f;
         timeWhenPreviousCrop = 0f;
-        fieldObjectList = new ArrayList<>();
+        fieldObjectArray = new GameObject[9];
 
         fieldPosX = new float [9];
         fieldPosY = new float[9];
@@ -92,13 +93,22 @@ public class Field extends GameObject {
     }
 
     public void updateFieldObjectList() {
-        for (GameObject obj: fieldObjectList) {
-            obj.update();
+        for (int i = 0; i < fieldObjectArray.length; i++) {
+            if (fieldObjectArray[i] == null) {
+
+            } else {
+                fieldObjectArray[i].update();
+            }
         }
     }
     public void renderFieldObjectList(Batch batch) {
-        for (GameObject obj: fieldObjectList) {
-            obj.render(batch);
+        for (int i = 0; i < fieldObjectArray.length; i++) {
+            if (fieldObjectArray[i] == null) {
+
+            } else {
+                fieldObjectArray[i].render(batch);
+            }
+
         }
     }
     public void defineFielPos() {
@@ -128,7 +138,7 @@ public class Field extends GameObject {
             timeWhenPreviousCrop = lifeTime;
             fillLevel -= 1f;
             throwBanana();
-System.out.println(fillLevel);
+            System.out.println(fillLevel);
             //temporal rat spawn
             if (fillLevel % 6 == 0.0f) {
                 spawnRat();
@@ -159,24 +169,36 @@ System.out.println(fillLevel);
             float randY = MathUtils.random(4f,8f);
             float randX = MathUtils.random(-2f,-0.5f);
 
-            int tempN = MathUtils.random(1,3);
-            if (tempN == 1) {
+            ArrayList<Integer> listOfUsedIndexes = checkUsedIndexOfObjectArray();
+            int index = listOfUsedIndexes.get(MathUtils.random(0,listOfUsedIndexes.size()-1));
+
+            if (fieldObjectArray[index] instanceof Banana) {
                 Banana temp = new Banana(fieldPosX, fieldPosY, game);
                 temp.body.setLinearVelocity(randX,randY);
                 temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
+
+                game.toBeDeleted.add(fieldObjectArray[index]);
+                fieldObjectArray[index] = null;
+
             }
-            else if (tempN == 2) {
+            else if (fieldObjectArray[index] instanceof Tomato) {
                 Tomato temp = new Tomato(fieldPosX, fieldPosY, game);
                 temp.body.setLinearVelocity(randX,randY);
                 temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
+
+                game.toBeDeleted.add(fieldObjectArray[index]);
+                fieldObjectArray[index] = null;
             }
-            else if (tempN == 3) {
+            else if (fieldObjectArray[index] instanceof Carrot) {
                 Carrot temp = new Carrot(fieldPosX, fieldPosY, game);
                 temp.body.setLinearVelocity(randX,randY);
                 temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
+
+                game.toBeDeleted.add(fieldObjectArray[index]);
+                fieldObjectArray[index] = null;
             }
             //Banana temp = new Banana(fieldPosX, fieldPosY, game);
 
@@ -206,7 +228,7 @@ System.out.println(fillLevel);
                 fillLevel += ((CompostWaste) other).getFillAmount();
                 game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
-                //growRandomFood(((CompostWaste)other).getFillAmount());
+                growRandomFood(((CompostWaste)other).getFillAmount());
             }
 
             //System.out.println("Field fillevel = " + fillLevel);
@@ -221,49 +243,51 @@ System.out.println(fillLevel);
 
             for (int i = 0; i < amount; i++) {
 
-
+                ArrayList<Integer> listOfFreeIndexes = checkFreeIndexOfObjectArray();
+                int index = listOfFreeIndexes.get(MathUtils.random(0,listOfFreeIndexes.size()-1));
                 int tempN = MathUtils.random(1,3);
 
-
                 if (tempN == 1) {
-                    //System.out.println(fieldPositionsX[i][i] + "X " + fieldPositionsY[i][i] + " Y");
-                    Banana temp = new Banana(fieldPosX[i], fieldPosY[i],0.1f, game);
+                    Banana temp = new Banana(fieldPosX[index], fieldPosY[index],0.1f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
-                    fieldObjectList.add(temp);
+                    fieldObjectArray[index] = temp;
                 }
                 else if (tempN == 2) {
-                    //System.out.println(fieldPositionsX[i][i] + "X " + fieldPositionsY[i][i] + " Y");
-                    Tomato temp = new Tomato(fieldPosX[i], fieldPosY[i],0.1f, game);
+                    Tomato temp = new Tomato(fieldPosX[index], fieldPosY[index],0.1f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
-                    fieldObjectList.add(temp);
+                    fieldObjectArray[index] = temp;
                 }
                 else if (tempN == 3) {
-                    //System.out.println(fieldPositionsX[i][i] + "X " + fieldPositionsY[i][i] + " Y");
-                    Carrot temp = new Carrot(fieldPosX[i], fieldPosY[i],0.1f, game);
+                    Carrot temp = new Carrot(fieldPosX[index], fieldPosY[index],0.1f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
-                    fieldObjectList.add(temp);
+                    fieldObjectArray[index] = temp;
                 }
             }
 
             return null;
         });
     }
-    private void addFieldObjectByIndex(int index) {
-        if (index == 0) {
+    private ArrayList<Integer> checkFreeIndexOfObjectArray() {
+        ArrayList<Integer> temp = new ArrayList<>();
 
-        } else if (index == 1) {
-
-        } else if (index == 2) {
-
-        } else if (index == 3) {
-
-        } else if (index == 4) {
-
-        } else if (index == 5) {
-
+        for (int i = 0; i < fieldObjectArray.length; i++) {
+            if (fieldObjectArray[i] == null) {
+                temp.add(i);
+            }
         }
+        return temp;
     }
+    private ArrayList<Integer> checkUsedIndexOfObjectArray() {
+        ArrayList<Integer> temp = new ArrayList<>();
+        for (int i = 0; i < fieldObjectArray.length; i++) {
+            if (fieldObjectArray[i] != null) {
+                temp.add(i);
+            }
+        }
+        return temp;
+    }
+
 }
