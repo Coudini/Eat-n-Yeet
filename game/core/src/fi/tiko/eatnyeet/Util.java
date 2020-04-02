@@ -45,4 +45,21 @@ public class Util {
             r.flip(true, false);
         }
     }
+
+    /**
+     * Transforms two dimensonal array to one dimensional, NOTE it only works when columns are same size
+     * @param twoDimArr
+     * @return
+     */
+    public static float [] toOneDimensonalArray(float [][] twoDimArr) {
+        float temp [] = new float[twoDimArr.length * twoDimArr[0].length];
+        int index = 0;
+        for (int i = 0; i < twoDimArr.length; i++) {
+            for (int j = 0; j < twoDimArr[i].length; j++) {
+                temp[index] = twoDimArr[i][j];
+                index++;
+            }
+        }
+        return temp;
+    }
 }

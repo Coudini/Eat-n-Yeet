@@ -108,7 +108,7 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
-		//debugRenderer.render(world, camera.combined);
+		debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
@@ -168,7 +168,7 @@ public class MainGame extends ApplicationAdapter {
 			try {
 				callable.call();
 			} catch (Exception e) {
-				//System.out.println("penis");
+				//ystem.out.println("penis");
 			}
 		}
 		functionsToBeCalled.clear();

@@ -7,6 +7,7 @@ public class Cloud extends GraphicObject {
 
     private final float WINDOW_WIDTH = 16f;
     private final float WINDOW_HEIGHT = 9f;
+
     public static Texture texture1;
     public static Texture texture2;
     public static Texture texture3;
