@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class Field extends GameObject {
 
-    // temp
     public static Texture empty;
     public static Texture fill1;
     public static Texture fill2;
@@ -36,13 +35,12 @@ public class Field extends GameObject {
 
     public Field(float width, float height, Body body , MainGame game) {
         super(empty, width,height, body, game);
-        fillLevel = 10f;
         timeWhenPreviousCrop = 0f;
         fieldObjectArray = new GameObject[9];
-
         fieldPosX = new float [9];
         fieldPosY = new float[9];
         defineFielPos();
+        fillLevel = maxFill;
         growRandomFood(maxFill);
 
     }
@@ -50,7 +48,7 @@ public class Field extends GameObject {
     @Override
     public void update () {
         super.update();
-        updateFieldObjectList();
+        updateFieldObjects();
         float currentPercent = fillLevel / maxFill;
 
         if (currentPercent > 0.05f) {
@@ -89,10 +87,10 @@ public class Field extends GameObject {
     @Override
     public void render(Batch batch) {
         super.render(batch);
-        renderFieldObjectList(batch);
+        renderFieldObjects(batch);
     }
 
-    public void updateFieldObjectList() {
+    public void updateFieldObjects() {
         for (int i = 0; i < fieldObjectArray.length; i++) {
             if (fieldObjectArray[i] == null) {
 
@@ -101,7 +99,7 @@ public class Field extends GameObject {
             }
         }
     }
-    public void renderFieldObjectList(Batch batch) {
+    public void renderFieldObjects(Batch batch) {
         for (int i = 0; i < fieldObjectArray.length; i++) {
             if (fieldObjectArray[i] == null) {
 
@@ -115,10 +113,8 @@ public class Field extends GameObject {
         float startX;
         float startY = this.getY() - this.getHeight()/3f/2f;
 
-        float [][] fieldPositionsX;
-        float [][] fieldPositionsY;
-        fieldPositionsX = new float[3][3];
-        fieldPositionsY = new float[3][3];
+        float [][] fieldPositionsX = new float[3][3];
+        float [][] fieldPositionsY = new float[3][3];
 
         for (int i = 0; i < fieldPositionsX.length; i++) {
             startX = this.getX() +this.getWidth()/3f/2f;
@@ -132,12 +128,16 @@ public class Field extends GameObject {
         fieldPosX = Util.toOneDimensonalArray(fieldPositionsX);
         fieldPosY = Util.toOneDimensonalArray(fieldPositionsY);
     }
+
+    /**
+     * Placeholder for customer, keeps track of time and throws object every 5 second
+     */
     public void cropCrops() {
         
         if (lifeTime - timeWhenPreviousCrop > 5f) {
             timeWhenPreviousCrop = lifeTime;
             fillLevel -= 1f;
-            throwBanana();
+            throwObject();
             System.out.println(fillLevel);
             //temporal rat spawn
             if (fillLevel % 6 == 0.0f) {
@@ -161,7 +161,10 @@ public class Field extends GameObject {
         });
     }
 
-    public void throwBanana() {
+    /**
+     * Throws object based on what object got removed from field
+     */
+    public void throwObject() {
         callAfterPhysicsStep(() -> {
             float fieldPosY = body.getPosition().y + 0.4f;
             float fieldPosX = body.getPosition().x;
@@ -200,9 +203,6 @@ public class Field extends GameObject {
                 game.toBeDeleted.add(fieldObjectArray[index]);
                 fieldObjectArray[index] = null;
             }
-            //Banana temp = new Banana(fieldPosX, fieldPosY, game);
-
-
 
             return null;
         });
@@ -224,6 +224,7 @@ public class Field extends GameObject {
             }
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;
+                System.out.println("field already full");
             } else {
                 fillLevel += ((CompostWaste) other).getFillAmount();
                 game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
@@ -231,12 +232,16 @@ public class Field extends GameObject {
                 growRandomFood(((CompostWaste)other).getFillAmount());
             }
 
-            //System.out.println("Field fillevel = " + fillLevel);
         }
 
 
 
     }
+
+    /**
+     * Grows random crops to field, checks if slot is empty before doing so
+     * @param amount how many crops needs to be grown
+     */
     protected void growRandomFood (float amount) {
 
         callAfterPhysicsStep(() -> {
