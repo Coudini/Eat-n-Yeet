@@ -58,6 +58,7 @@ public class MainGame extends ApplicationAdapter {
 		CompostWaste.texture = new Texture("compostcube.png");
 		Character.run = new Texture("farma_run.png");
 		Character.idle  = new Texture("farma_idle.png");
+		Customer.customerTexture = new Texture("customer_boi.png");
 		Rat.run = new Texture("ratboi_run.png");
 		Compost.empty = new Texture("compost_empty.png");
 		Compost.fill1 = new Texture("compost_stage1.png");
@@ -101,14 +102,16 @@ public class MainGame extends ApplicationAdapter {
 		moveCamera();
 
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
+		spawnCustomers();
 		callCallables();
 		updateObjects();
+
 
 		batch.begin();
 		renderObjects();
 		batch.end();
 
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
@@ -127,6 +130,7 @@ public class MainGame extends ApplicationAdapter {
 		this.sun = new Sun(Sun.texture1, this);
 		graphicObjects.add(sun);
 
+		gameObjects.add(new Customer(this));
 		//clouds ym grphx
 		for (int i = 0; i < 3; i++) {
 			System.out.println(i);
@@ -182,22 +186,15 @@ public class MainGame extends ApplicationAdapter {
 	}
 
 	/**
-	 * Not in use,could be refactored to be random nutrient spawner
+	 * Spawns customer every 5 seconds, uses player lifetime as caluclation value
 	 */
-	public void tempBananaSpawn () {
-		boolean spawnBanana = false;
-		for (GameObject obj : gameObjects) {
-			if (obj instanceof Food) {
-				spawnBanana = true;
-			}
-		}
-		if (!spawnBanana) {
-			//temporally to simulate random X on food-drops
-			float tempX = MathUtils.random(3f,13f);
-			System.out.println();
-			Banana temp = new Banana(tempX, WINDOW_HEIGHT -1f, this);
-			//Banana temp = new Banana(WINDOW_WIDTH / 2f, WINDOW_HEIGHT -1f, this);
-			gameObjects.add(temp);
+	float customerSpawnTimer = 0f;
+	float randTime = MathUtils.random(9f,15f);
+	public void spawnCustomers () {
+		if (player.lifeTime - customerSpawnTimer > randTime) {
+			gameObjects.add(new Customer(this));
+			customerSpawnTimer = player.lifeTime;
+			randTime = MathUtils.random(9f,15f);
 		}
 
 	}

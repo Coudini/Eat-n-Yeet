@@ -36,6 +36,7 @@ public class GameObject extends Sprite {
     protected static final short DEFAULT_BITS = 0x0001;
     protected static final short PLAYER_BITS = 0x0002;
     protected static final short FLINGABLE_BITS = 0x0004;
+    protected static final short OTHER_BITS = 0x0008;
 
     public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
         super(texture);
