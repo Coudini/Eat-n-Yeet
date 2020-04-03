@@ -58,6 +58,7 @@ public class MainGame extends ApplicationAdapter {
 		CompostWaste.texture = new Texture("compostcube.png");
 		Character.run = new Texture("farma_run.png");
 		Character.idle  = new Texture("farma_idle.png");
+		Customer.customerTexture = new Texture("customer_boi.png");
 		Rat.run = new Texture("ratboi_run.png");
 		Compost.empty = new Texture("compost_empty.png");
 		Compost.fill1 = new Texture("compost_stage1.png");
@@ -127,6 +128,7 @@ public class MainGame extends ApplicationAdapter {
 		this.sun = new Sun(Sun.texture1, this);
 		graphicObjects.add(sun);
 
+		gameObjects.add(new Customer(this));
 		//clouds ym grphx
 		for (int i = 0; i < 3; i++) {
 			System.out.println(i);

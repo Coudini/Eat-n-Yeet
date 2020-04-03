@@ -30,8 +30,8 @@ public class Character extends GameObject {
     //boolean jump = false;
     private float maxStr = 10f;
 
-    public  static Texture run;
-    public  static Texture idle;
+    public static Texture run;
+    public static Texture idle;
 
     Animation<TextureRegion> characterIdle;
     Animation<TextureRegion> characterRun;

@@ -166,6 +166,7 @@ public class Field extends GameObject {
      */
     public void throwObject() {
         callAfterPhysicsStep(() -> {
+
             float fieldPosY = body.getPosition().y + 0.4f;
             float fieldPosX = body.getPosition().x;
 
