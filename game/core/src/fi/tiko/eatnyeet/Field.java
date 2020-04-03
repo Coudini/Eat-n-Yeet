@@ -136,8 +136,8 @@ public class Field extends GameObject {
         
         if (lifeTime - timeWhenPreviousCrop > 5f) {
             timeWhenPreviousCrop = lifeTime;
-            fillLevel -= 1f;
-            throwObject();
+            //fillLevel -= 1f;
+            //throwObject();
             System.out.println(fillLevel);
             //temporal rat spawn
             if (fillLevel % 6 == 0.0f) {
@@ -164,49 +164,41 @@ public class Field extends GameObject {
     /**
      * Throws object based on what object got removed from field
      */
-    public void throwObject() {
-        callAfterPhysicsStep(() -> {
+    public FlingableObject giveRandomFood() {
 
+            fillLevel -= 1f;
             float fieldPosY = body.getPosition().y + 0.4f;
             float fieldPosX = body.getPosition().x;
-
-            float randY = MathUtils.random(4f,8f);
-            float randX = MathUtils.random(-2f,-0.5f);
 
             ArrayList<Integer> listOfUsedIndexes = checkUsedIndexOfObjectArray();
             int index = listOfUsedIndexes.get(MathUtils.random(0,listOfUsedIndexes.size()-1));
 
             if (fieldObjectArray[index] instanceof Banana) {
                 Banana temp = new Banana(fieldPosX, fieldPosY, game);
-                temp.body.setLinearVelocity(randX,randY);
-                temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
 
                 game.toBeDeleted.add(fieldObjectArray[index]);
                 fieldObjectArray[index] = null;
+                return temp;
 
             }
             else if (fieldObjectArray[index] instanceof Tomato) {
                 Tomato temp = new Tomato(fieldPosX, fieldPosY, game);
-                temp.body.setLinearVelocity(randX,randY);
-                temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
 
                 game.toBeDeleted.add(fieldObjectArray[index]);
                 fieldObjectArray[index] = null;
+                return temp;
             }
             else if (fieldObjectArray[index] instanceof Carrot) {
                 Carrot temp = new Carrot(fieldPosX, fieldPosY, game);
-                temp.body.setLinearVelocity(randX,randY);
-                temp.body.setGravityScale(0.4f);
                 game.gameObjects.add(temp);
 
                 game.toBeDeleted.add(fieldObjectArray[index]);
                 fieldObjectArray[index] = null;
+                return temp;
             }
-
             return null;
-        });
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {

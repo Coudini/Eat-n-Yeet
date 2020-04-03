@@ -102,14 +102,16 @@ public class MainGame extends ApplicationAdapter {
 		moveCamera();
 
 		gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
+		spawnCustomers();
 		callCallables();
 		updateObjects();
+
 
 		batch.begin();
 		renderObjects();
 		batch.end();
 
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
@@ -184,22 +186,15 @@ public class MainGame extends ApplicationAdapter {
 	}
 
 	/**
-	 * Not in use,could be refactored to be random nutrient spawner
+	 * Spawns customer every 5 seconds, uses player lifetime as caluclation value
 	 */
-	public void tempBananaSpawn () {
-		boolean spawnBanana = false;
-		for (GameObject obj : gameObjects) {
-			if (obj instanceof Food) {
-				spawnBanana = true;
-			}
-		}
-		if (!spawnBanana) {
-			//temporally to simulate random X on food-drops
-			float tempX = MathUtils.random(3f,13f);
-			System.out.println();
-			Banana temp = new Banana(tempX, WINDOW_HEIGHT -1f, this);
-			//Banana temp = new Banana(WINDOW_WIDTH / 2f, WINDOW_HEIGHT -1f, this);
-			gameObjects.add(temp);
+	float customerSpawnTimer = 0f;
+	float randTime = MathUtils.random(9f,15f);
+	public void spawnCustomers () {
+		if (player.lifeTime - customerSpawnTimer > randTime) {
+			gameObjects.add(new Customer(this));
+			customerSpawnTimer = player.lifeTime;
+			randTime = MathUtils.random(9f,15f);
 		}
 
 	}

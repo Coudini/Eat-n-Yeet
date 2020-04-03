@@ -6,7 +6,7 @@ public class Carrot extends FlingableObject implements Food {
 
     public static Texture texture;
 
-    private boolean spawnComplete = false;
+
 
     public Carrot(float posX, float posY, MainGame game) {
         super(texture, posX, posY, 0.9f, 0.9f, game);
@@ -31,11 +31,10 @@ public class Carrot extends FlingableObject implements Food {
     public void update() {
         super.update();
 
-        if (!spawnComplete) {
-            if (isBeingCarried || isOnFloor) {
-                spawnComplete = true;
-                resetGravityScale();
-            }
+
+        if (isOnFloor && body.getGravityScale() < 1f) {
+
+            resetGravityScale();
         }
     }
 }
