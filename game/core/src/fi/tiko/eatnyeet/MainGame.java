@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
@@ -66,8 +67,10 @@ public class MainGame extends ApplicationAdapter {
 		Character.idle  = new Texture("farma_idle.png");
 		Customer.customerTexture = new Texture("customer_boi.png");
 		Customer.customerRun = new Texture("c_run.png");
-		Customer.carrotEaten = new Texture("carrothalf.png");
-		Customer.tomatoEaten = new Texture("tomatohalf.png");
+		Carrot.carrotEaten = new Texture("carrothalf.png");
+		Tomato.tomatoEaten = new Texture("tomatohalf.png");
+		//Customer.carrotEaten = new Texture("carrothalf.png");
+		//Customer.tomatoEaten = new Texture("tomatohalf.png");
 		Rat.run = new Texture("ratboi_run.png");
 		Compost.empty = new Texture("compost_empty.png");
 		Compost.fill1 = new Texture("compost_stage1.png");
@@ -120,7 +123,7 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
@@ -199,13 +202,13 @@ public class MainGame extends ApplicationAdapter {
 	 * Spawns customer every 5 seconds, uses player lifetime as caluclation value
 	 */
 	float customerSpawnTimer = 0f;
-	float randTime = MathUtils.random(9f,15f);
+	float randTime = MathUtils.random(4f,8f);
 	public void spawnCustomers () {
 		if (Field.getFillLevel() > 0) {
 			if (player.lifeTime - customerSpawnTimer > randTime) {
 				gameObjects.add(new Customer(this));
 				customerSpawnTimer = player.lifeTime;
-				randTime = MathUtils.random(9f, 15f);
+				randTime = MathUtils.random(4f, 8f);
 			}
 		}
 	}

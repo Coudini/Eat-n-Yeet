@@ -17,6 +17,7 @@ public class Carrot extends FlingableObject implements Food {
 
     public boolean eaten;
 
+    public static Texture carrotEaten;
 
 
     public Carrot(float posX, float posY, MainGame game) {
@@ -49,7 +50,7 @@ public class Carrot extends FlingableObject implements Food {
     public void update() {
         super.update();
 
-        if (getTexture().equals(Customer.carrotEaten)) {
+        if (getTexture().equals(carrotEaten)) {
             eaten = true;
         }
         if (!eaten) {

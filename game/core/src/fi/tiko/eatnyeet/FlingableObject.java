@@ -48,6 +48,14 @@ public class FlingableObject extends GameObject {
             fix.setFilterData(filter);
         }
     }
+    public void ignoreGroundCollision() {
+        Filter filter = new Filter();
+        filter.categoryBits = FLINGABLE_BITS;
+        filter.maskBits = FLINGABLE_BITS;
+        for (Fixture fix: body.getFixtureList()) {
+            fix.setFilterData(filter);
+        }
+    }
 
     /**
      * allows collision with character class

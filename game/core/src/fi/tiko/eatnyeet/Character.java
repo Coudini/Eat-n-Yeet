@@ -187,7 +187,7 @@ public class Character extends GameObject {
 
     public void throwObjectToCarry (float speedX,float speedY) {
         objectToCarry.body.setLinearVelocity(speedX, speedY);
-        objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
+        objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.1f, true);
 
         startPosSet = false;
         isCarryingFlingable = false;
@@ -196,6 +196,9 @@ public class Character extends GameObject {
         objectToCarry.timeWhenThrown = objectToCarry.lifeTime;
         objectToCarry.isBeingCarried = false;
         objectToCarry.isJustThrown = true;
+        if (objectToCarry.body.getGravityScale() < 1f) {
+            objectToCarry.resetGravityScale();
+        }
     }
 
     public void move() {

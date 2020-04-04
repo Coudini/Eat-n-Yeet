@@ -10,9 +10,9 @@
  </layer>
  <objectgroup id="2" name="wall-rectangles">
   <object id="2" type="groundType" x="4" y="852" width="1599" height="27.2727"/>
-  <object id="3" x="0" y="-3.0303" width="2.1818" height="931.03"/>
+  <object id="3" x="0" y="-3.0303" width="14.1818" height="931.03"/>
   <object id="4" x="3.0303" y="3.0303" width="1596.97" height="12.2424"/>
-  <object id="10" x="1596" y="0" width="4" height="928"/>
+  <object id="10" x="1588" y="0" width="12" height="928"/>
  </objectgroup>
  <objectgroup id="4" name="compost-rectangles">
   <object id="6" name="testinimi" type="compostType" x="38" y="700" width="184" height="136.667"/>
