@@ -23,7 +23,7 @@ public class Field extends GameObject {
     public static Texture fill7;
     public static Texture fill8;
     public static Texture fill9;
-    float fillLevel;
+    static float fillLevel;
     float maxFill = 9f;
     float timeWhenPreviousCrop;
 
@@ -55,32 +55,7 @@ public class Field extends GameObject {
             cropCrops();
         }
 
-        if (currentPercent < 0.1) {
-            this.setTexture(empty);
-        }
-        /*
-        else if (currentPercent < 0.2) {
-            this.setTexture(fill1);
-        } else if (currentPercent < 0.3) {
-            this.setTexture(fill2);
-        } else if (currentPercent < 0.4) {
-            this.setTexture(fill3);
-        } else if (currentPercent < 0.5) {
-            this.setTexture(fill4);
-        }else if (currentPercent < 0.6) {
-            this.setTexture(fill5);
-        }else if (currentPercent < 0.7) {
-            this.setTexture(fill6);
-        }else if (currentPercent < 0.8) {
-            this.setTexture(fill7);
-        }else if (currentPercent < 0.9) {
-            this.setTexture(fill8);
-        } else {
-            this.setTexture(fill9);
-        }
 
-         */
-        //System.out.println("Current% " + currentPercent + ", fill " + fillLevel + ", max " + maxFill);
 
 
     }
@@ -243,7 +218,7 @@ public class Field extends GameObject {
 
                 ArrayList<Integer> listOfFreeIndexes = checkFreeIndexOfObjectArray();
                 int index = listOfFreeIndexes.get(MathUtils.random(0,listOfFreeIndexes.size()-1));
-                int tempN = MathUtils.random(1,3);
+                int tempN = MathUtils.random(2,3);
 
                 if (tempN == 1) {
                     Banana temp = new Banana(fieldPosX[index], fieldPosY[index],0.1f, game);
@@ -286,6 +261,10 @@ public class Field extends GameObject {
             }
         }
         return temp;
+    }
+
+    public static float getFillLevel() {
+        return fillLevel;
     }
 
 }

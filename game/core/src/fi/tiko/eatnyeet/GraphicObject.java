@@ -34,6 +34,12 @@ public class GraphicObject extends Sprite {
         this.setOriginCenter();
     }
 
+    //sun
+    public GraphicObject(MainGame game) {
+        super();
+        this.game = game;
+        this.setOriginCenter();
+    }
 
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();

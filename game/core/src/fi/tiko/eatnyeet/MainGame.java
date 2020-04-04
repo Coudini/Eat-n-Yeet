@@ -46,19 +46,28 @@ public class MainGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		Sun.texture1 = new Texture("sunboi_NoDisco.png");
-		Sun.texture2 = new Texture("sunboi_YesDisco.png");
+		Sun.sunNoDisco = new Texture("sun.png");
+		Sun.sunDisco = new Texture("sun_disco.png");
 		ForceMeter.texture = new Texture("carrot_no_disco.png"); //temp grphx
 		Cloud.texture1 = new Texture("cloud1.png");
 		Cloud.texture2 = new Texture("cloud2.png");
 		Cloud.texture3 = new Texture("cloud3.png");
 		Banana.texture = new Texture("banana.png");
-		Carrot.texture = new Texture("carrotboi.png");
-		Tomato.texture = new Texture("tomatoboi_NoShadow.png");
+		Carrot.texture1 = new Texture("carrotboi.png");
+		Carrot.texture2 = new Texture("carrotdisco.png");
+		Carrot.carrotNoDisco = new Texture("carrot.png");
+		Carrot.carrotDisco = new Texture("carrot_disco.png");
+		Tomato.texture1 = new Texture("tomatoboi_NoShadow.png");
+		Tomato.texture2 = new Texture("tomatoboi_NoShadow.png"); //no discotomato yet
+		Tomato.tomatoNoDisco = new Texture("tomato.png");
+		Tomato.tomatoDisco = new Texture("tomato_disco.png");
 		CompostWaste.texture = new Texture("compostcube.png");
 		Character.run = new Texture("farma_run.png");
 		Character.idle  = new Texture("farma_idle.png");
 		Customer.customerTexture = new Texture("customer_boi.png");
+		Customer.customerRun = new Texture("c_run.png");
+		Customer.carrotEaten = new Texture("carrothalf.png");
+		Customer.tomatoEaten = new Texture("tomatohalf.png");
 		Rat.run = new Texture("ratboi_run.png");
 		Compost.empty = new Texture("compost_empty.png");
 		Compost.fill1 = new Texture("compost_stage1.png");
@@ -111,7 +120,7 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
-		//debugRenderer.render(world, camera.combined);
+		debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
 
@@ -127,7 +136,7 @@ public class MainGame extends ApplicationAdapter {
 		//graphicObjects.add(meter);
 
 		//sun
-		this.sun = new Sun(Sun.texture1, this);
+		this.sun = new Sun(this);
 		graphicObjects.add(sun);
 
 		gameObjects.add(new Customer(this));
@@ -151,12 +160,13 @@ public class MainGame extends ApplicationAdapter {
 
 	//add grphx rendere here
 	public void renderObjects () {
-		for (GraphicObject obj : graphicObjects) {
-			obj.render(batch);
-		}
+
 		for (GameObject obj: gameObjects) {
 			obj.render(batch);
 		}
+        for (GraphicObject obj : graphicObjects) {
+            obj.render(batch);
+        }
 
 	}
 	public void updateObjects () {
@@ -191,12 +201,13 @@ public class MainGame extends ApplicationAdapter {
 	float customerSpawnTimer = 0f;
 	float randTime = MathUtils.random(9f,15f);
 	public void spawnCustomers () {
-		if (player.lifeTime - customerSpawnTimer > randTime) {
-			gameObjects.add(new Customer(this));
-			customerSpawnTimer = player.lifeTime;
-			randTime = MathUtils.random(9f,15f);
+		if (Field.getFillLevel() > 0) {
+			if (player.lifeTime - customerSpawnTimer > randTime) {
+				gameObjects.add(new Customer(this));
+				customerSpawnTimer = player.lifeTime;
+				randTime = MathUtils.random(9f, 15f);
+			}
 		}
-
 	}
 	@Override
 	public void pause () {

@@ -6,14 +6,17 @@ import com.badlogic.gdx.math.MathUtils;
 public class Banana extends FlingableObject implements Food {
     public static Texture texture;
 
+    public boolean disco;
+
 
     public Banana(float posX, float posY, MainGame game) {
-        super(texture, posX, posY, 0.9f, 0.9f, game);
+        super(texture, posX, posY, 0.6f, 0.6f, game);
         setDensity(0.8f);
         setFriction(4.5f);
         setRestitution(0.4f);
-        body = createBody(posX,posY,0.45f);
+        body = createBody(posX,posY,0.3f);
         allowPlayerCollision();
+        disco = false;
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
     public Banana(float posX, float posY,float radius, MainGame game) {
@@ -23,6 +26,8 @@ public class Banana extends FlingableObject implements Food {
         setRestitution(0.4f);
         body = createBody(posX,posY,radius);
         allowPlayerCollision();
+        disco = false;
+        
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 

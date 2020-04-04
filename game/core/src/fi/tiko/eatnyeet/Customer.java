@@ -3,6 +3,8 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -21,9 +23,20 @@ public class Customer extends GameObject {
     public boolean pickedUpFood = false;
     public boolean spawnComplete = false;
     public static Texture customerTexture;
-    public Customer(MainGame game) {
-        super(customerTexture, 15f,5f,1f,1f,game);
 
+    public static Texture customerRun;
+
+    Animation<TextureRegion> run;
+
+
+    public static Texture carrotEaten;
+    public static Texture tomatoEaten;
+
+    public Customer(MainGame game) {
+        super(customerTexture, 15f,5f,1.5f,1.5f,game);
+
+        run = Util.createTextureAnimation(8,1, customerRun);
+        Util.flip(run);
         body = createBody(16f,4f,0.45f);
         body.setGravityScale(0);
 
@@ -39,9 +52,20 @@ public class Customer extends GameObject {
     @Override
     public void update() {
         super.update();
+        currentAnimation = run;
         move();
         updateObjectToCarry();
         if (lifeTime - timeWhenPickedUp > randomThrowTime && isCarryingFlingable) {
+            if (objectToCarry instanceof Carrot) {
+
+                objectToCarry.setTexture(carrotEaten);
+                objectToCarry.setSize(0.3f,0.3f);
+
+            }
+            else if (objectToCarry instanceof Tomato) {
+                objectToCarry.setTexture(tomatoEaten);
+                objectToCarry.setSize(0.3f,0.3f);
+            }
             throwObjectToCarry();
         }
 
@@ -90,6 +114,7 @@ public class Customer extends GameObject {
             float distancePerTimestep = speedToUse / 60.0f;
             if (distancePerTimestep > distanceToTravel)
                 speedToUse *= (distanceToTravel / distancePerTimestep);
+
 
             Vector2 desiredVelocity = direction.scl(speedToUse);
             Vector2 changeInVelocity = desiredVelocity.sub(body.getLinearVelocity());
