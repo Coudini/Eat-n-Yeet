@@ -16,7 +16,10 @@ public class Customer extends GameObject {
     protected FlingableObject objectToCarry;
     protected boolean isCarryingFlingable = false;
     private float timeWhenPickedUp;
-    private float randomThrowTime = MathUtils.random(3f,7f);
+    private float timeWhenStopped;
+    private float waitTime;
+    private boolean allowMove = true;
+    private float randomThrowTime = MathUtils.random(7f,13f);
     private float speed = 30f;
     public Vector2 fieldPoint = new Vector2(14f, 2f);
     public Vector2 moveAwayPoint = new Vector2(-1f,3.3f);
@@ -29,8 +32,8 @@ public class Customer extends GameObject {
     Animation<TextureRegion> run;
 
 
-    public static Texture carrotEaten;
-    public static Texture tomatoEaten;
+    //public static Texture carrotEaten;
+    //public static Texture tomatoEaten;
 
     public Customer(MainGame game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
@@ -55,15 +58,23 @@ public class Customer extends GameObject {
         currentAnimation = run;
         move();
         updateObjectToCarry();
+
+        // stop move for 2s before throwing
+        /*
+        if (lifeTime - timeWhenPickedUp > randomThrowTime - 1f && isCarryingFlingable) {
+            stopMove(1.5f);
+        }
+
+         */
         if (lifeTime - timeWhenPickedUp > randomThrowTime && isCarryingFlingable) {
             if (objectToCarry instanceof Carrot) {
 
-                objectToCarry.setTexture(carrotEaten);
+                objectToCarry.setTexture(((Carrot) objectToCarry).carrotEaten);
                 objectToCarry.setSize(0.3f,0.3f);
 
             }
             else if (objectToCarry instanceof Tomato) {
-                objectToCarry.setTexture(tomatoEaten);
+                objectToCarry.setTexture(((Tomato) objectToCarry).tomatoEaten);
                 objectToCarry.setSize(0.3f,0.3f);
             }
             throwObjectToCarry();
@@ -85,11 +96,19 @@ public class Customer extends GameObject {
     }
     private void move () {
 
-        if (!pickedUpFood) {
-            moveTowardsPoint(fieldPoint);
-        } else {
-            moveTowardsPoint(moveAwayPoint);
+        if (allowMove) {
+            if (!pickedUpFood) {
+                moveTowardsPoint(fieldPoint);
+            } else {
+                moveTowardsPoint(moveAwayPoint);
+            }
         }
+        // stopmove ends here
+        else if (lifeTime - timeWhenStopped > waitTime) {
+            System.out.println("gay");
+            allowMove = true;
+        }
+
 
     }
     public void killYourSelf () {
@@ -139,9 +158,16 @@ public class Customer extends GameObject {
                 objectToCarry.isBeingCarried = true;
                 objectToCarry.body.setGravityScale(0.3f);
                 timeWhenPickedUp = lifeTime;
+                //stopMove(2f);
                 return null;
             });
         }
+    }
+    private void stopMove(float timeSeconds) {
+        timeWhenStopped = lifeTime;
+        allowMove = false;
+        waitTime = timeSeconds;
+        body.setLinearVelocity(0f,0f);
     }
     private void updateObjectToCarry () {
 
@@ -161,9 +187,9 @@ public class Customer extends GameObject {
     }
     public void throwObjectToCarry () {
         float speedX = MathUtils.random(3f,-3f);
-        float speedY = MathUtils.random(5f,8f);
+        float speedY = MathUtils.random(5f,7f);
         objectToCarry.body.setLinearVelocity(speedX, speedY);
-        objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
+        objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.1f, true);
 
         isCarryingFlingable = false;
 

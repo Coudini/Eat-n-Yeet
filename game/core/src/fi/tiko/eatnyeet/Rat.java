@@ -16,6 +16,8 @@ public class Rat extends GameObject {
     private  float FLOOR;
 
     boolean isRight = true;
+    private float timeWhenPickedUp;
+    private boolean doneDyingAnimation = false;
 
     public  static Texture run;
     Animation<TextureRegion> ratRun;
@@ -31,8 +33,8 @@ public class Rat extends GameObject {
 
         //body.setGravityScale(-80f);
 
-        //allowPlayerCollision();
-        ignorePlayerCollision();
+        allowPlayerCollision();
+        //ignorePlayerCollision();
 
     }
 
@@ -40,12 +42,26 @@ public class Rat extends GameObject {
         super.update();
         move();
         //flingListener();
-        //updateObjectToCarry();
+        updateObjectToCarry();
         if(isCarryingFlingable) {
+
+            // start dying by falling trough floor
+            if (lifeTime - timeWhenPickedUp > 1.5f && !doneDyingAnimation) {
+                doneDyingAnimation = true;
+                ignoreGroundCollision();
+                objectToCarry.ignoreGroundCollision();
+            }
+            if (lifeTime - timeWhenPickedUp > 2f) {
+                killYourSelf();
+            }
             //run etc..
         }
     }
 
+    public void killYourSelf() {
+        game.toBeDeleted.add(this);
+        game.toBeDeleted.add(objectToCarry);
+    }
     public void throwObjectToCarry (float speedX,float speedY) {
         objectToCarry.body.setLinearVelocity(speedX, speedY);
         objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.3f, true);
@@ -67,19 +83,20 @@ public class Rat extends GameObject {
             //temporal movement
         if (getX() < WINDOW_WIDTH / 2 && getX() >  1.3f) {
             if (isRight) {
-                body.setLinearVelocity(1f, 0f);
+                body.setLinearVelocity(1f, body.getLinearVelocity().y);
             } else {
-                body.setLinearVelocity(-1f, 0f);
+                body.setLinearVelocity(-1f, body.getLinearVelocity().y);
             }
         } else if(getX() > WINDOW_WIDTH / 2 && getX() < WINDOW_WIDTH - 1.3f) {
             if (isRight) {
-                body.setLinearVelocity(1f, 0f);
+                body.setLinearVelocity(1f, body.getLinearVelocity().y);
             } else {
-                body.setLinearVelocity(-1f, 0f);
+                body.setLinearVelocity(-1f, body.getLinearVelocity().y);
             }
         } else {
             float temp = MathUtils.random(-1f,1f);
             //body.setLinearVelocity(temp, 0f);
+            System.out.println("kyrpä");
             body.applyLinearImpulse(new Vector2(temp, 0f), body.getWorldCenter(), true);
 
         }
@@ -124,9 +141,10 @@ public class Rat extends GameObject {
                 objectToCarry.isBeingCarried = true;
                 isCarryingFlingable = true;
 
+                timeWhenPickedUp = lifeTime;
                 // when colliding mask waste to ignore player collision
-                //ignorePlayerCollision();
-                //objectToCarry.ignorePlayerCollision();
+                ignorePlayerCollision();
+                objectToCarry.ignorePlayerCollision();
             }
         }
     }
@@ -135,9 +153,9 @@ public class Rat extends GameObject {
 
         if (isCarryingFlingable) {
             float xModif = -0.4f;
-            float yModif = 0.8f;
+            float yModif = 0.2f;
             if (isRight) {
-                xModif = 0.5f;
+                xModif = 0.4f;
             }
 
             // set body location to player body location -+ x and y modifiers
@@ -156,6 +174,14 @@ public class Rat extends GameObject {
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
         filter.maskBits = DEFAULT_BITS | FLINGABLE_BITS;
+        for (Fixture fix: body.getFixtureList()) {
+            fix.setFilterData(filter);
+        }
+    }
+    public void ignoreGroundCollision() {
+        Filter filter = new Filter();
+        filter.categoryBits = OTHER_BITS;
+        filter.maskBits = PLAYER_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }

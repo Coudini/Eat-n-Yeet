@@ -16,7 +16,7 @@ public class Tomato extends FlingableObject implements Food {
     Animation<TextureRegion> discoTomato;
 
     public boolean eaten;
-
+    public static Texture tomatoEaten;
 
     public Tomato(float posX, float posY, MainGame game) {
         super(texture1, posX, posY, 0.3f, 0.3f, game);
@@ -27,6 +27,7 @@ public class Tomato extends FlingableObject implements Food {
         body = createBody(posX,posY,0.3f);
         allowPlayerCollision();
         eaten = false;
+
 
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
@@ -48,7 +49,7 @@ public class Tomato extends FlingableObject implements Food {
     public void update() {
         super.update();
 
-        if (getTexture().equals(Customer.tomatoEaten)) {
+        if (getTexture().equals(tomatoEaten)) {
             eaten = true;
         }
         if (!eaten) {

@@ -115,9 +115,16 @@ public class Field extends GameObject {
             //throwObject();
             System.out.println(fillLevel);
             //temporal rat spawn
-            if (fillLevel % 6 == 0.0f) {
-                spawnRat();
-            }
+                // purkka maanantain demoa varten:D
+                boolean spawnrat = true;
+                for (GameObject obj : game.gameObjects) {
+                    if (obj instanceof Rat) {
+                        spawnrat = false;
+                    }
+                }
+                if (spawnrat) {
+                    spawnRat();
+                }
         }
     }
     public void spawnRat() {
@@ -129,7 +136,6 @@ public class Field extends GameObject {
 
             Rat temp = new Rat(posX, posY, game);
             //temp.body.setLinearVelocity(randX,randY);
-            temp.body.setGravityScale(0.4f);
             game.gameObjects.add(temp);
 
             return null;
