@@ -46,15 +46,18 @@ public class Character extends GameObject {
 
 
     // for force-meter
-    public static float pX;
-    public static boolean carry;
-    public static boolean startDrag;
-    public static boolean initial;
-    public static float meter1x;
-    public static float meter1y;
-    public static float meter2x;
-    public static float meter2y;
-    public static float angle;
+    public boolean meterStart = false;
+    public double angle;
+    public float angleX;
+    public float angleY;
+    public float meterX;
+    public float meterY;
+    public float meter1x;
+    public float meter1y;
+    public float meter2x;
+    public float meter2y;
+    public float meter3x;
+    public float meter3y;
 
 
     public Character(float posX, float posY, MainGame game) {
@@ -62,8 +65,6 @@ public class Character extends GameObject {
         characterRun = Util.createTextureAnimation(4,2, run);
         characterIdle = Util.createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.95f);
-        startDrag = false;
-        initial = true;
         allowPlayerCollision();
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
@@ -76,20 +77,13 @@ public class Character extends GameObject {
         flingListener();
         updateObjectToCarry();
         printScoreAndCombo();
-        if(isCarryingFlingable) {
-            upX();
-            upAngle();
-        }
-        carry = isCarryingFlingable;
     }
 
-    public void upX() {
-        pX = getX();
-    }
-    public void upAngle() {
 
+    public void setXYA(float X, float Y, double A){
+        ForceMeter.setXY(X, Y);
+        ForceMeter.setRotate(A);
     }
-
     public void printScoreAndCombo() {
         if (characterScore != previousScore) {
             System.out.println("Current score = " + characterScore);
@@ -109,6 +103,8 @@ public class Character extends GameObject {
     }
     public void flingListener() {
 
+
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -118,21 +114,45 @@ public class Character extends GameObject {
                     game.camera.unproject(touchPosDrag);
                     startPosSet = true;
 
-                    startDrag = true;
-                    if (startDrag && initial) {
-                        meter1x = screenX;
-                        meter1y = screenY;
-                        //System.out.println("1x:                " + meter1x);
-                        //System.out.println("1y:                " + meter1y);
-                        startDrag = false;
-                        initial = false;
-                    }
                 }
+
+                    //ForceMeter
+                if (!meterStart) {
+                    //starting coordinates
+                    meter1x = screenX;
+                    meter1y = screenY;
+                    meterStart = true;
+                    ForceMeter.show(true);
+                }
+                //updating coordinates
                 meter2x = screenX;
                 meter2y = screenY;
-                angle = meter2y;
-                //System.out.println("2x: " + meter2y);
-                //System.out.println("2y: " + meter2y);
+                //distance and angles between coordinates
+                if (meter1x > meter2x) {
+                    meter3x = meter1x - meter2x;
+                    meterX = (getX() + 0.66f) - (meter3x / 150f);
+                } else {
+                    meter3x = meter2x - meter1x;
+                    meterX = (getX() + 0.66f) + (meter3x / 150f);
+                }
+                if (meter1y > meter2y) {
+                    meter3y = meter1y - meter2y;
+                    meterY = getY() + (meter3y / 150f);
+                } else {
+                    meter3y = meter2y - meter1y;
+                    meterY = getY() - (meter3y / 150f);
+                }
+                angleX = meter2x - meter1x;
+                angleY = meter2y - meter1y;
+                angle = Math.atan2((double)angleY, (double)angleX);
+                if (angle < 0) {
+                    angle = Math.abs(angle);
+                } else {
+                    angle = 2*Math.PI - angle;
+                }
+                angle = Math.toDegrees(angle);
+                setXYA(meterX, meterY, angle);
+
                 return true;
             }
 
@@ -142,8 +162,6 @@ public class Character extends GameObject {
                 game.camera.unproject(endPosDrag);
                 float speedX = 0f;
                 float speedY = 0f;
-
-
                     try {
                         speedX = (touchPosDrag.x - endPosDrag.x) * 4;
                         speedY = (touchPosDrag.y - endPosDrag.y) * 4;
@@ -163,23 +181,12 @@ public class Character extends GameObject {
                     if (speedY < (0f - maxStr)) {
                         speedY = 0f - maxStr;
                     }
-                    //if ((speedX < 1.3f && speedX > -1.3f) && (speedY < 1.3f && speedY > -1.3f)) {
-                    //    startPosSet = false;
-                    //    jump = true;
-                    //}
-
 
                 if (isCarryingFlingable && startPosSet) {
                     throwObjectToCarry(speedX,speedY);
-
-                    initial = true;
-
-                //} else {
-                //    if (jump && body.getLinearVelocity().y == 0f) {
-                //        body.setLinearVelocity(0f, 5f);
-                //        jump = false;
-                //    }
                 }
+                meterStart = false;
+                ForceMeter.show(false);
                 return true;
             }
         });

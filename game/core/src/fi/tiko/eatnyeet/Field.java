@@ -1,28 +1,17 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Field extends GameObject {
 
     public static Texture empty;
-    public static Texture fill1;
-    public static Texture fill2;
-    public static Texture fill3;
-    public static Texture fill4;
-    public static Texture fill5;
-    public static Texture fill6;
-    public static Texture fill7;
-    public static Texture fill8;
-    public static Texture fill9;
+
     static float fillLevel;
     float maxFill = 9f;
     float timeWhenPreviousCrop;
@@ -154,8 +143,8 @@ public class Field extends GameObject {
             ArrayList<Integer> listOfUsedIndexes = checkUsedIndexOfObjectArray();
             int index = listOfUsedIndexes.get(MathUtils.random(0,listOfUsedIndexes.size()-1));
 
-            if (fieldObjectArray[index] instanceof Banana) {
-                Banana temp = new Banana(fieldPosX, fieldPosY, game);
+            if (fieldObjectArray[index] instanceof Melon) {
+                Melon temp = new Melon(fieldPosX, fieldPosY, game);
                 game.gameObjects.add(temp);
 
                 game.toBeDeleted.add(fieldObjectArray[index]);
@@ -224,10 +213,10 @@ public class Field extends GameObject {
 
                 ArrayList<Integer> listOfFreeIndexes = checkFreeIndexOfObjectArray();
                 int index = listOfFreeIndexes.get(MathUtils.random(0,listOfFreeIndexes.size()-1));
-                int tempN = MathUtils.random(2,3);
+                int tempN = MathUtils.random(1,3);
 
                 if (tempN == 1) {
-                    Banana temp = new Banana(fieldPosX[index], fieldPosY[index],0.1f, game);
+                    Melon temp = new Melon(fieldPosX[index], fieldPosY[index],0.1f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
                     fieldObjectArray[index] = temp;

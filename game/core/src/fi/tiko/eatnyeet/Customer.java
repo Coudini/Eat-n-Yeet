@@ -25,20 +25,24 @@ public class Customer extends GameObject {
     public Vector2 moveAwayPoint = new Vector2(-1f,3.3f);
     public boolean pickedUpFood = false;
     public boolean spawnComplete = false;
+
     public static Texture customerTexture;
 
     public static Texture customerRun;
+    public static Texture customerRun2;
 
     Animation<TextureRegion> run;
 
 
-    //public static Texture carrotEaten;
-    //public static Texture tomatoEaten;
-
     public Customer(MainGame game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
+        int temp = MathUtils.random(0,1);
+        if (temp == 1) {
+            run = Util.createTextureAnimation(8,1, customerRun);
+        } else {
+            run = Util.createTextureAnimation(8,1, customerRun2);
+        }
 
-        run = Util.createTextureAnimation(8,1, customerRun);
         Util.flip(run);
         body = createBody(16f,4f,0.45f);
         body.setGravityScale(0);
@@ -77,6 +81,10 @@ public class Customer extends GameObject {
                 objectToCarry.setTexture(((Tomato) objectToCarry).tomatoEaten);
                 objectToCarry.setSize(0.3f,0.3f);
             }
+            else if (objectToCarry instanceof Melon) {
+                objectToCarry.setTexture(((Melon) objectToCarry).melonEaten);
+                objectToCarry.setSize(0.3f,0.3f);
+            }
             throwObjectToCarry();
         }
 
@@ -108,7 +116,6 @@ public class Customer extends GameObject {
             System.out.println("gay");
             allowMove = true;
         }
-
 
     }
     public void killYourSelf () {

@@ -2,16 +2,11 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -49,17 +44,20 @@ public class MainGame extends ApplicationAdapter {
 	public void create () {
 		Sun.sunNoDisco = new Texture("sun.png");
 		Sun.sunDisco = new Texture("sun_disco.png");
-		ForceMeter.texture = new Texture("carrot_no_disco.png"); //temp grphx
+		ForceMeter.texture = new Texture("arrows.png"); //temp grphx
 		Cloud.texture1 = new Texture("cloud1.png");
 		Cloud.texture2 = new Texture("cloud2.png");
 		Cloud.texture3 = new Texture("cloud3.png");
-		Banana.texture = new Texture("banana.png");
+		Melon.texture1 = new Texture("melon.png");
+		Melon.texture2 = new Texture("melond.png");
+		Melon.melonNoDisco = new Texture("mel.png");
+		Melon.melonDisco =  new Texture("meld.png");
 		Carrot.texture1 = new Texture("carrotboi.png");
 		Carrot.texture2 = new Texture("carrotdisco.png");
 		Carrot.carrotNoDisco = new Texture("carrot.png");
 		Carrot.carrotDisco = new Texture("carrot_disco.png");
 		Tomato.texture1 = new Texture("tomatoboi_NoShadow.png");
-		Tomato.texture2 = new Texture("tomatoboi_NoShadow.png"); //no discotomato yet
+		Tomato.texture2 = new Texture("tomatodisco.png"); //no discotomato yet
 		Tomato.tomatoNoDisco = new Texture("tomato.png");
 		Tomato.tomatoDisco = new Texture("tomato_disco.png");
 		CompostWaste.texture = new Texture("compostcube.png");
@@ -67,8 +65,10 @@ public class MainGame extends ApplicationAdapter {
 		Character.idle  = new Texture("farma_idle.png");
 		Customer.customerTexture = new Texture("customer_boi.png");
 		Customer.customerRun = new Texture("c_run.png");
+		Customer.customerRun2 = new Texture("c_run2.png");
 		Carrot.carrotEaten = new Texture("carrothalf.png");
 		Tomato.tomatoEaten = new Texture("tomatohalf.png");
+		Melon.melonEaten = new Texture("melonEaten.png");
 		//Customer.carrotEaten = new Texture("carrothalf.png");
 		//Customer.tomatoEaten = new Texture("tomatohalf.png");
 		Rat.run = new Texture("ratboi_run.png");
@@ -78,15 +78,7 @@ public class MainGame extends ApplicationAdapter {
 		Compost.fill3 = new Texture("compost_stage3.png");
 		Compost.fill4 = new Texture("compost_stage4.png");
 		Field.empty = new Texture("field_empty.png");
-		Field.fill1 = new Texture("field_stage1.png");
-		Field.fill2 = new Texture("field_stage2.png");
-		Field.fill3 = new Texture("field_stage3.png");
-		Field.fill4 = new Texture("field_stage4.png");
-		Field.fill5 = new Texture("field_stage5.png");
-		Field.fill6 = new Texture("field_stage6.png");
-		Field.fill7 = new Texture("field_stage7.png");
-		Field.fill8 = new Texture("field_stage8.png");
-		Field.fill9 = new Texture("field_stage9.png");
+
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -135,8 +127,8 @@ public class MainGame extends ApplicationAdapter {
 	public void spawnDefaultObjects() {
 		this.player = new Character(WINDOW_WIDTH / 2, 2f, this);
 		gameObjects.add(player);
-		//this.meter = new ForceMeter(this);
-		//graphicObjects.add(meter);
+
+
 
 		//sun
 		this.sun = new Sun(this);
@@ -159,26 +151,30 @@ public class MainGame extends ApplicationAdapter {
 				graphicObjects.add(cloud);
 			}
 		}
+		//forcemeter
+		this.meter = new ForceMeter(this);
+		graphicObjects.add(meter);
 	}
 
 	//add grphx rendere here
 	public void renderObjects () {
-
+		for (GraphicObject obj : graphicObjects) {
+			obj.render(batch);
+		}
 		for (GameObject obj: gameObjects) {
 			obj.render(batch);
 		}
-        for (GraphicObject obj : graphicObjects) {
-            obj.render(batch);
-        }
+
 
 	}
 	public void updateObjects () {
-		for (GameObject obj: gameObjects) {
-			obj.update();
-		}
 		for (GraphicObject obj : graphicObjects) {
 			obj.update();
 		}
+		for (GameObject obj: gameObjects) {
+			obj.update();
+		}
+
 	}
 	public void callCallables () {
 		for (Callable<Void> callable: functionsToBeCalled) {

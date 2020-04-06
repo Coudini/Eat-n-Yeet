@@ -1,59 +1,62 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import java.awt.Image;
-
-
 
 public class ForceMeter extends GraphicObject {
 
     public static Texture texture;
-    public static boolean charge;
-    public float rotation;
-    public static float width = 5f;
-    public static float height = 5f;
+    public static float width = 0.5f;
+    public static float height = 0.5f;
+    public static float x;
+    public static float y;
+    public static boolean show;
+    public static double rotation;
+    public static float angular;
 
-
-
-
-    //<Texture texture, float x, float y, float width, float height, MainGame game
     public ForceMeter(MainGame game) {
         super(texture, width, height, game);
         setOriginCenter();
-        //setRotation(180);
         System.out.println("meter made");
-        charge = false;
+        show = false;
     }
-
-
 
     public void update () {
         super.update();
 
-        if (Character.startPosSet) {
-            charge = true;
+        //add an additional if() for less texture calls
+        if (show) {
+            setMeter();
+            setTexture(texture);
         } else {
-            charge = false;
-            if (getRegionWidth() > 0) {
-                setRegionWidth(0);
-            }
+            setTexture(null);
         }
-        if (charge) {
-            setRotation(Character.angle / 2);
-            int temp = (int) Character.meter2x;
-            if (temp < 0) {
-                temp = temp + (temp * 2);
-            }
-            System.out.println(temp);
-            setRegionWidth(temp);
-            move();
-        }
-    }
-    public void move() {
-        setX((Character.pX) - getWidth() / 2);
     }
 
+    public void setMeter() {
+        setR();
+        setA();
+        setX(x);
+        setY(y);
+
+    }
+
+    public static void setXY(float X, float Y) {
+        x = X;
+        y = Y;
+    }
+
+    public static void show(boolean b) {
+        show = b;
+    }
+
+    public static void setRotate(double d) {
+        rotation = d;
+    }
+    public void setR() {
+        setRotation((float)rotation);
+    }
+
+    public void setA() {
+        rotate(angular);
+    }
 }
