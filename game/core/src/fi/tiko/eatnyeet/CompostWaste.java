@@ -8,7 +8,7 @@ public class CompostWaste extends FlingableObject {
 
     public static Texture texture;
 
-    public CompostWaste(float x, float y,float fill, MainGame game) {
+    public CompostWaste(float x, float y,float fill, GameScreen game) {
         super(texture, x,y, 1f, 1f, game);
         this.fillAmount = fill;
         setDensity(0.8f);

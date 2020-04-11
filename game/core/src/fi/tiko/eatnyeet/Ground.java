@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 public class Ground extends GameObject {
 
 
-    public Ground (float width,float height, Body body, MainGame game) {
+    public Ground (float width,float height, Body body, GameScreen game) {
         super(width,height,body,game);
     }
 

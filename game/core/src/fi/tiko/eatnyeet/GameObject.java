@@ -30,7 +30,7 @@ public class GameObject extends Sprite {
     private float restitution = 0f;
     private float friction = 0f;
 
-    public MainGame game;
+    public GameScreen game;
 
     protected float lifeTime = 0f;
 
@@ -39,14 +39,14 @@ public class GameObject extends Sprite {
     protected static final short FLINGABLE_BITS = 0x0004;
     protected static final short OTHER_BITS = 0x0008;
 
-    public GameObject(Texture texture, float x, float y, float width, float height, MainGame game) {
+    public GameObject(Texture texture, float x, float y, float width, float height, GameScreen game) {
         super(texture);
         this.game = game;
         this.setSize(width,height);
         this.setCenter(x,y);
         this.setOriginCenter();
     }
-    public GameObject(Texture texture,float width, float height, Body body, MainGame game) {
+    public GameObject(Texture texture,float width, float height, Body body, GameScreen game) {
         super(texture);
         this.game = game;
         this.body = body;
@@ -55,13 +55,13 @@ public class GameObject extends Sprite {
         this.setCenter(body.getPosition().x,body.getPosition().y);
         this.setOriginCenter();
     }
-    public GameObject( float x, float y, float width, float height, MainGame game) {
+    public GameObject( float x, float y, float width, float height, GameScreen game) {
         this.game = game;
         this.setSize(width,height);
         this.setCenter(x,y);
         this.setOriginCenter();
     }
-    public GameObject(float width, float height, Body body, MainGame game) {
+    public GameObject(float width, float height, Body body, GameScreen game) {
         this.game = game;
         this.body = body;
         this.body.setUserData(this);

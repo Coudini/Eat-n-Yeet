@@ -17,7 +17,7 @@ public class Melon extends FlingableObject implements Food {
     public static Texture melonEaten;
 
 
-    public Melon(float posX, float posY, MainGame game) {
+    public Melon(float posX, float posY, GameScreen game) {
         super(texture1, posX, posY, 0.3f, 0.3f, game);
         setSize(0.6f,0.6f);
         setDensity(0.8f);
@@ -28,7 +28,7 @@ public class Melon extends FlingableObject implements Food {
         eaten = false;
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
-    public Melon(float posX, float posY, float radius, MainGame game) {
+    public Melon(float posX, float posY, float radius, GameScreen game) {
         super(texture1, posX, posY, 0.6f, 0.6f, game);
         setDensity(0.8f);
         setFriction(4.5f);

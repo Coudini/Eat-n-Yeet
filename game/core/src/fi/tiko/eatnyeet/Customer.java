@@ -34,7 +34,7 @@ public class Customer extends GameObject {
     Animation<TextureRegion> run;
 
 
-    public Customer(MainGame game) {
+    public Customer(GameScreen game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
         int temp = MathUtils.random(0,1);
         if (temp == 1) {

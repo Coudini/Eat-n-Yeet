@@ -13,7 +13,7 @@ public class Compost extends GameObject {
     float fillLevel;
     float maxFill = 10f;
 
-    public Compost(float width, float height,Body body , MainGame game) {
+    public Compost(float width, float height,Body body , GameScreen game) {
         super(fill4, width,height, body, game);
         fillLevel = 0f;
     }

@@ -14,13 +14,13 @@ public class GraphicObject extends Sprite {
     Sound soundEffect;
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
-    public MainGame game;
+    public GameScreen game;
 
     protected float stateTime;
     protected float lifeTime = 0f;
 
     //froceMeter
-    public GraphicObject(Texture texture,float width, float height, MainGame game) {
+    public GraphicObject(Texture texture,float width, float height, GameScreen game) {
         super(texture);
         this.game = game;
         this.setSize(width,height);
@@ -28,14 +28,14 @@ public class GraphicObject extends Sprite {
     }
 
     //for clouds
-    public GraphicObject(Texture texture, MainGame game) {
+    public GraphicObject(Texture texture, GameScreen game) {
         super(texture);
         this.game = game;
         this.setOriginCenter();
     }
 
     //sun
-    public GraphicObject(MainGame game) {
+    public GraphicObject(GameScreen game) {
         super();
         this.game = game;
         this.setOriginCenter();

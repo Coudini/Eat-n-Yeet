@@ -12,7 +12,7 @@ public class Sun extends GraphicObject {
     Animation<TextureRegion> sun;
     Animation<TextureRegion> discoSun;
 
-    public Sun(MainGame game) {
+    public Sun(GameScreen game) {
         super(game);
         sun = Util.createTextureAnimation(12,1, sunNoDisco);
         discoSun = Util.createTextureAnimation(12,1,sunDisco);

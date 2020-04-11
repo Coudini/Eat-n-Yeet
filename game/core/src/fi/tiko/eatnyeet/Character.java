@@ -60,7 +60,7 @@ public class Character extends GameObject {
     public float meter3y;
 
 
-    public Character(float posX, float posY, MainGame game) {
+    public Character(float posX, float posY, GameScreen game) {
         super(posX, posY, 1.9f, 1.9f, game);
         characterRun = Util.createTextureAnimation(4,2, run);
         characterIdle = Util.createTextureAnimation(4,1,idle);

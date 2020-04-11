@@ -26,8 +26,8 @@ public class GameWorld  {
     public TiledMap tiledMap;
     public TiledMapRenderer tiledMapRenderer;
     public float UNIT_SCALE = 100f;
-    private MainGame game;
-    public GameWorld (MainGame game) {
+    private GameScreen game;
+    public GameWorld (GameScreen game) {
         this.game = game;
         game.world = new World(new Vector2(0f, -10.8f), true);
         tiledMap = new TmxMapLoader().load("map2.0.tmx");
