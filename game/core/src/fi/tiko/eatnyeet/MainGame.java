@@ -2,10 +2,13 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -26,6 +29,7 @@ public class MainGame extends ApplicationAdapter {
 
 	private Box2DDebugRenderer debugRenderer;
 	protected OrthographicCamera camera;
+	protected OrthographicCamera fontCamera;
 	public GameWorld gameWorld;
 	public World world;
 	public ArrayList<GameObject> gameObjects;
@@ -36,6 +40,9 @@ public class MainGame extends ApplicationAdapter {
 	ForceMeter meter;
 	Cloud cloud;
 	Sun sun;
+	FreeTypeFontGenerator generator;
+	BitmapFont score;
+	BitmapFont combo;
 
 	// Alternate for ArrayList
 	HashSet<GameObject> toBeDeleted;
@@ -83,6 +90,11 @@ public class MainGame extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+		fontCamera = new OrthographicCamera();
+		fontCamera.setToOrtho(false, 1280f, 720f);
+
+
+
 		gameObjects = new ArrayList<GameObject>();
 		graphicObjects = new ArrayList<GraphicObject>();
 		functionsToBeCalled = new ArrayList<Callable<Void>>();
@@ -90,6 +102,16 @@ public class MainGame extends ApplicationAdapter {
 		gameWorld = new GameWorld(this);
 
 		spawnDefaultObjects();
+
+		generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 48;
+		parameter.borderColor = Color.BLACK;
+		parameter.borderWidth = 1;
+		score = generator.generateFont(parameter);
+        combo = generator.generateFont(parameter);
+
+
 		toBeDeleted = new HashSet<>();
 		debugRenderer = new Box2DDebugRenderer();
 
@@ -115,6 +137,11 @@ public class MainGame extends ApplicationAdapter {
 		renderObjects();
 		batch.end();
 
+		batch.setProjectionMatrix(fontCamera.combined);
+		batch.begin();
+		score.draw(batch,"Score " + player.getScore(), 200,700);
+		combo.draw(batch,"Combo " + player.getCombo(), 700,700);
+		batch.end();
 		//debugRenderer.render(world, camera.combined);
 		deleteDeletables();
 	}
