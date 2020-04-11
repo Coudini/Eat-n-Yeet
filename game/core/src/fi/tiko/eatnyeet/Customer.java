@@ -113,7 +113,6 @@ public class Customer extends GameObject {
         }
         // stopmove ends here
         else if (lifeTime - timeWhenStopped > waitTime) {
-            System.out.println("gay");
             allowMove = true;
         }
 
@@ -155,7 +154,6 @@ public class Customer extends GameObject {
     public void onCollision(Contact contact, GameObject other) {
 
         if (other != null && other instanceof Field) {
-            System.out.println("field");
             pickedUpFood = true;
             isCarryingFlingable = true;
 

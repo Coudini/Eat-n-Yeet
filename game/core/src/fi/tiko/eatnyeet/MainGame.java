@@ -29,16 +29,30 @@ public class MainGame extends Game  {
 	SpriteBatch batch;
 
 	GameScreen gameScreen;
+	StartScreen startScreen;
 
+	protected final float FONT_CAM_WIDTH = 1280f;
+	protected final float FONT_CAM_HEIGHT = 720f;
+	protected final float GAME_CAM_WIDTH = 16f;
+	protected final float GAME_CAM_HEIGHT = 9f;
+
+	protected OrthographicCamera camera;
+	protected OrthographicCamera fontCamera;
 
 
 	// overide might not be needed
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		gameScreen = new GameScreen(batch,this);
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, GAME_CAM_WIDTH, GAME_CAM_HEIGHT);
 
-		setScreen(gameScreen);
+		fontCamera = new OrthographicCamera();
+		fontCamera.setToOrtho(false, FONT_CAM_WIDTH, FONT_CAM_HEIGHT);
+
+		startScreen = new StartScreen(batch,this);
+
+		setScreen(startScreen);
 	}
 
 	@Override

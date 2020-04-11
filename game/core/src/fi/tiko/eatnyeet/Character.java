@@ -3,6 +3,8 @@ package fi.tiko.eatnyeet;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -76,7 +78,7 @@ public class Character extends GameObject {
         move();
         flingListener();
         updateObjectToCarry();
-        printScoreAndCombo();
+        updateScoreAndCombo();
     }
 
 
@@ -84,13 +86,13 @@ public class Character extends GameObject {
         ForceMeter.setXY(X, Y);
         ForceMeter.setRotate(A);
     }
-    public void printScoreAndCombo() {
+    public void updateScoreAndCombo() {
         if (characterScore != previousScore) {
-            System.out.println("Current score = " + characterScore);
+            //System.out.println("Current score = " + characterScore);
             previousScore = characterScore;
         }
         if (characterCombo != previousCombo) {
-            System.out.println("Current combo = " + characterCombo);
+            //System.out.println("Current combo = " + characterCombo);
             previousCombo = characterCombo;
         }
     }
@@ -104,14 +106,14 @@ public class Character extends GameObject {
     public void flingListener() {
 
 
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
 
                 if (!startPosSet) {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
-                    game.camera.unproject(touchPosDrag);
+                    // :D
+                    game.game.camera.unproject(touchPosDrag);
                     startPosSet = true;
 
                 }
@@ -153,20 +155,19 @@ public class Character extends GameObject {
                 angle = Math.toDegrees(angle);
                 setXYA(meterX, meterY, angle);
 
-                return true;
+                return false;
             }
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 endPosDrag = new Vector3(screenX, screenY, 0);
-                game.camera.unproject(endPosDrag);
+                game.game.camera.unproject(endPosDrag);
                 float speedX = 0f;
                 float speedY = 0f;
                     try {
                         speedX = (touchPosDrag.x - endPosDrag.x) * 4;
                         speedY = (touchPosDrag.y - endPosDrag.y) * 4;
                     } catch (Exception e) {
-                        System.out.println("no drag");
                         return false;
                     }
                     if (speedX > maxStr) {
@@ -187,7 +188,7 @@ public class Character extends GameObject {
                 }
                 meterStart = false;
                 ForceMeter.show(false);
-                return true;
+                return false;
             }
         });
     }

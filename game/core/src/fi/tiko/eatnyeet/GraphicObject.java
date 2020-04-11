@@ -14,7 +14,8 @@ public class GraphicObject extends Sprite {
     Sound soundEffect;
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
-    public GameScreen game;
+    public GameScreen gameScreen;
+    public StartScreen startScreen;
 
     protected float stateTime;
     protected float lifeTime = 0f;
@@ -22,7 +23,14 @@ public class GraphicObject extends Sprite {
     //froceMeter
     public GraphicObject(Texture texture,float width, float height, GameScreen game) {
         super(texture);
-        this.game = game;
+        this.gameScreen = game;
+        this.setSize(width,height);
+        this.setOriginCenter();
+    }
+
+    public GraphicObject(Texture texture,float width, float height, StartScreen screen) {
+        super(texture);
+        this.startScreen = screen;
         this.setSize(width,height);
         this.setOriginCenter();
     }
@@ -30,14 +38,14 @@ public class GraphicObject extends Sprite {
     //for clouds
     public GraphicObject(Texture texture, GameScreen game) {
         super(texture);
-        this.game = game;
+        this.gameScreen = game;
         this.setOriginCenter();
     }
 
     //sun
     public GraphicObject(GameScreen game) {
         super();
-        this.game = game;
+        this.gameScreen = game;
         this.setOriginCenter();
     }
 

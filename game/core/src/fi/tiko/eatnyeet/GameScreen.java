@@ -25,12 +25,12 @@ public class GameScreen implements Screen {
     MainGame game;
 
     // window height and width in meters
-    private final float WINDOW_WIDTH = 16f;
-    private final float WINDOW_HEIGHT = 9f;
+    //private final float WINDOW_WIDTH = 16f;
+    //private final float WINDOW_HEIGHT = 9f;
 
     private Box2DDebugRenderer debugRenderer;
-    protected OrthographicCamera camera;
-    protected OrthographicCamera fontCamera;
+    //protected OrthographicCamera camera;
+    //protected OrthographicCamera fontCamera;
     protected boolean isPaused = false;
     public GameWorld gameWorld;
     public World world;
@@ -42,6 +42,7 @@ public class GameScreen implements Screen {
     ForceMeter meter;
     Cloud cloud;
     Sun sun;
+    PauseButton pauseButton;
     FreeTypeFontGenerator generator;
     BitmapFont score;
     BitmapFont combo;
@@ -89,12 +90,16 @@ public class GameScreen implements Screen {
         Compost.fill3 = new Texture("compost_stage3.png");
         Compost.fill4 = new Texture("compost_stage4.png");
         Field.empty = new Texture("field_empty.png");
+        PauseButton.pauseButtonTexture = new Texture("pause.png");
 
+        /*
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
+        camera.setToOrtho(false, game.GAME_CAM_WIDTH, game.GAME_CAM_HEIGHT);
 
         fontCamera = new OrthographicCamera();
-        fontCamera.setToOrtho(false, 1280f, 720f);
+        fontCamera.setToOrtho(false, game.FONT_CAM_WIDTH, game.FONT_CAM_HEIGHT);
+
+         */
 
 
 
@@ -129,11 +134,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         if (!isPaused) {
 
-            batch.setProjectionMatrix(camera.combined);
+            batch.setProjectionMatrix(game.camera.combined);
             Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            gameWorld.render(camera);
+            gameWorld.render(game.camera);
             moveCamera();
 
             gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
@@ -147,25 +152,22 @@ public class GameScreen implements Screen {
             batch.end();
 
             // different render for fonts
-            batch.setProjectionMatrix(fontCamera.combined);
+            batch.setProjectionMatrix(game.fontCamera.combined);
             batch.begin();
             score.draw(batch, "Score " + player.getScore(), 200, 700);
             combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
             batch.end();
             //debugRenderer.render(world, camera.combined);
             deleteDeletables();
-            if (player.getCombo() >= 1) {
-                game.setScreen(new TestScreen(batch, game));
-                pause();
-            }
+
         }
     }
     public void moveCamera() {
         //camera.position.x = player.body.getPosition().x;
-        camera.update();
+        game.camera.update();
     }
     public void spawnDefaultObjects() {
-        this.player = new Character(WINDOW_WIDTH / 2, 2f, this);
+        this.player = new Character(game.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
 
 
@@ -173,6 +175,8 @@ public class GameScreen implements Screen {
         //sun
         this.sun = new Sun(this);
         graphicObjects.add(sun);
+        this.pauseButton = new PauseButton(this);
+        graphicObjects.add(pauseButton);
 
         gameObjects.add(new Customer(this));
         //clouds ym grphx

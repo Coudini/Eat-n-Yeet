@@ -117,7 +117,6 @@ public class Field extends GameObject {
         }
     }
     public void spawnRat() {
-        System.out.println("RAT");
         callAfterPhysicsStep(() -> {
             float posY = 1f;
             float posX = 2f;
