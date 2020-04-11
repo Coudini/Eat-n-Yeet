@@ -22,7 +22,7 @@ public class Field extends GameObject {
     private float [] fieldPosY;
 
 
-    public Field(float width, float height, Body body , MainGame game) {
+    public Field(float width, float height, Body body , GameScreen game) {
         super(empty, width,height, body, game);
         timeWhenPreviousCrop = 0f;
         fieldObjectArray = new GameObject[9];
@@ -117,7 +117,6 @@ public class Field extends GameObject {
         }
     }
     public void spawnRat() {
-        System.out.println("RAT");
         callAfterPhysicsStep(() -> {
             float posY = 1f;
             float posX = 2f;

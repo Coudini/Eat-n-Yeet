@@ -25,7 +25,7 @@ public class Rat extends GameObject {
     protected FlingableObject objectToCarry;
     protected boolean isCarryingFlingable = false;
 
-    public Rat (float posX, float posY, MainGame game) {
+    public Rat (float posX, float posY, GameScreen game) {
         super(posX, posY, 1f, 0.5f, game);
         ratRun = Util.createTextureAnimation(6,1, run);
 

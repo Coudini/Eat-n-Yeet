@@ -34,7 +34,7 @@ public class Customer extends GameObject {
     Animation<TextureRegion> run;
 
 
-    public Customer(MainGame game) {
+    public Customer(GameScreen game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
         int temp = MathUtils.random(0,1);
         if (temp == 1) {
@@ -113,7 +113,6 @@ public class Customer extends GameObject {
         }
         // stopmove ends here
         else if (lifeTime - timeWhenStopped > waitTime) {
-            System.out.println("gay");
             allowMove = true;
         }
 
@@ -155,7 +154,6 @@ public class Customer extends GameObject {
     public void onCollision(Contact contact, GameObject other) {
 
         if (other != null && other instanceof Field) {
-            System.out.println("field");
             pickedUpFood = true;
             isCarryingFlingable = true;
 

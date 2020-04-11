@@ -20,7 +20,7 @@ public class Carrot extends FlingableObject implements Food {
     public static Texture carrotEaten;
 
 
-    public Carrot(float posX, float posY, MainGame game) {
+    public Carrot(float posX, float posY, GameScreen game) {
         super(texture1, posX, posY, 0.3f, 0.3f, game);
         setSize(0.6f,0.6f);
         setDensity(0.8f);
@@ -32,7 +32,7 @@ public class Carrot extends FlingableObject implements Food {
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
-    public Carrot(float posX, float posY,float radius, MainGame game) {
+    public Carrot(float posX, float posY,float radius, GameScreen game) {
         super(texture1, posX, posY, 0.6f, 0.6f, game);
         setDensity(0.8f);
         setFriction(4.5f);

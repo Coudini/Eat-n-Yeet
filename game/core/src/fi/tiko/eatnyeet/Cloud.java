@@ -13,7 +13,7 @@ public class Cloud extends GraphicObject {
     public static Texture texture3;
     public float speed;
 
-    public Cloud(Texture texture, MainGame game) {
+    public Cloud(Texture texture, GameScreen game) {
         super(texture, game);
         setSize(this.getWidth()/50, this.getHeight()/50);
         setX(-2f);

@@ -17,7 +17,7 @@ public class FlingableObject extends GameObject {
     // fillvalue related variables
     protected float fillAmount = 1f;
 
-    public FlingableObject (Texture texture, float x, float y, float width, float height, MainGame game) {
+    public FlingableObject (Texture texture, float x, float y, float width, float height, GameScreen game) {
         super(texture, x, y, width, height, game);
     }
 
