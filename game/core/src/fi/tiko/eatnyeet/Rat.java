@@ -96,7 +96,6 @@ public class Rat extends GameObject {
         } else {
             float temp = MathUtils.random(-1f,1f);
             //body.setLinearVelocity(temp, 0f);
-            System.out.println("kyrpä");
             body.applyLinearImpulse(new Vector2(temp, 0f), body.getWorldCenter(), true);
 
         }
@@ -134,7 +133,7 @@ public class Rat extends GameObject {
     }
     @Override
     public void onCollision(Contact contact, GameObject other) {
-        if (other != null && other instanceof FlingableObject) {
+        if (other != null && other instanceof FlingableObject &&  other instanceof Food) {
             if (!isCarryingFlingable) {
 
                 objectToCarry = (FlingableObject) other;

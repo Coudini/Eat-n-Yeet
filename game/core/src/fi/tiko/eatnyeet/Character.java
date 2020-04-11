@@ -314,4 +314,10 @@ public class Character extends GameObject {
        objectToCarry = null;
        allowPlayerCollision();
     }
+    public int getScore () {
+        return characterScore;
+    }
+    public int getCombo() {
+        return characterCombo;
+    }
 }
