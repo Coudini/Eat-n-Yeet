@@ -1,6 +1,8 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -37,6 +40,7 @@ public class GameScreen implements Screen {
     public ArrayList<GameObject> gameObjects;
     public ArrayList<GraphicObject> graphicObjects;
     public ArrayList <Callable<Void>> functionsToBeCalled;
+    public ArrayList<Button> buttons;
     public Array<Body> bodies;
     Character player;
     ForceMeter meter;
@@ -47,6 +51,8 @@ public class GameScreen implements Screen {
     BitmapFont score;
     BitmapFont combo;
 
+    InputMultiplexer multiplexer;
+    InputAdapter gameUiInputs;
 
     // Alternate for ArrayList
     HashSet<GameObject> toBeDeleted;
@@ -106,6 +112,7 @@ public class GameScreen implements Screen {
         gameObjects = new ArrayList<GameObject>();
         graphicObjects = new ArrayList<GraphicObject>();
         functionsToBeCalled = new ArrayList<Callable<Void>>();
+        buttons = new ArrayList<>();
         // gameworld  must be created before spawning anything else
         gameWorld = new GameWorld(this);
 
@@ -118,6 +125,12 @@ public class GameScreen implements Screen {
         parameter.borderWidth = 1;
         score = generator.generateFont(parameter);
         combo = generator.generateFont(parameter);
+
+        multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(player.characterInput);
+        createGameUiInputs();
+        multiplexer.addProcessor(gameUiInputs);
+        Gdx.input.setInputProcessor(multiplexer);
 
 
         toBeDeleted = new HashSet<>();
@@ -132,6 +145,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        // temp solution to resume game
+        if (isPaused && Gdx.input.justTouched()) {
+            resume();
+        }
         if (!isPaused) {
 
             batch.setProjectionMatrix(game.camera.combined);
@@ -176,7 +193,7 @@ public class GameScreen implements Screen {
         this.sun = new Sun(this);
         graphicObjects.add(sun);
         this.pauseButton = new PauseButton(this);
-        graphicObjects.add(pauseButton);
+        buttons.add(pauseButton);
 
         gameObjects.add(new Customer(this));
         //clouds ym grphx
@@ -208,6 +225,9 @@ public class GameScreen implements Screen {
         for (GameObject obj: gameObjects) {
             obj.render(batch);
         }
+        for (Button btn : buttons) {
+            btn.render(batch);
+        }
 
 
     }
@@ -217,6 +237,9 @@ public class GameScreen implements Screen {
         }
         for (GameObject obj: gameObjects) {
             obj.update();
+        }
+        for (Button btn : buttons) {
+            btn.update();
         }
 
     }
@@ -251,6 +274,45 @@ public class GameScreen implements Screen {
                 randTime = MathUtils.random(4f, 8f);
             }
         }
+    }
+
+    public void createGameUiInputs() {
+        gameUiInputs = new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                Vector3 realMousePos = new Vector3(screenX, screenY, 0);
+                game.camera.unproject(realMousePos);
+
+                float mousePosY = realMousePos.y;
+                float mousePosX = realMousePos.x;
+
+                for (Button btn : buttons) {
+                    if (mousePosX >= btn.getxStart() && mousePosX <= btn.getxEnd() && mousePosY >= btn.getyStart() && mousePosY <= btn.getyEnd()) {
+                        btn.setScale(1.2f);
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                Vector3 realMousePos = new Vector3(screenX, screenY, 0);
+                game.camera.unproject(realMousePos);
+
+                float mousePosY = realMousePos.y;
+                float mousePosX = realMousePos.x;
+
+                for (Button btn : buttons) {
+                    if (mousePosX >= btn.getxStart() && mousePosX <= btn.getxEnd() && mousePosY >= btn.getyStart() && mousePosY <= btn.getyEnd()) {
+                        btn.setScale(1f);
+                        btn.clicked();
+                    } else {
+                        btn.setScale(1f);
+                    }
+                }
+                return true;
+            }
+        };
     }
 
     @Override

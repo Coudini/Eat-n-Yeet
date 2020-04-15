@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 
 public class PauseButton extends Button {
@@ -19,10 +18,11 @@ public class PauseButton extends Button {
     public void update () {
         super.update();
 
-        //clickListenerGameCamera();
         // when clicked play button start game
         if (isClicked) {
             System.out.println("Pause");
+            gameScreen.pause();
+            isClicked = false;
         }
     }
 }
