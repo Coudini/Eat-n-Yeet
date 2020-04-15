@@ -3,6 +3,8 @@ package fi.tiko.eatnyeet;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 public class Compost extends GameObject {
     public static Texture empty;
@@ -16,6 +18,12 @@ public class Compost extends GameObject {
     public Compost(float width, float height,Body body , GameScreen game) {
         super(fill4, width,height, body, game);
         fillLevel = 0f;
+        Filter filter = new Filter();
+        filter.categoryBits = OTHER_BITS;
+        filter.maskBits = DEFAULT_BITS | FLINGABLE_BITS;
+        for (Fixture fix: body.getFixtureList()) {
+            fix.setFilterData(filter);
+        }
     }
 
     @Override
@@ -43,7 +51,8 @@ public class Compost extends GameObject {
      * @param contact
      * @param other is gameObject gotten from body userdata, can check from this if the object is also flingableObject
      */
-    @Override
+
+   /* @Override
     public void onCollision(Contact contact, GameObject other) {
 
         if (other != null && other instanceof Food && other instanceof FlingableObject) {
@@ -89,4 +98,6 @@ public class Compost extends GameObject {
            });
         }
     }
+
+    */
 }

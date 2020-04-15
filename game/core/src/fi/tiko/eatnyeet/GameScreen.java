@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
     public ArrayList<Button> buttons;
     public Array<Body> bodies;
     Character player;
+    Compost compost;
     ForceMeter meter;
     Cloud cloud;
     Sun sun;
@@ -174,7 +175,7 @@ public class GameScreen implements Screen {
             score.draw(batch, "Score " + player.getScore(), 200, 700);
             combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
             batch.end();
-            //debugRenderer.render(world, camera.combined);
+            //debugRenderer.render(world, game.camera.combined);
             deleteDeletables();
 
         }
