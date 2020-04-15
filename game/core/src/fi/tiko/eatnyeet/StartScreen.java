@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class StartScreen implements Screen {
+
     SpriteBatch batch;
     MainGame game;
     public static Texture startScreenBackGround;

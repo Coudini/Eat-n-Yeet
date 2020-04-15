@@ -60,6 +60,7 @@ public class Character extends GameObject {
     public float meter2y;
     public float meter3x;
     public float meter3y;
+    public InputAdapter characterInput;
 
 
     public Character(float posX, float posY, GameScreen game) {
@@ -70,13 +71,100 @@ public class Character extends GameObject {
         allowPlayerCollision();
 
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
+
+
+        characterInput = new InputAdapter() {
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+                if (!startPosSet) {
+                    touchPosDrag = new Vector3(screenX, screenY, 0);
+                    // :D
+                    game.game.camera.unproject(touchPosDrag);
+                    startPosSet = true;
+
+                }
+
+                //ForceMeter
+                if (!meterStart) {
+                    //starting coordinates
+                    meter1x = screenX;
+                    meter1y = screenY;
+                    meterStart = true;
+                    ForceMeter.show(true);
+                }
+                //updating coordinates
+                meter2x = screenX;
+                meter2y = screenY;
+                //distance and angles between coordinates
+                if (meter1x > meter2x) {
+                    meter3x = meter1x - meter2x;
+                    meterX = (getX() + 0.66f) - (meter3x / 150f);
+                } else {
+                    meter3x = meter2x - meter1x;
+                    meterX = (getX() + 0.66f) + (meter3x / 150f);
+                }
+                if (meter1y > meter2y) {
+                    meter3y = meter1y - meter2y;
+                    meterY = getY() + (meter3y / 150f);
+                } else {
+                    meter3y = meter2y - meter1y;
+                    meterY = getY() - (meter3y / 150f);
+                }
+                angleX = meter2x - meter1x;
+                angleY = meter2y - meter1y;
+                angle = Math.atan2((double)angleY, (double)angleX);
+                if (angle < 0) {
+                    angle = Math.abs(angle);
+                } else {
+                    angle = 2*Math.PI - angle;
+                }
+                angle = Math.toDegrees(angle);
+                setXYA(meterX, meterY, angle);
+
+                return false;
+            }
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                endPosDrag = new Vector3(screenX, screenY, 0);
+                game.game.camera.unproject(endPosDrag);
+                float speedX = 0f;
+                float speedY = 0f;
+                try {
+                    speedX = (touchPosDrag.x - endPosDrag.x) * 4;
+                    speedY = (touchPosDrag.y - endPosDrag.y) * 4;
+                } catch (Exception e) {
+                    return false;
+                }
+                if (speedX > maxStr) {
+                    speedX = maxStr;
+                }
+                if (speedX < (0f - maxStr)) {
+                    speedX = 0f - maxStr;
+                }
+                if (speedY > maxStr) {
+                    speedY = maxStr;
+                }
+                if (speedY < (0f - maxStr)) {
+                    speedY = 0f - maxStr;
+                }
+
+                if (isCarryingFlingable && startPosSet) {
+                    throwObjectToCarry(speedX,speedY);
+                }
+                meterStart = false;
+                ForceMeter.show(false);
+                return false;
+            }
+
+        };
     }
 
 
     public void update () {
         super.update();
         move();
-        flingListener();
+        //flingListener();
         updateObjectToCarry();
         updateScoreAndCombo();
     }
