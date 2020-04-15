@@ -10,8 +10,26 @@ public class Button extends GraphicObject {
 
     protected float xStart;
     protected float xEnd;
+
+    public float getxStart() {
+        return xStart;
+    }
+
+    public float getxEnd() {
+        return xEnd;
+    }
+
+    public float getyStart() {
+        return yStart;
+    }
+
+    public float getyEnd() {
+        return yEnd;
+    }
+
     protected float yStart;
     protected float yEnd;
+
     protected boolean isClicked = false;
 
     public Button (Texture texture,float width, float height, StartScreen screen) {
@@ -32,56 +50,18 @@ public class Button extends GraphicObject {
     @Override
     public void update () {
         super.update();
-
+        if (startScreen != null) {
+        }
     }
 
 
-    public void clickListenerFontCamera () {
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                if (startScreen != null) {
-                    startScreen.game.fontCamera.unproject(realMousePos);
-                } else {
-                    gameScreen.game.fontCamera.unproject(realMousePos);
-                }
-                float mousePosY = realMousePos.y;
-                float mousePosX = realMousePos.x;
-
-                if (mousePosX >= xStart && mousePosX <= xEnd && mousePosY >= yStart && mousePosY <= yEnd) {
-                    setScale(1.2f);
-                }
-                return false;
-            }
-
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                if (startScreen != null) {
-                    startScreen.game.fontCamera.unproject(realMousePos);
-                } else {
-                    gameScreen.game.fontCamera.unproject(realMousePos);
-                }
-                float mousePosY = realMousePos.y;
-                float mousePosX = realMousePos.x;
-                if (mousePosX >= xStart && mousePosX <= xEnd && mousePosY >= yStart && mousePosY <= yEnd) {
-                    setScale(1f);
-                    clicked();
-                } else {
-                    setScale(1f);
-                }
-                return false;
-            }
-        });
-    }
 
     /**
      * Not working probably because libgdx cannot handle 2 differentn inputprosessors with this method??
      * TODO fix this
      */
+    /*
     public void clickListenerGameCamera () {
 
 
@@ -128,7 +108,11 @@ public class Button extends GraphicObject {
             }
         });
     }
+
+     */
     public void clicked () {
         isClicked = true;
     }
+
+
 }
