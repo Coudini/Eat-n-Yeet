@@ -19,7 +19,7 @@ public class PauseButton extends Button {
     public void update () {
         super.update();
 
-        clickListenerGameCamera();
+        //clickListenerGameCamera();
         // when clicked play button start game
         if (isClicked) {
             System.out.println("Pause");
