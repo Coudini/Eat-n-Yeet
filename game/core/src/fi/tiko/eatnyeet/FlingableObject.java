@@ -65,7 +65,7 @@ public class FlingableObject extends GameObject {
     public void allowPlayerCollision(){
         Filter filter = new Filter();
         filter.categoryBits = FLINGABLE_BITS;
-        filter.maskBits = DEFAULT_BITS | PLAYER_BITS;
+        filter.maskBits = DEFAULT_BITS | PLAYER_BITS | OTHER_BITS;
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }

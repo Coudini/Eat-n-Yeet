@@ -137,7 +137,14 @@ public class GameWorld  {
 
             Body body =  createStaticBody(rectangle, userData);
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("compostType")) {
-                game.gameObjects.add(new Compost(rectangle.getWidth(), rectangle.getHeight(), body,game));
+                game.compost = new Compost(rectangle.getWidth(), rectangle.getHeight(), body,game);
+                game.gameObjects.add(game.compost);
+            }
+            if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("hitPoint")) {
+                game.gameObjects.add(new CompostHitArea(rectangle.getWidth(),rectangle.getHeight(),body,game));
+            }
+            if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("CollectPoint")) {
+                game.gameObjects.add(new CompostCollectPoint(rectangle.getWidth(),rectangle.getHeight(),body,game));
             }
             if (rectangleObject.getProperties().get("type") != null && rectangleObject.getProperties().get("type").equals("fieldType")) {
                 game.gameObjects.add(new Field(rectangle.getWidth(), rectangle.getHeight(), body,game));
@@ -171,7 +178,7 @@ public class GameWorld  {
         // Real width and height is 2 X this!
         groundBox.setAsBox(rect.getWidth() / 2 , height / 2 );
 
-        if ((wall.getUserData().equals("compost")) || (wall.getUserData().equals("field"))) {
+        if ( (wall.getUserData().equals("field"))) {
             wall.createFixture(groundBox, 0.0f).setSensor(true);
         } else {
             wall.createFixture(groundBox, 0.0f);
