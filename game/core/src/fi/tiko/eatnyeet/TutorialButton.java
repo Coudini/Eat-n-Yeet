@@ -6,9 +6,9 @@ public class TutorialButton extends Button {
     public static Texture tutorialButtonTexture;
 
 
-    public TutorialButton (StartScreen screen) {
-        super(tutorialButtonTexture,tutorialButtonTexture.getWidth(),tutorialButtonTexture.getHeight(),screen);
-        setPosition(screen.game.FONT_CAM_WIDTH / 2f - getWidth() / 2f, screen.game.FONT_CAM_HEIGHT - 240f - getHeight() / 2f);
+    public TutorialButton (MainGame mainGame) {
+        super(tutorialButtonTexture,tutorialButtonTexture.getWidth(),tutorialButtonTexture.getHeight(),mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT - 240f - getHeight() / 2f);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();

@@ -61,6 +61,7 @@ public class Rat extends GameObject {
     public void killYourSelf() {
         game.toBeDeleted.add(this);
         game.toBeDeleted.add(objectToCarry);
+        game.player.healthPoints--;
     }
     public void throwObjectToCarry (float speedX,float speedY) {
         objectToCarry.body.setLinearVelocity(speedX, speedY);

@@ -1,15 +1,16 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class QuitButton extends Button {
 
     public static Texture quitButtonTexture;
 
-    public QuitButton (StartScreen screen) {
-        super(quitButtonTexture,quitButtonTexture.getWidth(),quitButtonTexture.getHeight(),screen);
-        setPosition(screen.game.FONT_CAM_WIDTH / 2f - getWidth() / 2f, screen.game.FONT_CAM_HEIGHT  - 500f - getHeight() / 2f);
+    public QuitButton (MainGame mainGame) {
+        super(quitButtonTexture,quitButtonTexture.getWidth(),quitButtonTexture.getHeight(),mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 500f - getHeight() / 2f);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();
@@ -25,7 +26,8 @@ public class QuitButton extends Button {
             // highscore screenhere
             System.out.println("quit");
             isClicked = false;
-            startScreen.dispose();
+            //mainGame.gameScreen.dispose();
+            //mainGame.startScreen.dispose();
             Gdx.app.exit();
         }
     }

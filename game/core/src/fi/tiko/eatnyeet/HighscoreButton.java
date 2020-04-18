@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 public class HighscoreButton extends Button {
     public static Texture highscoreButtonTexture;
 
-    public HighscoreButton (StartScreen screen) {
-        super(highscoreButtonTexture,highscoreButtonTexture.getWidth(),highscoreButtonTexture.getHeight(),screen);
-        setPosition(screen.game.FONT_CAM_WIDTH / 2f - getWidth() / 2f, screen.game.FONT_CAM_HEIGHT  - 370f - getHeight() / 2f);
+    public HighscoreButton (MainGame mainGame) {
+        super(highscoreButtonTexture,highscoreButtonTexture.getWidth(),highscoreButtonTexture.getHeight(),mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 370f - getHeight() / 2f);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();

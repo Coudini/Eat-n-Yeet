@@ -26,6 +26,7 @@ public class Character extends GameObject {
     private int previousScore = 0;
     protected int characterCombo = 0;
     private int previousCombo = 0;
+    protected int healthPoints = 3;
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
@@ -80,7 +81,7 @@ public class Character extends GameObject {
                 if (!startPosSet) {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     // :D
-                    game.game.camera.unproject(touchPosDrag);
+                    game.mainGame.camera.unproject(touchPosDrag);
                     startPosSet = true;
 
                 }
@@ -127,7 +128,7 @@ public class Character extends GameObject {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 endPosDrag = new Vector3(screenX, screenY, 0);
-                game.game.camera.unproject(endPosDrag);
+                game.mainGame.camera.unproject(endPosDrag);
                 float speedX = 0f;
                 float speedY = 0f;
                 try {
@@ -201,7 +202,7 @@ public class Character extends GameObject {
                 if (!startPosSet) {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     // :D
-                    game.game.camera.unproject(touchPosDrag);
+                    game.mainGame.camera.unproject(touchPosDrag);
                     startPosSet = true;
 
                 }
@@ -249,7 +250,7 @@ public class Character extends GameObject {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 endPosDrag = new Vector3(screenX, screenY, 0);
-                game.game.camera.unproject(endPosDrag);
+                game.mainGame.camera.unproject(endPosDrag);
                 float speedX = 0f;
                 float speedY = 0f;
                     try {

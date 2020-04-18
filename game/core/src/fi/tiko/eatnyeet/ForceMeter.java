@@ -13,8 +13,8 @@ public class ForceMeter extends GraphicObject {
     public static double rotation;
     public static float angular;
 
-    public ForceMeter(GameScreen game) {
-        super(texture, width, height, game);
+    public ForceMeter(MainGame mainGame) {
+        super(texture, width, height, mainGame);
         setOriginCenter();
         System.out.println("meter made");
         show = false;

@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -10,28 +9,21 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class StartScreen implements Screen {
-
+public class GameOverScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
     ArrayList<Button> buttons;
 
-    public StartScreen (SpriteBatch batch, MainGame mainGame) {
+    public GameOverScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
         startScreenBackGround = new Texture("game_background2.png");
-        TutorialButton.tutorialButtonTexture = new Texture("tutorial.png");
-        PlayButton.playButtonTexture = new Texture("play.png");
-        HighscoreButton.highscoreButtonTexture = new Texture("highscore.png");
         QuitButton.quitButtonTexture = new Texture("quit.png");
 
         buttons = new ArrayList<>();
 
-        buttons.add(new PlayButton(mainGame));
-        buttons.add(new TutorialButton(mainGame));
-        buttons.add(new HighscoreButton(mainGame));
         buttons.add(new QuitButton(mainGame));
 
 
@@ -82,7 +74,7 @@ public class StartScreen implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                mainGame.fontCamera.unproject(realMousePos);
+               mainGame.fontCamera.unproject(realMousePos);
 
                 float mousePosY = realMousePos.y;
                 float mousePosX = realMousePos.x;

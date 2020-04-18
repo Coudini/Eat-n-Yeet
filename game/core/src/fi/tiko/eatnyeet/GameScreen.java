@@ -25,7 +25,7 @@ import java.util.concurrent.Callable;
 
 public class GameScreen implements Screen {
     SpriteBatch batch;
-    MainGame game;
+    MainGame mainGame;
 
     // window height and width in meters
     //private final float WINDOW_WIDTH = 16f;
@@ -51,15 +51,16 @@ public class GameScreen implements Screen {
     FreeTypeFontGenerator generator;
     BitmapFont score;
     BitmapFont combo;
+    BitmapFont health;
 
     InputMultiplexer multiplexer;
     InputAdapter gameUiInputs;
 
     // Alternate for ArrayList
     HashSet<GameObject> toBeDeleted;
-    public GameScreen (SpriteBatch batch, MainGame game) {
+    public GameScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
-        this.game = game;
+        this.mainGame = mainGame;
 
         Sun.sunNoDisco = new Texture("sun.png");
         Sun.sunDisco = new Texture("sun_disco.png");
@@ -69,8 +70,8 @@ public class GameScreen implements Screen {
         Cloud.texture3 = new Texture("cloud3.png");
         Melon.texture1 = new Texture("melon.png");
         Melon.texture2 = new Texture("melond.png");
-        Melon.melonNoDisco = new Texture("mel.png");
-        Melon.melonDisco =  new Texture("meld.png");
+        Melon.melonNoDisco = new Texture("melNew.png");
+        Melon.melonDisco =  new Texture("MelonParty.png");
         Carrot.texture1 = new Texture("carrotboi.png");
         Carrot.texture2 = new Texture("carrotdisco.png");
         Carrot.carrotNoDisco = new Texture("carrot.png");
@@ -126,6 +127,7 @@ public class GameScreen implements Screen {
         parameter.borderWidth = 1;
         score = generator.generateFont(parameter);
         combo = generator.generateFont(parameter);
+        health = generator.generateFont(parameter);
 
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(player.characterInput);
@@ -150,14 +152,20 @@ public class GameScreen implements Screen {
         if (isPaused && Gdx.input.justTouched()) {
             resume();
         }
+        if (player.healthPoints <= 0) {
+           // game.setScreen(gameOverScreen);
+        }
+        batch.setProjectionMatrix(mainGame.camera.combined);
+        Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        gameWorld.render(mainGame.camera);
+        moveCamera();
         if (!isPaused) {
 
-            batch.setProjectionMatrix(game.camera.combined);
-            Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            gameWorld.render(game.camera);
-            moveCamera();
+
+
+
 
             gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
             spawnCustomers();
@@ -165,35 +173,37 @@ public class GameScreen implements Screen {
             updateObjects();
 
 
-            batch.begin();
-            renderObjects();
-            batch.end();
 
-            // different render for fonts
-            batch.setProjectionMatrix(game.fontCamera.combined);
-            batch.begin();
-            score.draw(batch, "Score " + player.getScore(), 200, 700);
-            combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
-            batch.end();
             //debugRenderer.render(world, game.camera.combined);
             deleteDeletables();
 
         }
+        batch.begin();
+        renderObjects();
+        batch.end();
+
+        // different render for fonts
+        batch.setProjectionMatrix(mainGame.fontCamera.combined);
+        batch.begin();
+        score.draw(batch, "Score " + player.getScore(), 200, 700);
+        combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
+        health.draw(batch, "Health " + player.healthPoints, 400,600);
+        batch.end();
     }
     public void moveCamera() {
         //camera.position.x = player.body.getPosition().x;
-        game.camera.update();
+        mainGame.camera.update();
     }
     public void spawnDefaultObjects() {
-        this.player = new Character(game.GAME_CAM_WIDTH / 2, 2f, this);
+        this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
 
 
 
         //sun
-        this.sun = new Sun(this);
+        this.sun = new Sun(mainGame);
         graphicObjects.add(sun);
-        this.pauseButton = new PauseButton(this);
+        this.pauseButton = new PauseButton(mainGame);
         buttons.add(pauseButton);
 
         gameObjects.add(new Customer(this));
@@ -201,20 +211,20 @@ public class GameScreen implements Screen {
         for (int i = 0; i < 3; i++) {
             System.out.println(i);
             if (i==0) {
-                this.cloud = new Cloud(Cloud.texture1, this);
+                this.cloud = new Cloud(Cloud.texture1, mainGame);
                 graphicObjects.add(cloud);
             }
             if (i==1) {
-                this.cloud = new Cloud(Cloud.texture2, this);
+                this.cloud = new Cloud(Cloud.texture2, mainGame);
                 graphicObjects.add(cloud);
             }
             if (i==2) {
-                this.cloud = new Cloud(Cloud.texture3, this);
+                this.cloud = new Cloud(Cloud.texture3, mainGame);
                 graphicObjects.add(cloud);
             }
         }
         //forcemeter
-        this.meter = new ForceMeter(this);
+        this.meter = new ForceMeter(mainGame);
         graphicObjects.add(meter);
     }
 
@@ -282,7 +292,7 @@ public class GameScreen implements Screen {
             @Override
             public boolean touchDown(int screenX, int screenY, int pointer, int button) {
                 Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                game.camera.unproject(realMousePos);
+                mainGame.camera.unproject(realMousePos);
 
                 float mousePosY = realMousePos.y;
                 float mousePosX = realMousePos.x;
@@ -298,7 +308,7 @@ public class GameScreen implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                game.camera.unproject(realMousePos);
+                mainGame.camera.unproject(realMousePos);
 
                 float mousePosY = realMousePos.y;
                 float mousePosX = realMousePos.x;
