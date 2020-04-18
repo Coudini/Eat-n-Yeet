@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
@@ -14,22 +15,35 @@ public class GameOverScreen implements Screen {
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
+    protected String gameOverMessage = "Game over!";
+    protected int gameOverMessageLength;
+    protected String scoreMessage = "Your score was ";
+    protected int scoreLenght;
+    protected int fontSize = 48;
     ArrayList<Button> buttons;
 
-    public GameOverScreen (SpriteBatch batch, MainGame mainGame) {
+    BitmapFont messageAndScore;
+
+    public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
         this.batch = batch;
         this.mainGame = mainGame;
-        startScreenBackGround = new Texture("game_background2.png");
-        QuitButton.quitButtonTexture = new Texture("quit.png");
+        startScreenBackGround = new Texture("tilebk.png");
+        QuitToMainMenuButton.quitButtonTexture = new Texture("quit.png");
+        RetryButton.retryButtonTexture = new Texture("retry.png");
 
         buttons = new ArrayList<>();
 
-        buttons.add(new QuitButton(mainGame));
+        buttons.add(new QuitToMainMenuButton(mainGame));
+        buttons.add(new RetryButton(mainGame));
 
 
         // all startscreen inputs are handled in here
         createInputProcessor();
+        messageAndScore = mainGame.generateFont(fontSize,1);
 
+        gameOverMessageLength = gameOverMessage.length() * fontSize / 2;
+        scoreMessage += score;
+        scoreLenght = scoreMessage.length() * fontSize / 2;
 
     }
     @Override
@@ -44,6 +58,8 @@ public class GameOverScreen implements Screen {
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
         renderButtons(batch);
+        messageAndScore.draw(batch,gameOverMessage,mainGame.FONT_CAM_WIDTH / 2 - gameOverMessageLength / 2,mainGame.FONT_CAM_HEIGHT - 150);
+        messageAndScore.draw(batch,scoreMessage,mainGame.FONT_CAM_WIDTH / 2 - scoreLenght / 2,mainGame.FONT_CAM_HEIGHT - 250);
         batch.end();
     }
 

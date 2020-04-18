@@ -30,6 +30,8 @@ public class MainGame extends Game  {
 
 	GameScreen gameScreen;
 	StartScreen startScreen;
+	GameOverScreen gameOverScreen;
+
 
 	protected final float FONT_CAM_WIDTH = 1280f;
 	protected final float FONT_CAM_HEIGHT = 720f;
@@ -53,8 +55,21 @@ public class MainGame extends Game  {
 		startScreen = new StartScreen(batch,this);
 
 		setScreen(startScreen);
+
+		// set up font generator for all classes
+
 	}
 
+	public BitmapFont generateFont(int size, int borderWidth) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = size;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = borderWidth;
+
+	    BitmapFont temp = generator.generateFont(parameter);
+	    return temp;
+    }
 	@Override
 	public void render () {
 		super.render();

@@ -99,6 +99,7 @@ public class GameObject extends Sprite {
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
+        stateTime += Gdx.graphics.getDeltaTime();
     }
 
 
@@ -107,7 +108,7 @@ public class GameObject extends Sprite {
         if (getTexture() == null && currentAnimation == null ) {
             return;
         }
-        stateTime += Gdx.graphics.getDeltaTime();
+
 
         if (currentAnimation != null) {
             currentFrameTexture = currentAnimation.getKeyFrame(stateTime, true);

@@ -21,7 +21,7 @@ public class StartScreen implements Screen {
     public StartScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
-        startScreenBackGround = new Texture("game_background2.png");
+        startScreenBackGround = new Texture("tilebk.png");
         TutorialButton.tutorialButtonTexture = new Texture("tutorial.png");
         PlayButton.playButtonTexture = new Texture("play.png");
         HighscoreButton.highscoreButtonTexture = new Texture("highscore.png");

@@ -41,14 +41,15 @@ public class GameScreen implements Screen {
     public ArrayList<GraphicObject> graphicObjects;
     public ArrayList <Callable<Void>> functionsToBeCalled;
     public ArrayList<Button> buttons;
-    public Array<Body> bodies;
+    //public Array<Body> bodies;
+    private boolean gameOver = false;
     Character player;
     Compost compost;
     ForceMeter meter;
     Cloud cloud;
     Sun sun;
     PauseButton pauseButton;
-    FreeTypeFontGenerator generator;
+    //FreeTypeFontGenerator generator;
     BitmapFont score;
     BitmapFont combo;
     BitmapFont health;
@@ -120,14 +121,10 @@ public class GameScreen implements Screen {
 
         spawnDefaultObjects();
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 48;
-        parameter.borderColor = Color.BLACK;
-        parameter.borderWidth = 1;
-        score = generator.generateFont(parameter);
-        combo = generator.generateFont(parameter);
-        health = generator.generateFont(parameter);
+
+        score = mainGame.generateFont(48,1);
+        combo =  mainGame.generateFont(48,1);
+        health =  mainGame.generateFont(48,1);
 
         multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(player.characterInput);
@@ -153,42 +150,43 @@ public class GameScreen implements Screen {
             resume();
         }
         if (player.healthPoints <= 0) {
-           // game.setScreen(gameOverScreen);
-        }
-        batch.setProjectionMatrix(mainGame.camera.combined);
-        Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        gameWorld.render(mainGame.camera);
-        moveCamera();
-        if (!isPaused) {
-
-
-
-
-
-
-            gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
-            spawnCustomers();
-            callCallables();
-            updateObjects();
-
-
-
-            //debugRenderer.render(world, game.camera.combined);
-            deleteDeletables();
+            mainGame.gameOverScreen = new GameOverScreen(batch, mainGame, player.characterScore);
+            mainGame.setScreen(mainGame.gameOverScreen);
+            // TODO save scores etc
+            gameOver = true;
 
         }
-        batch.begin();
-        renderObjects();
-        batch.end();
+        if (!gameOver) {
+            batch.setProjectionMatrix(mainGame.camera.combined);
+            Gdx.gl.glClearColor(0, 0.5f, 1, 0.5f);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            gameWorld.render(mainGame.camera);
+            if (!isPaused) {
+                moveCamera();
 
-        // different render for fonts
-        batch.setProjectionMatrix(mainGame.fontCamera.combined);
-        batch.begin();
-        score.draw(batch, "Score " + player.getScore(), 200, 700);
-        combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
-        health.draw(batch, "Health " + player.healthPoints, 400,600);
-        batch.end();
+                gameWorld.doPhysicsStep(Gdx.graphics.getDeltaTime());
+                spawnCustomers();
+                callCallables();
+                updateObjects();
+                //debugRenderer.render(world, game.camera.combined);
+                deleteDeletables();
+            }
+            batch.begin();
+            renderObjects();
+            batch.end();
+
+            // different render for fonts
+            batch.setProjectionMatrix(mainGame.fontCamera.combined);
+            batch.begin();
+            score.draw(batch, "Score " + player.getScore(), 200, 700);
+            combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
+            health.draw(batch, "Health " + player.healthPoints, 400,600);
+            batch.end();
+        }
+        if (gameOver) {
+            dispose();
+        }
+
     }
     public void moveCamera() {
         //camera.position.x = player.body.getPosition().x;
