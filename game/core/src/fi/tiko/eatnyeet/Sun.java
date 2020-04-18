@@ -12,7 +12,7 @@ public class Sun extends GraphicObject {
     Animation<TextureRegion> sun;
     Animation<TextureRegion> discoSun;
 
-    public Sun(GameScreen game) {
+    public Sun(MainGame game) {
         super(game);
         sun = Util.createTextureAnimation(12,1, sunNoDisco);
         discoSun = Util.createTextureAnimation(12,1,sunDisco);
@@ -26,7 +26,7 @@ public class Sun extends GraphicObject {
     }
     public void checkDisco() {
         // discomode based on combo-points
-        if (gameScreen.player.characterCombo > 1) {
+        if (mainGame.gameScreen.player.characterCombo > 1) {
             currentAnimation = discoSun;
         } else {
             currentAnimation = sun;

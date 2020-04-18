@@ -1,43 +1,49 @@
 package fi.tiko.eatnyeet;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class StartScreen implements Screen {
-
+public class GameOverScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
+    protected String gameOverMessage = "Game over!";
+    protected int gameOverMessageLength;
+    protected String scoreMessage = "Your score was ";
+    protected int scoreLenght;
+    protected int fontSize = 48;
     ArrayList<Button> buttons;
 
-    public StartScreen (SpriteBatch batch, MainGame mainGame) {
+    BitmapFont messageAndScore;
+
+    public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
         this.batch = batch;
         this.mainGame = mainGame;
         startScreenBackGround = new Texture("tilebk.png");
-        TutorialButton.tutorialButtonTexture = new Texture("tutorial.png");
-        PlayButton.playButtonTexture = new Texture("play.png");
-        HighscoreButton.highscoreButtonTexture = new Texture("highscore.png");
-        QuitButton.quitButtonTexture = new Texture("quit.png");
+        QuitToMainMenuButton.quitButtonTexture = new Texture("quit.png");
+        RetryButton.retryButtonTexture = new Texture("retry.png");
 
         buttons = new ArrayList<>();
 
-        buttons.add(new PlayButton(mainGame));
-        buttons.add(new TutorialButton(mainGame));
-        buttons.add(new HighscoreButton(mainGame));
-        buttons.add(new QuitButton(mainGame));
+        buttons.add(new QuitToMainMenuButton(mainGame));
+        buttons.add(new RetryButton(mainGame));
 
 
         // all startscreen inputs are handled in here
         createInputProcessor();
+        messageAndScore = mainGame.generateFont(fontSize,1);
 
+        gameOverMessageLength = gameOverMessage.length() * fontSize / 2;
+        scoreMessage += score;
+        scoreLenght = scoreMessage.length() * fontSize / 2;
 
     }
     @Override
@@ -52,6 +58,8 @@ public class StartScreen implements Screen {
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
         renderButtons(batch);
+        messageAndScore.draw(batch,gameOverMessage,mainGame.FONT_CAM_WIDTH / 2 - gameOverMessageLength / 2,mainGame.FONT_CAM_HEIGHT - 150);
+        messageAndScore.draw(batch,scoreMessage,mainGame.FONT_CAM_WIDTH / 2 - scoreLenght / 2,mainGame.FONT_CAM_HEIGHT - 250);
         batch.end();
     }
 
@@ -82,7 +90,7 @@ public class StartScreen implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-                mainGame.fontCamera.unproject(realMousePos);
+               mainGame.fontCamera.unproject(realMousePos);
 
                 float mousePosY = realMousePos.y;
                 float mousePosX = realMousePos.x;

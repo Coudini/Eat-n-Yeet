@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class QuitButton extends Button {
+public class QuitToMainMenuButton extends Button {
 
     public static Texture quitButtonTexture;
 
-    public QuitButton (MainGame mainGame) {
+    public QuitToMainMenuButton (MainGame mainGame) {
         super(quitButtonTexture,quitButtonTexture.getWidth(),quitButtonTexture.getHeight(),mainGame);
         setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 500f - getHeight() / 2f);
         xStart = getX();
@@ -17,15 +17,7 @@ public class QuitButton extends Button {
         yEnd = getY() + getHeight();
 
     }
-    public QuitButton (MainGame mainGame, float posX, float posY) {
-        super(quitButtonTexture,quitButtonTexture.getWidth(),quitButtonTexture.getHeight(),mainGame);
-        setPosition(posX, posY);
-        xStart = getX();
-        xEnd = getX() + getWidth();
-        yStart = getY();
-        yEnd = getY() + getHeight();
 
-    }
     @Override
     public void update () {
         super.update();
@@ -33,11 +25,13 @@ public class QuitButton extends Button {
         // when clicked play button start game
         if (isClicked) {
             // highscore screenhere
-            System.out.println("quit");
+            System.out.println("?");
             isClicked = false;
             //mainGame.gameScreen.dispose();
             //mainGame.startScreen.dispose();
-            Gdx.app.exit();
+
+            mainGame.startScreen = new StartScreen(mainGame.batch,mainGame);
+            mainGame.setScreen(mainGame.startScreen);
         }
     }
 }

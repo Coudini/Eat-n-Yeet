@@ -1,6 +1,8 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+
 
 
 
@@ -31,7 +33,7 @@ public class Button extends GraphicObject {
 
     protected boolean isClicked = false;
 
-    public Button (Texture texture,float width, float height, StartScreen screen) {
+   /* public Button (Texture texture,float width, float height, StartScreen screen) {
         super(texture,width,height,screen);
         xStart = getX();
         xEnd = getX() + getWidth();
@@ -41,6 +43,15 @@ public class Button extends GraphicObject {
     }
     public Button (Texture texture,float width, float height, GameScreen screen) {
         super(texture,width,height,screen);
+        xStart = getX();
+        xEnd = getX() + getWidth();
+        yStart = getY();
+        yEnd = getY() + getHeight();
+    }
+
+    */
+    public Button (Texture texture,float width, float height, MainGame mainGame) {
+        super(texture,width,height,mainGame);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();

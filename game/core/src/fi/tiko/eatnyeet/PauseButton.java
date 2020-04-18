@@ -6,8 +6,8 @@ public class PauseButton extends Button {
     public static Texture pauseButtonTexture;
 
 
-    public PauseButton (GameScreen screen) {
-        super(pauseButtonTexture,0.4f,0.4f,screen);
+    public PauseButton (MainGame mainGame) {
+        super(pauseButtonTexture,0.4f,0.4f,mainGame);
         setPosition(15f, 8f);
         xStart = getX();
         xEnd = getX() + getWidth();
@@ -21,7 +21,7 @@ public class PauseButton extends Button {
         // when clicked play button start game
         if (isClicked) {
             System.out.println("Pause");
-            gameScreen.pause();
+            mainGame.gameScreen.pause();
             isClicked = false;
         }
     }

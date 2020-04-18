@@ -1,6 +1,7 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,49 +10,56 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
+import sun.applet.Main;
+
 public class GraphicObject extends Sprite {
 
     Sound soundEffect;
     Animation<TextureRegion> currentAnimation;
     TextureRegion currentFrameTexture;
-    public GameScreen gameScreen;
-    public StartScreen startScreen;
+    //public GameScreen gameScreen;
+    //public StartScreen startScreen;
+    public MainGame mainGame;
 
     protected float stateTime;
     protected float lifeTime = 0f;
 
     //froceMeter
-    public GraphicObject(Texture texture,float width, float height, GameScreen game) {
+    /*
+    public GraphicObject(Texture texture,float width, float height, MainGame mainGame) {
         super(texture);
-        this.gameScreen = game;
+        this.mainGame = mainGame;
         this.setSize(width,height);
         this.setOriginCenter();
     }
 
-    public GraphicObject(Texture texture,float width, float height, StartScreen screen) {
+     */
+
+    public GraphicObject(Texture texture,float width, float height, MainGame mainGame) {
         super(texture);
-        this.startScreen = screen;
+        this.mainGame = mainGame;
         this.setSize(width,height);
         this.setOriginCenter();
     }
 
     //for clouds
-    public GraphicObject(Texture texture, GameScreen game) {
+    public GraphicObject(Texture texture, MainGame mainGame) {
         super(texture);
-        this.gameScreen = game;
+        this.mainGame = mainGame;
         this.setOriginCenter();
     }
 
     //sun
-    public GraphicObject(GameScreen game) {
+    public GraphicObject(MainGame mainGame) {
         super();
-        this.gameScreen = game;
+        this.mainGame = mainGame;
         this.setOriginCenter();
     }
 
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
+        stateTime += Gdx.graphics.getDeltaTime();
     }
 
     public void render(Batch batch) {
@@ -59,7 +67,6 @@ public class GraphicObject extends Sprite {
         if (getTexture() == null && currentAnimation == null ) {
             return;
         }
-        stateTime += Gdx.graphics.getDeltaTime();
 
         if (currentAnimation != null) {
             currentFrameTexture = currentAnimation.getKeyFrame(stateTime, true);

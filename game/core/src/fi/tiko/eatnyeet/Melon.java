@@ -35,8 +35,8 @@ public class Melon extends FlingableObject implements Food {
         setRestitution(0.4f);
         body = createBody(posX,posY,radius);
         allowPlayerCollision();
-        melon = Util.createTextureAnimation(1,2, melonNoDisco);
-        discoMelon = Util.createTextureAnimation(3,3,melonDisco);
+        melon = Util.createTextureAnimation(4,1, melonNoDisco);
+        discoMelon = Util.createTextureAnimation(10,1,melonDisco);
         eaten = false;
         
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
