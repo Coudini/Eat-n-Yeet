@@ -26,7 +26,7 @@ public class Character extends GameObject {
     private int previousScore = 0;
     protected int characterCombo = 0;
     private int previousCombo = 0;
-    protected int healthPoints = 1;
+    protected int healthPoints = 3;
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 

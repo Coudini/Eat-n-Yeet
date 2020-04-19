@@ -44,7 +44,11 @@ public class GameScreen implements Screen {
     //public Array<Body> bodies;
     private boolean gameOver = false;
     Character player;
+
+    Healthbar healthbar;
+
     Compost compost;
+
     ForceMeter meter;
     Cloud cloud;
     Sun sun;
@@ -87,11 +91,10 @@ public class GameScreen implements Screen {
         Customer.customerTexture = new Texture("customer_boi.png");
         Customer.customerRun = new Texture("c_run.png");
         Customer.customerRun2 = new Texture("c_run2.png");
+        Customer.customerRun3 = new Texture("c_run3.png");
         Carrot.carrotEaten = new Texture("carrothalf.png");
         Tomato.tomatoEaten = new Texture("tomatohalf.png");
         Melon.melonEaten = new Texture("melonEaten.png");
-        //Customer.carrotEaten = new Texture("carrothalf.png");
-        //Customer.tomatoEaten = new Texture("tomatohalf.png");
         Rat.run = new Texture("ratboi_run.png");
         Compost.empty = new Texture("compost_empty.png");
         Compost.fill1 = new Texture("compost_stage1.png");
@@ -100,6 +103,8 @@ public class GameScreen implements Screen {
         Compost.fill4 = new Texture("compost_stage4.png");
         Field.empty = new Texture("field_empty.png");
         PauseButton.pauseButtonTexture = new Texture("pause.png");
+
+        Heart.texture = new Texture("heart.png");
 
         /*
         camera = new OrthographicCamera();
@@ -195,6 +200,7 @@ public class GameScreen implements Screen {
     public void spawnDefaultObjects() {
         this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
+        System.out.println(player.healthPoints);
 
 
 
@@ -205,7 +211,8 @@ public class GameScreen implements Screen {
         buttons.add(pauseButton);
 
         gameObjects.add(new Customer(this));
-        //clouds ym grphx
+
+        //clouds
         for (int i = 0; i < 3; i++) {
             System.out.println(i);
             if (i==0) {
@@ -221,12 +228,16 @@ public class GameScreen implements Screen {
                 graphicObjects.add(cloud);
             }
         }
+
+        //healthbar
+        healthbar = new Healthbar(mainGame, player.healthPoints);
+        graphicObjects.add(healthbar);
+
         //forcemeter
         this.meter = new ForceMeter(mainGame);
         graphicObjects.add(meter);
     }
 
-    //add grphx rendere here
     public void renderObjects () {
         for (GraphicObject obj : graphicObjects) {
             obj.render(batch);

@@ -42,6 +42,9 @@ public class GraphicObject extends Sprite {
         this.setOriginCenter();
     }
 
+    //for healthbar
+
+
     //for clouds
     public GraphicObject(Texture texture, MainGame mainGame) {
         super(texture);

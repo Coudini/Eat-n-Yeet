@@ -30,15 +30,19 @@ public class Customer extends GameObject {
 
     public static Texture customerRun;
     public static Texture customerRun2;
+    public static Texture customerRun3;
 
     Animation<TextureRegion> run;
 
 
     public Customer(GameScreen game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
-        int temp = MathUtils.random(0,1);
+        int temp = MathUtils.random(0,2);
         if (temp == 1) {
             run = Util.createTextureAnimation(8,1, customerRun);
+        }
+        else if(temp == 2) {
+            run = Util.createTextureAnimation(8, 1, customerRun3);
         } else {
             run = Util.createTextureAnimation(8,1, customerRun2);
         }
