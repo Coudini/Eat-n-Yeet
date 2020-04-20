@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Healthbar extends GraphicObject {
 
-    public static float x = 2.5f;
+    public float x = 2.5f;
     public ArrayList<GraphicObject> hearts;
 
 

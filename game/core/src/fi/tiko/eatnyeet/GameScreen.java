@@ -185,7 +185,7 @@ public class GameScreen implements Screen {
             batch.begin();
             score.draw(batch, "Score " + player.getScore(), 200, 700);
             combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
-            health.draw(batch, "Health " + player.healthPoints, 400,600);
+            //health.draw(batch, "Health " + player.healthPoints, 400,600);
             batch.end();
         }
         if (gameOver) {
