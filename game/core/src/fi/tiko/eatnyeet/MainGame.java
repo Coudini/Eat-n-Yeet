@@ -31,7 +31,10 @@ public class MainGame extends Game  {
 	GameScreen gameScreen;
 	StartScreen startScreen;
 	GameOverScreen gameOverScreen;
+	HighScoreScreen highScoreScreen;
 
+	protected String playerName = "Juha";
+	protected int highestScore = 0;
 
 	protected final float FONT_CAM_WIDTH = 1280f;
 	protected final float FONT_CAM_HEIGHT = 720f;
@@ -53,6 +56,7 @@ public class MainGame extends Game  {
 		fontCamera.setToOrtho(false, FONT_CAM_WIDTH, FONT_CAM_HEIGHT);
 
 		startScreen = new StartScreen(batch,this);
+
 
 		setScreen(startScreen);
 

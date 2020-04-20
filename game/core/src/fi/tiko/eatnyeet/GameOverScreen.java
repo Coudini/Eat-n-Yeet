@@ -36,6 +36,16 @@ public class GameOverScreen implements Screen {
         buttons.add(new QuitToMainMenuButton(mainGame));
         buttons.add(new RetryButton(mainGame));
 
+        // update score if it was bigger than session highest
+        if (score > mainGame.highestScore) {
+            String name = "Seppo";
+            HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
+            // this needs to be done before creating inputprocessor for gameover screen, or else game will use highscore sceens input prosessor
+            mainGame.highScoreScreen = new HighScoreScreen(mainGame.batch,mainGame);
+            HighScoreServer.sendNewHighScore(scoreEntry, mainGame.highScoreScreen);
+            mainGame.highestScore = score;
+        }
+
 
         // all startscreen inputs are handled in here
         createInputProcessor();
@@ -44,6 +54,7 @@ public class GameOverScreen implements Screen {
         gameOverMessageLength = gameOverMessage.length() * fontSize / 2;
         scoreMessage += score;
         scoreLenght = scoreMessage.length() * fontSize / 2;
+
 
     }
     @Override
