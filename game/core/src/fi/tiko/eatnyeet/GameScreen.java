@@ -18,9 +18,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class GameScreen implements Screen {
@@ -54,6 +56,7 @@ public class GameScreen implements Screen {
     Sun sun;
     PauseButton pauseButton;
     //FreeTypeFontGenerator generator;
+
     BitmapFont score;
     BitmapFont combo;
     BitmapFont health;
@@ -63,13 +66,20 @@ public class GameScreen implements Screen {
 
     // Alternate for ArrayList
     HashSet<GameObject> toBeDeleted;
+
+    //localization
+    Locale locale = Locale.getDefault();
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+    String langScore;
+    String langCombo;
+
     public GameScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
 
         Sun.sunNoDisco = new Texture("sun.png");
         Sun.sunDisco = new Texture("sun_disco.png");
-        ForceMeter.texture = new Texture("arrows.png"); //temp grphx
+        ForceMeter.texture = new Texture("force_arrow.png");
         Cloud.texture1 = new Texture("cloud1.png");
         Cloud.texture2 = new Texture("cloud2.png");
         Cloud.texture3 = new Texture("cloud3.png");
@@ -95,7 +105,7 @@ public class GameScreen implements Screen {
         Carrot.carrotEaten = new Texture("carrothalf.png");
         Tomato.tomatoEaten = new Texture("tomatohalf.png");
         Melon.melonEaten = new Texture("melonEaten.png");
-        Rat.run = new Texture("ratboi_run.png");
+        Rat.run = new Texture("ratboi_running.png");
         Compost.empty = new Texture("compost_empty.png");
         Compost.fill1 = new Texture("compost_stage1.png");
         Compost.fill2 = new Texture("compost_stage2.png");
@@ -140,6 +150,11 @@ public class GameScreen implements Screen {
 
         toBeDeleted = new HashSet<>();
         debugRenderer = new Box2DDebugRenderer();
+
+        //localisation for fonts
+
+        langScore = lang.get("score");
+        langCombo = lang.get("combo");
     }
 
 
@@ -183,8 +198,8 @@ public class GameScreen implements Screen {
             // different render for fonts
             batch.setProjectionMatrix(mainGame.fontCamera.combined);
             batch.begin();
-            score.draw(batch, "Score " + player.getScore(), 200, 700);
-            combo.draw(batch, "Combo " + player.getCombo(), 700, 700);
+            score.draw(batch, langScore + player.getScore(), 200, 700);
+            combo.draw(batch, langCombo + player.getCombo(), 700, 700);
             //health.draw(batch, "Health " + player.healthPoints, 400,600);
             batch.end();
         }

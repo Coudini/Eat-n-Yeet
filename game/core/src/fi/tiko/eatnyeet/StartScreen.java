@@ -7,8 +7,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StartScreen implements Screen {
 
@@ -18,14 +20,26 @@ public class StartScreen implements Screen {
 
     ArrayList<Button> buttons;
 
+    //localization
+    Locale locale = Locale.getDefault();
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+    String langTutorial;
+    String langPlay;
+    String langHighScore;
+    String langQuit;
+
     public StartScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
         startScreenBackGround = new Texture("tilebk.png");
-        TutorialButton.tutorialButtonTexture = new Texture("tutorial.png");
-        PlayButton.playButtonTexture = new Texture("play.png");
-        HighscoreButton.highscoreButtonTexture = new Texture("highscore.png");
-        QuitButton.quitButtonTexture = new Texture("quit.png");
+        langTutorial = lang.get("tutorial");
+        langPlay = lang.get("play");
+        langHighScore = lang.get("highscore");
+        langQuit = lang.get("quit");
+        TutorialButton.tutorialButtonTexture = new Texture(langTutorial);
+        PlayButton.playButtonTexture = new Texture(langPlay);
+        HighscoreButton.highscoreButtonTexture = new Texture(langHighScore);
+        QuitButton.quitButtonTexture = new Texture(langQuit);
 
         buttons = new ArrayList<>();
 

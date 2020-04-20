@@ -20,9 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * MainClass is just for demo purposes in this project.
@@ -31,8 +33,16 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	private Stage stage;
 	private Skin skin;
 
-	protected String updateNameMessage = "Update name";
-	protected String backToMainMenuMessage = "Back to main menu";
+	//localization
+	Locale locale = Locale.getDefault();
+	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+	String langName;
+	String langUpdateName;
+	String langBackToMainMenu;
+	String langHighscores;
+
+	//protected String updateNameMessage = "Update name";
+	//protected String backToMainMenuMessage = "Back to main menu";
 
 	private Table content;
 
@@ -40,9 +50,14 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	SpriteBatch batch;
 	MainGame mainGame;
 
+
     public HighScoreScreen (SpriteBatch batch, MainGame mainGame) {
 		this.batch = batch;
 		this.mainGame = mainGame;
+		langName = lang.get("name");
+		langUpdateName = lang.get("updatename");
+		langBackToMainMenu = lang.get("backtomainmenu");
+		langHighscores = lang.get("highscores");
         HighScoreServer.readConfig("highscore.config");
         HighScoreServer.setVerbose(true);
         HighScoreServer.fetchHighScores(this);
@@ -129,7 +144,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	private void createTable() {
 		content.setFillParent(true);
-		content.add(new Label("High Scores", skin)).colspan(2);
+		content.add(new Label(langHighscores, skin)).colspan(2);
 
 		scoreLabels = new ArrayList<>();
 
@@ -153,7 +168,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		 */
 
 
-		TextButton newHighScore = new TextButton(updateNameMessage, skin);
+		TextButton newHighScore = new TextButton(langUpdateName, skin);
 		newHighScore.addListener(new ClickListener() {
 			 @Override
 			 public void clicked(InputEvent event, float x, float y) {
@@ -161,7 +176,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 				createNewScore();
 			 }
 		});
-		TextButton backToMainMenu = new TextButton(backToMainMenuMessage, skin);
+		TextButton backToMainMenu = new TextButton(langBackToMainMenu, skin);
 
 		backToMainMenu.addListener(new ClickListener() {
 			@Override
@@ -175,7 +190,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
    		content.row();
 		//content.add(fetch).colspan(2);
 		content.row();
-		content.add(new Label("Name:", skin));
+		content.add(new Label(langName, skin));
 		//content.add(new Label("Score:", skin));
 		content.row();
 

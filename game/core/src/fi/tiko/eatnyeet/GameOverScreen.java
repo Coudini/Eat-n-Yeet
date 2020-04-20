@@ -7,29 +7,47 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class GameOverScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
-    protected String gameOverMessage = "Game over!";
+    //localization
+    Locale locale = Locale.getDefault();
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+    String langGameOver;
+    String langScore;
+    String langQuit;
+    String langRetry;
+
+    //protected String gameOverMessage = "Game over!";
     protected int gameOverMessageLength;
-    protected String scoreMessage = "Your score was ";
+    //protected String scoreMessage = "Your score was ";
     protected int scoreLenght;
     protected int fontSize = 48;
     ArrayList<Button> buttons;
 
     BitmapFont messageAndScore;
 
+
+
     public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
         this.batch = batch;
         this.mainGame = mainGame;
         startScreenBackGround = new Texture("tilebk.png");
-        QuitToMainMenuButton.quitButtonTexture = new Texture("quit.png");
-        RetryButton.retryButtonTexture = new Texture("retry.png");
+
+        langGameOver = lang.get("gameover");
+        langScore = lang.get("scorewas");
+        langQuit = lang.get("quit");
+        langRetry = lang.get("retry");
+
+        QuitToMainMenuButton.quitButtonTexture = new Texture(langQuit);
+        RetryButton.retryButtonTexture = new Texture(langRetry);
 
         buttons = new ArrayList<>();
 
@@ -38,7 +56,7 @@ public class GameOverScreen implements Screen {
 
         // update score if it was bigger than session highest
         if (score > mainGame.highestScore) {
-            String name = "Seppo";
+            String name = "Seppo :D";
             HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
             // this needs to be done before creating inputprocessor for gameover screen, or else game will use highscore sceens input prosessor
             mainGame.highScoreScreen = new HighScoreScreen(mainGame.batch,mainGame);
@@ -51,9 +69,9 @@ public class GameOverScreen implements Screen {
         createInputProcessor();
         messageAndScore = mainGame.generateFont(fontSize,1);
 
-        gameOverMessageLength = gameOverMessage.length() * fontSize / 2;
-        scoreMessage += score;
-        scoreLenght = scoreMessage.length() * fontSize / 2;
+        gameOverMessageLength = langGameOver.length() * fontSize / 2;
+        langScore += score;
+        scoreLenght = langScore.length() * fontSize / 2;
 
 
     }
@@ -69,8 +87,8 @@ public class GameOverScreen implements Screen {
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
         renderButtons(batch);
-        messageAndScore.draw(batch,gameOverMessage,mainGame.FONT_CAM_WIDTH / 2 - gameOverMessageLength / 2,mainGame.FONT_CAM_HEIGHT - 150);
-        messageAndScore.draw(batch,scoreMessage,mainGame.FONT_CAM_WIDTH / 2 - scoreLenght / 2,mainGame.FONT_CAM_HEIGHT - 250);
+        messageAndScore.draw(batch,langGameOver,mainGame.FONT_CAM_WIDTH / 2 - gameOverMessageLength / 2,mainGame.FONT_CAM_HEIGHT - 150);
+        messageAndScore.draw(batch,langScore,mainGame.FONT_CAM_WIDTH / 2 - scoreLenght / 2,mainGame.FONT_CAM_HEIGHT - 250);
         batch.end();
     }
 
