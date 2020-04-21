@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
         Carrot.carrotEaten = new Texture("carrothalf.png");
         Tomato.tomatoEaten = new Texture("tomatohalf.png");
         Melon.melonEaten = new Texture("melonEaten.png");
-        Rat.run = new Texture("ratboi_running.png");
+        Rat.run = new Texture("prison_rat.png");
         Compost.empty = new Texture("compost_empty.png");
         Compost.fill1 = new Texture("compost_stage1.png");
         Compost.fill2 = new Texture("compost_stage2.png");

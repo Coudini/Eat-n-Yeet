@@ -99,17 +99,17 @@ public class Character extends GameObject {
                 meter2y = screenY;
                 //distance and angles between coordinates
                 if (meter1x > meter2x) {
-                    meter3x = meter1x - meter2x;
+                    meter3x = (meter1x - meter2x) * 0.8f;
                     meterX = (getX() + 0.66f) - (meter3x / 150f);
                 } else {
-                    meter3x = meter2x - meter1x;
+                    meter3x = (meter2x - meter1x) * 0.8f;
                     meterX = (getX() + 0.66f) + (meter3x / 150f);
                 }
                 if (meter1y > meter2y) {
-                    meter3y = meter1y - meter2y;
+                    meter3y = (meter1y - meter2y) * 0.8f;
                     meterY = getY() + (meter3y / 150f);
                 } else {
-                    meter3y = meter2y - meter1y;
+                    meter3y = (meter2y - meter1y) * 0.8f;
                     meterY = getY() - (meter3y / 150f);
                 }
                 angleX = meter2x - meter1x;

@@ -6,7 +6,7 @@ public class ForceMeter extends GraphicObject {
 
     public static Texture texture;
     public static float width = 0.5f;
-    public static float height = 0.5f;
+    public static float height = 0.3f;
     public static float x;
     public static float y;
     public static boolean show;
