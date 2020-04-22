@@ -23,7 +23,7 @@ public class StartScreen implements Screen {
 
     //localization
 
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
+
     String langTutorial;
     String langPlay;
     String langHighScore;
@@ -33,6 +33,7 @@ public class StartScreen implements Screen {
     public StartScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
+        I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         logo = new Texture(("text_logo.png"));
         startScreenBackGround = new Texture("menu_background.png");
         langTutorial = lang.get("tutorial");

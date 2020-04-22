@@ -50,13 +50,7 @@ public class MainGame extends Game  {
 	protected OrthographicCamera camera;
 	protected OrthographicCamera fontCamera;
 
-	public  void changeLocale() {
-		if (locale.equals("fi_FI")) {
-			locale = new Locale("");
-		} else {
-			locale = new Locale("fi","FI");
-		}
-	}
+
 
 	// overide might not be needed
 	@Override
@@ -77,6 +71,23 @@ public class MainGame extends Game  {
 
 	}
 
+	public  void changeLocale() {
+		System.out.println(locale.getCountry());
+		String tmp = locale.getCountry();
+		if (tmp.equals("US")) {
+			System.out.println("homo");
+			locale = new Locale("fi","FI");
+		}
+		if (tmp.equals("FI")) {
+			locale = new Locale("en","US");
+
+		}
+		/*else {
+			locale = new Locale("fi","FI");
+		}
+
+		 */
+	}
 	public BitmapFont generateFont(int size, int borderWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

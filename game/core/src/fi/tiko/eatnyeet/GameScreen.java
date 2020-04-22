@@ -68,14 +68,14 @@ public class GameScreen implements Screen {
     HashSet<GameObject> toBeDeleted;
 
     //localization
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
+
     String langScore;
     String langCombo;
 
     public GameScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
-
+        I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         Sun.sunNoDisco = new Texture("sun.png");
         Sun.sunDisco = new Texture("sun_disco.png");
         ForceMeter.texture = new Texture("force_arrow.png");
