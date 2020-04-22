@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * MainClass is just for demo purposes in this project.
+ * Highscore screen, lists top 10 highscores and allows user to change player name
  */
 public class HighScoreScreen implements HighScoreListener, Screen {
 	private Stage stage;
@@ -39,12 +39,9 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	Locale locale = Locale.getDefault();
 	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
 	String langName;
-	String langUpdateName;
-	String langBackToMainMenu;
 	String langHighscores;
-
-	//protected String updateNameMessage = "Update name";
-	//protected String backToMainMenuMessage = "Back to main menu";
+	String langUpdateButton;
+	String langBackButton;
 
 	InputMultiplexer multiplexer;
 	InputAdapter gameUiInputs;
@@ -62,16 +59,16 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		this.batch = batch;
 		this.mainGame = mainGame;
 		langName = lang.get("name");
-		langUpdateName = lang.get("updatename");
-		langBackToMainMenu = lang.get("backtomainmenu");
 		langHighscores = lang.get("highscores");
-		BackToMainMenuButton.backButtonTexture = new Texture("back.png");
-		UpdateNameButton.buttonTexture = new Texture("update_name.png");
+		langBackButton = lang.get("back");
+		langUpdateButton = lang.get("update");
+		BackToMainMenuButton.backButtonTexture = new Texture(langBackButton);
+		UpdateNameButton.buttonTexture = new Texture(langUpdateButton);
         HighScoreServer.readConfig("highscore.config");
         HighScoreServer.setVerbose(true);
         HighScoreServer.fetchHighScores(this);
 
-		startScreenBackGround = new Texture("highscoreBk.png");
+		startScreenBackGround = new Texture("menu_background.png");
 
 		buttons = new ArrayList<>();
 		buttons.add(new BackToMainMenuButton(mainGame));
@@ -136,14 +133,11 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		skin = new Skin (Gdx.files.internal("uiskin.json"));
 		stage = new Stage();
 
-
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(stage);
 		createGameUiInputs();
 		multiplexer.addProcessor(gameUiInputs);
 		Gdx.input.setInputProcessor(multiplexer);
-
-		//Gdx.input.setInputProcessor(stage);
 
 		content = new Table();
 		createTable();
@@ -162,7 +156,6 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	}
 
 	private TextField nameField;
-	private TextField scoreField;
 
 	private void createTable() {
 		content.setFillParent(true);
@@ -178,61 +171,14 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			scoreLabels.add(l);
 		}
 
-		/*TextButton fetch = new TextButton("Fetch highscores", skin);
-		fetch.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				fetchHighScores();
-			}
-		});
-
-
-		 */
-
-
-		/*
-		TextButton newHighScore = new TextButton(langUpdateName, skin);
-		newHighScore.addListener(new ClickListener() {
-			 @Override
-			 public void clicked(InputEvent event, float x, float y) {
-
-				createNewScore();
-			 }
-		});
-
-		 */
-
-		/*
-		TextButton backToMainMenu = new TextButton(langBackToMainMenu, skin);
-
-		backToMainMenu.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-				mainGame.startScreen = new StartScreen(mainGame.batch,mainGame);
-				mainGame.setScreen(mainGame.startScreen);
-			}
-		});
-
-		 */
-
-   		content.row();
-		//content.add(fetch).colspan(2);
 		content.row();
 		content.add(new Label(langName, skin));
-		//content.add(new Label("Score:", skin));
 		content.row();
 
-
 		nameField = new TextField(mainGame.playerName, skin);
-		//scoreField = new TextField("", skin);
 
 		content.add(nameField);
-		//content.add(scoreField);
 
-		//content.add(newHighScore);
-		//content.row();
-		//content.add(backToMainMenu).pad(10,100,0,0);
 	}
 
 	private void fetchHighScores() {
@@ -248,9 +194,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			System.out.println("No text");
 		}
 
-		// TODO frm player
 		int score = mainGame.highestScore;
-		//int score = Integer.parseInt(scoreField.getText());
 		HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
 		HighScoreServer.sendNewHighScore(scoreEntry, this);
 		fetchHighScores();
@@ -269,6 +213,11 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	}
 
 
+	/***
+	 * Ui inputs for font camera aka real pixel size camera
+	 * Checks if any button is pressed, if is then resize them bigger to visualise click.
+	 * Set clicked to true which triggers button built in actions.
+	 */
 	public void createGameUiInputs() {
 		gameUiInputs = new InputAdapter() {
 			@Override

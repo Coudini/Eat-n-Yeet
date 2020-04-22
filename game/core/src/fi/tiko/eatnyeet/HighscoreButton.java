@@ -6,8 +6,8 @@ public class HighscoreButton extends Button {
     public static Texture highscoreButtonTexture;
 
     public HighscoreButton (MainGame mainGame) {
-        super(highscoreButtonTexture,highscoreButtonTexture.getWidth(),highscoreButtonTexture.getHeight(),mainGame);
-        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 370f - getHeight() / 2f);
+        super(highscoreButtonTexture,highscoreButtonTexture.getWidth() * 0.8f,highscoreButtonTexture.getHeight() * 0.8f,mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 520f - getHeight() / 2f);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();

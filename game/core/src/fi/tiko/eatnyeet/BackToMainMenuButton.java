@@ -6,8 +6,17 @@ public class BackToMainMenuButton extends Button{
     public static Texture backButtonTexture;
 
     public BackToMainMenuButton (MainGame mainGame) {
+        super(backButtonTexture,backButtonTexture.getWidth() ,backButtonTexture.getHeight(),mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH * 0.15f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT - 100f - getHeight() / 2f);
+        xStart = getX();
+        xEnd = getX() + getWidth();
+        yStart = getY();
+        yEnd = getY() + getHeight();
+
+    }
+    public BackToMainMenuButton (MainGame mainGame, float x, float y) {
         super(backButtonTexture,backButtonTexture.getWidth(),backButtonTexture.getHeight(),mainGame);
-        setPosition(mainGame.FONT_CAM_WIDTH / 6f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT - 100f - getHeight() / 2f);
+        setPosition(x,y);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();
