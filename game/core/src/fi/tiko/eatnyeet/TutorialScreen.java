@@ -32,7 +32,7 @@ public class TutorialScreen implements Screen {
 
     //localization
     Locale locale = Locale.getDefault();
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+
     String langBack;
     String langTutorial1;
     String langTutorial2;
@@ -42,7 +42,7 @@ public class TutorialScreen implements Screen {
     public TutorialScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
-
+        I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         startScreenBackGround = new Texture("menu_background.png");
         arrowLeftTexture = new Texture("arrow_left.png");
         arrowRightTexture = new Texture("arrow_right.png");

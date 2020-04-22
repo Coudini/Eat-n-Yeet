@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-import sun.applet.Main;
 
 public class GraphicObject extends Sprite {
 

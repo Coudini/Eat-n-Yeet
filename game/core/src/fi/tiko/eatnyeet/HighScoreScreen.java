@@ -37,7 +37,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	//localization
 
-	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
+
 	String langName;
 	String langHighscores;
 	String langUpdateButton;
@@ -58,6 +58,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
     public HighScoreScreen (SpriteBatch batch, MainGame mainGame) {
 		this.batch = batch;
 		this.mainGame = mainGame;
+		I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
 		langName = lang.get("name");
 		langHighscores = lang.get("highscores");
 		langBackButton = lang.get("back");

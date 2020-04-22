@@ -19,7 +19,7 @@ public class GameOverScreen implements Screen {
 
     //localization
 
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
+
     String langGameOver;
     String langScore;
     String langQuit;
@@ -39,6 +39,7 @@ public class GameOverScreen implements Screen {
     public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
         this.batch = batch;
         this.mainGame = mainGame;
+        I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         startScreenBackGround = new Texture("tilebk.png");
 
         langGameOver = lang.get("gameover");
