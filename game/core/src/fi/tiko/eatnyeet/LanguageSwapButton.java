@@ -2,6 +2,8 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import sun.applet.Main;
+
 public class LanguageSwapButton extends Button {
     public static Texture buttonTexture;
 
@@ -21,8 +23,9 @@ public class LanguageSwapButton extends Button {
 
         if (isClicked) {
             System.out.println("swap language");
-            MainGame.changeLocale();
-            System.out.println(MainGame.locale);
+            System.out.println(mainGame.locale);
+            mainGame.changeLocale();
+            System.out.println(mainGame.locale);
             StartScreen temp = new StartScreen(mainGame.batch, mainGame);
             mainGame.setScreen(temp);
             isClicked = false;
