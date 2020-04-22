@@ -2,15 +2,17 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * MainClass is just for demo purposes in this project.
+ * Highscore screen, lists top 10 highscores and allows user to change player name
  */
 public class HighScoreScreen implements HighScoreListener, Screen {
 	private Stage stage;
@@ -37,12 +39,14 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	Locale locale = Locale.getDefault();
 	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
 	String langName;
-	String langUpdateName;
-	String langBackToMainMenu;
 	String langHighscores;
+	String langUpdateButton;
+	String langBackButton;
 
-	//protected String updateNameMessage = "Update name";
-	//protected String backToMainMenuMessage = "Back to main menu";
+	InputMultiplexer multiplexer;
+	InputAdapter gameUiInputs;
+	public ArrayList<Button> buttons;
+
 
 	private Table content;
 
@@ -55,14 +59,20 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		this.batch = batch;
 		this.mainGame = mainGame;
 		langName = lang.get("name");
-		langUpdateName = lang.get("updatename");
-		langBackToMainMenu = lang.get("backtomainmenu");
 		langHighscores = lang.get("highscores");
+		langBackButton = lang.get("back");
+		langUpdateButton = lang.get("update");
+		BackToMainMenuButton.backButtonTexture = new Texture(langBackButton);
+		UpdateNameButton.buttonTexture = new Texture(langUpdateButton);
         HighScoreServer.readConfig("highscore.config");
         HighScoreServer.setVerbose(true);
         HighScoreServer.fetchHighScores(this);
 
-		startScreenBackGround = new Texture("tilebk.png");
+		startScreenBackGround = new Texture("menu_background.png");
+
+		buttons = new ArrayList<>();
+		buttons.add(new BackToMainMenuButton(mainGame));
+		buttons.add(new UpdateNameButton(mainGame));
 
         otherSetup();
     }
@@ -122,7 +132,13 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		skin = new Skin();
 		skin = new Skin (Gdx.files.internal("uiskin.json"));
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+
+		multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(stage);
+		createGameUiInputs();
+		multiplexer.addProcessor(gameUiInputs);
+		Gdx.input.setInputProcessor(multiplexer);
+
 		content = new Table();
 		createTable();
 		stage.addActor(content);
@@ -140,7 +156,6 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	}
 
 	private TextField nameField;
-	private TextField scoreField;
 
 	private void createTable() {
 		content.setFillParent(true);
@@ -156,61 +171,21 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			scoreLabels.add(l);
 		}
 
-		/*TextButton fetch = new TextButton("Fetch highscores", skin);
-		fetch.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				fetchHighScores();
-			}
-		});
-
-
-		 */
-
-
-		TextButton newHighScore = new TextButton(langUpdateName, skin);
-		newHighScore.addListener(new ClickListener() {
-			 @Override
-			 public void clicked(InputEvent event, float x, float y) {
-
-				createNewScore();
-			 }
-		});
-		TextButton backToMainMenu = new TextButton(langBackToMainMenu, skin);
-
-		backToMainMenu.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-				mainGame.startScreen = new StartScreen(mainGame.batch,mainGame);
-				mainGame.setScreen(mainGame.startScreen);
-			}
-		});
-
-   		content.row();
-		//content.add(fetch).colspan(2);
 		content.row();
 		content.add(new Label(langName, skin));
-		//content.add(new Label("Score:", skin));
 		content.row();
-
 
 		nameField = new TextField(mainGame.playerName, skin);
-		//scoreField = new TextField("", skin);
 
 		content.add(nameField);
-		//content.add(scoreField);
 
-		content.add(newHighScore);
-		content.row();
-		content.add(backToMainMenu).pad(10,100,0,0);
 	}
 
 	private void fetchHighScores() {
 		HighScoreServer.fetchHighScores(this);
 	}
 
-	private void createNewScore() {
+	protected void createNewScore() {
 		String name = mainGame.playerName;
 		try {
 			 name = nameField.getText();
@@ -219,9 +194,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			System.out.println("No text");
 		}
 
-		// TODO frm player
 		int score = mainGame.highestScore;
-		//int score = Integer.parseInt(scoreField.getText());
 		HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
 		HighScoreServer.sendNewHighScore(scoreEntry, this);
 		fetchHighScores();
@@ -231,11 +204,67 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		updateButtons();
 		batch.begin();
 		batch.draw(startScreenBackGround,0f,0f);
+		renderButtons(batch);
 		batch.end();
 		stage.draw();
+	}
+
+
+	/***
+	 * Ui inputs for font camera aka real pixel size camera
+	 * Checks if any button is pressed, if is then resize them bigger to visualise click.
+	 * Set clicked to true which triggers button built in actions.
+	 */
+	public void createGameUiInputs() {
+		gameUiInputs = new InputAdapter() {
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				Vector3 realMousePos = new Vector3(screenX, screenY, 0);
+				mainGame.fontCamera.unproject(realMousePos);
+
+				float mousePosY = realMousePos.y;
+				float mousePosX = realMousePos.x;
+
+				for (Button btn : buttons) {
+					if (mousePosX >= btn.getxStart() && mousePosX <= btn.getxEnd() && mousePosY >= btn.getyStart() && mousePosY <= btn.getyEnd()) {
+						btn.setScale(1.2f);
+					}
+				}
+				return true;
+			}
+
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				Vector3 realMousePos = new Vector3(screenX, screenY, 0);
+				mainGame.fontCamera.unproject(realMousePos);
+
+				float mousePosY = realMousePos.y;
+				float mousePosX = realMousePos.x;
+
+				for (Button btn : buttons) {
+					if (mousePosX >= btn.getxStart() && mousePosX <= btn.getxEnd() && mousePosY >= btn.getyStart() && mousePosY <= btn.getyEnd()) {
+						btn.setScale(1f);
+						btn.clicked();
+					} else {
+						btn.setScale(1f);
+					}
+				}
+				return true;
+			}
+		};
+	}
+	public void updateButtons() {
+		for (fi.tiko.eatnyeet.Button obj: buttons) {
+			obj.update();
+		}
+	}
+	public void renderButtons(SpriteBatch batch) {
+		for (Button obj: buttons) {
+			obj.render(batch);
+		}
 	}
 
 	@Override

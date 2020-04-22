@@ -6,8 +6,8 @@ public class PlayButton extends Button {
     public static Texture playButtonTexture;
 
     public PlayButton (MainGame mainGame) {
-        super(playButtonTexture,playButtonTexture.getWidth(),playButtonTexture.getHeight(),mainGame);
-        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 110f - getHeight() / 2f);
+        super(playButtonTexture,playButtonTexture.getWidth(),playButtonTexture.getHeight() ,mainGame);
+        setPosition(mainGame.FONT_CAM_WIDTH / 2f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 300f - getHeight() / 2f);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();

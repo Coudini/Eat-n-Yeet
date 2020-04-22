@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -12,50 +11,74 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class StartScreen implements Screen {
-
+public class TutorialScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
-    public static Texture logo;
+    public static Texture arrowLeftTexture;
+    public static Texture arrowRightTexture;
+
+    private ArrayList<Texture> tutorialImages;
+    private static Texture tut1;
+    private static Texture tut2;
+    private int index = 0;
+    private int tutImgPrintX;
+    private int tutImgPrintY;
+
 
     ArrayList<Button> buttons;
+    Button arrowLeft;
+    Button arrowRight;
 
     //localization
     Locale locale = Locale.getDefault();
     I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
-    String langTutorial;
-    String langPlay;
-    String langHighScore;
-    String langQuit;
-    String langSwapIcon;
+    String langBack;
+    String langTutorial1;
+    String langTutorial2;
 
-    public StartScreen (SpriteBatch batch, MainGame mainGame) {
+
+
+    public TutorialScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
-        logo = new Texture(("text_logo.png"));
+
         startScreenBackGround = new Texture("menu_background.png");
-        langTutorial = lang.get("tutorial");
-        langPlay = lang.get("play");
-        langHighScore = lang.get("highscore");
-        langQuit = lang.get("quit");
-        langSwapIcon = lang.get("languageIcon");
-        TutorialButton.tutorialButtonTexture = new Texture(langTutorial);
-        PlayButton.playButtonTexture = new Texture(langPlay);
-        HighscoreButton.highscoreButtonTexture = new Texture(langHighScore);
-        QuitButton.quitButtonTexture = new Texture(langQuit);
-        LanguageSwapButton.buttonTexture = new Texture(langSwapIcon);
-        VolumeSwapButton.volumeOnTexture = new Texture("volume_on.png");
-        VolumeSwapButton.volumeOffTexture = new Texture("volume_off.png");
+        arrowLeftTexture = new Texture("arrow_left.png");
+        arrowRightTexture = new Texture("arrow_right.png");
+
+        langBack = lang.get("back");
+        langTutorial1 = lang.get("tutorial1");
+        langTutorial2 = lang.get("tutorial2");
+        tut1 = new Texture(langTutorial1);
+        tut2 = new Texture(langTutorial2);
+
+        // refresh these values if adding more tutorial images that are not same size as tut1!
+        tutImgPrintX = (int)mainGame.FONT_CAM_WIDTH / 2 - tut1.getWidth() / 2;
+        tutImgPrintY = (int)mainGame.FONT_CAM_HEIGHT / 2 - tut1.getHeight() / 2;
+
+        tutorialImages = new ArrayList<>();
+        tutorialImages.add(tut1);
+        tutorialImages.add(tut2);
+
+        BackToMainMenuButton.backButtonTexture = new Texture(langBack);
 
         buttons = new ArrayList<>();
 
-        buttons.add(new PlayButton(mainGame));
-        buttons.add(new TutorialButton(mainGame));
-        buttons.add(new HighscoreButton(mainGame));
-        buttons.add(new QuitButton(mainGame));
-        buttons.add(new LanguageSwapButton(mainGame));
-        buttons.add(new VolumeSwapButton(mainGame));
+
+
+        float posX = mainGame.FONT_CAM_WIDTH / 2f - BackToMainMenuButton.backButtonTexture.getWidth() / 2;
+        float poxY = 50f;
+
+        buttons.add(new BackToMainMenuButton(mainGame,posX,poxY));
+
+        posX = 50f;
+        arrowLeft = new ArrowButton(mainGame,arrowLeftTexture, posX,poxY);
+        posX = mainGame.FONT_CAM_WIDTH - 50f - arrowRightTexture.getWidth() * 0.7f;
+        arrowRight = new ArrowButton(mainGame,arrowRightTexture,posX,poxY);
+
+        buttons.add(arrowRight);
+        buttons.add(arrowLeft);
 
 
         // all startscreen inputs are handled in here
@@ -72,11 +95,27 @@ public class StartScreen implements Screen {
     public void render(float delta) {
         batch.setProjectionMatrix(mainGame.fontCamera.combined);
         updateButtons();
+        arrowClickChecker();
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
-        batch.draw(logo,mainGame.FONT_CAM_WIDTH / 2f - logo.getWidth() / 2f, 500f);
+        batch.draw(tutorialImages.get(index),tutImgPrintX,tutImgPrintY);
         renderButtons(batch);
         batch.end();
+    }
+
+    private void arrowClickChecker() {
+        if (arrowRight.isClicked) {
+            arrowRight.isClicked = false;
+            if (index < tutorialImages.size()-1) {
+                index++;
+            }
+        } else if (arrowLeft.isClicked) {
+            arrowLeft.isClicked = false;
+            if (index > 0) {
+                index--;
+            }
+        }
+
     }
 
 
@@ -163,6 +202,7 @@ public class StartScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("StartScreen dispose complete");
+        System.out.println("Tutorial dispose complete");
     }
+
 }
