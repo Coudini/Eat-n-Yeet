@@ -20,12 +20,18 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 /**
  * This file will start when opening the game, by default it will set screen to be MainMenuScreen
  * */
 public class MainGame extends Game  {
+	//public static Locale locale = Locale.getDefault();
+	//public static Locale locale = new Locale("fi","FI");
+	//public static Locale locale = new Locale("us","US");
+	public static Locale locale = new Locale("");
+
 	SpriteBatch batch;
 
 	GameScreen gameScreen;
@@ -44,6 +50,13 @@ public class MainGame extends Game  {
 	protected OrthographicCamera camera;
 	protected OrthographicCamera fontCamera;
 
+	public static void changeLocale() {
+		if (locale.equals("fi_FI")) {
+			locale = new Locale("");
+		} else {
+			locale = new Locale("fi","FI");
+		}
+	}
 
 	// overide might not be needed
 	@Override

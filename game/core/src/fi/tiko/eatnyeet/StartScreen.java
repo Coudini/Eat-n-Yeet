@@ -22,8 +22,8 @@ public class StartScreen implements Screen {
     ArrayList<Button> buttons;
 
     //localization
-    Locale locale = Locale.getDefault();
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
     String langTutorial;
     String langPlay;
     String langHighScore;

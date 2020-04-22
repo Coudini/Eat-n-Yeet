@@ -68,8 +68,7 @@ public class GameScreen implements Screen {
     HashSet<GameObject> toBeDeleted;
 
     //localization
-    Locale locale = Locale.getDefault();
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
     String langScore;
     String langCombo;
 

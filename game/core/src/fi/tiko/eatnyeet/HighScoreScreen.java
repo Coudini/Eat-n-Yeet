@@ -36,8 +36,8 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 	private Skin skin;
 
 	//localization
-	Locale locale = Locale.getDefault();
-	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+
+	I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
 	String langName;
 	String langHighscores;
 	String langUpdateButton;

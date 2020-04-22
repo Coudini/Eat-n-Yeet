@@ -18,8 +18,8 @@ public class GameOverScreen implements Screen {
     public static Texture startScreenBackGround;
 
     //localization
-    Locale locale = Locale.getDefault();
-    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), locale);
+
+    I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), MainGame.locale);
     String langGameOver;
     String langScore;
     String langQuit;

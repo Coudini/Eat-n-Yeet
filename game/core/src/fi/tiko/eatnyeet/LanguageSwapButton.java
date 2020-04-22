@@ -20,8 +20,11 @@ public class LanguageSwapButton extends Button {
         super.update();
 
         if (isClicked) {
-            // highscore screenhere
             System.out.println("swap language");
+            MainGame.changeLocale();
+            System.out.println(MainGame.locale);
+            StartScreen temp = new StartScreen(mainGame.batch, mainGame);
+            mainGame.setScreen(temp);
             isClicked = false;
         }
     }
