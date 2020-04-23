@@ -10,69 +10,44 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class GameOverScreen implements Screen {
+
+public class PauseScreen implements Screen {
+
+
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
     //localization
 
-
-    String langGameOver;
-    String langScore;
     String langQuit;
-    String langRetry;
+    String langResume;
 
-    //protected String gameOverMessage = "Game over!";
-    protected int gameOverMessageLength;
-    //protected String scoreMessage = "Your score was ";
-    protected int scoreLenght;
-    protected int fontSize = 48;
     ArrayList<Button> buttons;
 
-    BitmapFont messageAndScore;
-
-
-
-    public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
+    public PauseScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
         I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         startScreenBackGround = new Texture("menu_background.png");
 
-        langGameOver = lang.get("gameover");
-        langScore = lang.get("scorewas");
-        langQuit = lang.get("quit");
-        langRetry = lang.get("retry");
 
+
+        langQuit = lang.get("quit");
+        langResume = lang.get("resume");
+
+        ResumeButton.buttonTexture = new Texture(langResume);
         QuitToMainMenuButton.quitButtonTexture = new Texture(langQuit);
-        RetryButton.retryButtonTexture = new Texture(langRetry);
+
 
         buttons = new ArrayList<>();
-
         buttons.add(new QuitToMainMenuButton(mainGame));
-        buttons.add(new RetryButton(mainGame));
-
-        // update score if it was bigger than session highest
-        if (score > mainGame.highestScore) {
-            String name = mainGame.playerName;
-            HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
-            // this needs to be done before creating inputprocessor for gameover screen, or else game will use highscore sceens input prosessor
-            mainGame.highScoreScreen = new HighScoreScreen(mainGame.batch,mainGame);
-            HighScoreServer.sendNewHighScore(scoreEntry, mainGame.highScoreScreen);
-            mainGame.highestScore = score;
-        }
+        buttons.add(new ResumeButton(mainGame));
 
 
         // all startscreen inputs are handled in here
         createInputProcessor();
-        messageAndScore = mainGame.generateFont(fontSize,1);
-
-        gameOverMessageLength = langGameOver.length() * fontSize / 2;
-        langScore += score;
-        scoreLenght = langScore.length() * fontSize / 2;
 
 
     }
@@ -88,8 +63,6 @@ public class GameOverScreen implements Screen {
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
         renderButtons(batch);
-        messageAndScore.draw(batch,langGameOver,mainGame.FONT_CAM_WIDTH / 2 - gameOverMessageLength / 2,mainGame.FONT_CAM_HEIGHT - 150);
-        messageAndScore.draw(batch,langScore,mainGame.FONT_CAM_WIDTH / 2 - scoreLenght / 2,mainGame.FONT_CAM_HEIGHT - 250);
         batch.end();
     }
 
@@ -120,7 +93,7 @@ public class GameOverScreen implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 Vector3 realMousePos = new Vector3(screenX, screenY, 0);
-               mainGame.fontCamera.unproject(realMousePos);
+                mainGame.fontCamera.unproject(realMousePos);
 
                 float mousePosY = realMousePos.y;
                 float mousePosX = realMousePos.x;
@@ -177,6 +150,7 @@ public class GameOverScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("Gameover screen dispose complete");
+        System.out.println("pausescreen dispose complete");
     }
 }
+
