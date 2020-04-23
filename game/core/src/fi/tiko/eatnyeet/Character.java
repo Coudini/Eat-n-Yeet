@@ -22,7 +22,7 @@ public class Character extends GameObject {
     // Limit for mobile accelerometer
     private final float DEAD_ZONE = 10f;
     private final float speed = 300f;
-    protected int characterScore = 25604803;
+    protected int characterScore =0;
     private int previousScore = 0;
     protected int characterCombo = 0;
     private int previousCombo = 0;

@@ -23,6 +23,8 @@ public class PauseButton extends Button {
             System.out.println("Pause");
             mainGame.gameScreen.pause();
             isClicked = false;
+            PauseScreen temp = new PauseScreen(mainGame.batch,mainGame);
+            mainGame.setScreen(temp);
         }
     }
 }

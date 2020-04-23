@@ -39,7 +39,7 @@ public class MainGame extends Game  {
 	GameOverScreen gameOverScreen;
 	HighScoreScreen highScoreScreen;
 
-	protected String playerName = "TestiBoi";
+	protected String playerName = "Player";
 	protected int highestScore = 0;
 
 	protected final float FONT_CAM_WIDTH = 1280f;
