@@ -22,11 +22,11 @@ public class Character extends GameObject {
     // Limit for mobile accelerometer
     private final float DEAD_ZONE = 10f;
     private final float speed = 300f;
-    protected int characterScore = 0;
+    protected int characterScore = 25604803;
     private int previousScore = 0;
     protected int characterCombo = 0;
     private int previousCombo = 0;
-    protected int healthPoints = 1;
+    protected int healthPoints = 3;
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 

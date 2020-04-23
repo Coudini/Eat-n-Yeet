@@ -39,7 +39,7 @@ public class MainGame extends Game  {
 	GameOverScreen gameOverScreen;
 	HighScoreScreen highScoreScreen;
 
-	protected String playerName = "Juha";
+	protected String playerName = "TestiBoi";
 	protected int highestScore = 0;
 
 	protected final float FONT_CAM_WIDTH = 1280f;
@@ -72,21 +72,15 @@ public class MainGame extends Game  {
 	}
 
 	public  void changeLocale() {
-		System.out.println(locale.getCountry());
-		String tmp = locale.getCountry();
-		if (tmp.equals("US")) {
-			System.out.println("homo");
+		String tmp = locale.getLanguage();
+		System.out.println(locale.getLanguage());
+		if (tmp.equals("en")) {
 			locale = new Locale("fi","FI");
 		}
-		if (tmp.equals("FI")) {
+		if (tmp.equals("fi")) {
 			locale = new Locale("en","US");
 
 		}
-		/*else {
-			locale = new Locale("fi","FI");
-		}
-
-		 */
 	}
 	public BitmapFont generateFont(int size, int borderWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));

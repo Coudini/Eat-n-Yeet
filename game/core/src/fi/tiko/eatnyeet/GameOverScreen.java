@@ -57,7 +57,7 @@ public class GameOverScreen implements Screen {
 
         // update score if it was bigger than session highest
         if (score > mainGame.highestScore) {
-            String name = "Seppo :D";
+            String name = mainGame.playerName;
             HighScoreEntry scoreEntry = new HighScoreEntry(name, score);
             // this needs to be done before creating inputprocessor for gameover screen, or else game will use highscore sceens input prosessor
             mainGame.highScoreScreen = new HighScoreScreen(mainGame.batch,mainGame);
