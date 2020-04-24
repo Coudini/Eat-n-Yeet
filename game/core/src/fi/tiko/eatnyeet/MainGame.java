@@ -27,7 +27,7 @@ import java.util.concurrent.Callable;
  * This file will start when opening the game, by default it will set screen to be MainMenuScreen
  * */
 public class MainGame extends Game  {
-	public  Locale locale = Locale.getDefault();
+	public Locale locale = Locale.getDefault();
 	//public static Locale locale = new Locale("fi","FI");
 	//public static Locale locale = new Locale("us","US");
 	//public static Locale locale = new Locale("");
@@ -65,19 +65,31 @@ public class MainGame extends Game  {
 		startScreen = new StartScreen(batch,this);
 
 
+		//probably useless
+		String tmp = locale.getLanguage();
+		System.out.println(tmp);
+		if (!(tmp.equals("en") || tmp.equals("fi"))) {
+			locale = new Locale("fi", "FI");
+		}
+
 		setScreen(startScreen);
 
 		// set up font generator for all classes
+
+		//locale = Locale.getDefault();
+
+
 
 	}
 
 	public  void changeLocale() {
 		String tmp = locale.getLanguage();
 		System.out.println(locale.getLanguage());
+
 		if (tmp.equals("en")) {
 			locale = new Locale("fi","FI");
 		}
-		if (tmp.equals("fi")) {
+		else if (tmp.equals("fi")) {
 			locale = new Locale("en","US");
 
 		}

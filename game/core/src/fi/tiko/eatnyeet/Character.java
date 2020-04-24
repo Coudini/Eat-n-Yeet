@@ -40,9 +40,9 @@ public class Character extends GameObject {
     Animation<TextureRegion> characterRun;
 
     protected FlingableObject objectToCarry;
-    protected boolean isCarryingFlingable = false;
+    boolean isCarryingFlingable = false;
 
-    public static boolean startPosSet =false;
+    public  boolean startPosSet =false;
     Vector3 touchPosDrag;
     Vector3 endPosDrag;
     // used for detect if object can pass through other object

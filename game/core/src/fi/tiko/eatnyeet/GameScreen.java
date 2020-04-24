@@ -1,5 +1,6 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
     public GameWorld gameWorld;
     public World world;
     public ArrayList<GameObject> gameObjects;
+    public ArrayList<GameObject> customers;
     public ArrayList<GraphicObject> graphicObjects;
     public ArrayList <Callable<Void>> functionsToBeCalled;
     public ArrayList<Button> buttons;
@@ -127,6 +129,7 @@ public class GameScreen implements Screen {
 
 
         gameObjects = new ArrayList<GameObject>();
+        customers = new ArrayList<GameObject>();
         graphicObjects = new ArrayList<GraphicObject>();
         functionsToBeCalled = new ArrayList<Callable<Void>>();
         buttons = new ArrayList<>();
@@ -224,8 +227,6 @@ public class GameScreen implements Screen {
         this.pauseButton = new PauseButton(mainGame);
         buttons.add(pauseButton);
 
-        gameObjects.add(new Customer(this));
-
         //clouds
         for (int i = 0; i < 3; i++) {
             System.out.println(i);
@@ -256,6 +257,9 @@ public class GameScreen implements Screen {
         for (GraphicObject obj : graphicObjects) {
             obj.render(batch);
         }
+        for(GameObject obj : customers) {
+            obj.render(batch);
+        }
         for (GameObject obj: gameObjects) {
             obj.render(batch);
         }
@@ -269,9 +273,13 @@ public class GameScreen implements Screen {
         for (GraphicObject obj : graphicObjects) {
             obj.update();
         }
+        for (GameObject obj : customers) {
+            obj.update();
+        }
         for (GameObject obj: gameObjects) {
             obj.update();
         }
+
         for (Button btn : buttons) {
             btn.update();
         }
@@ -291,6 +299,7 @@ public class GameScreen implements Screen {
         for (GameObject obj: toBeDeleted) {
             world.destroyBody(obj.body);
             gameObjects.remove(obj);
+            customers.remove(obj);
         }
         toBeDeleted.clear();
     }
@@ -303,7 +312,7 @@ public class GameScreen implements Screen {
     public void spawnCustomers () {
         if (Field.getFillLevel() > 0) {
             if (player.lifeTime - customerSpawnTimer > randTime) {
-                gameObjects.add(new Customer(this));
+                customers.add(new Customer(this));
                 customerSpawnTimer = player.lifeTime;
                 randTime = MathUtils.random(4f, 8f);
             }

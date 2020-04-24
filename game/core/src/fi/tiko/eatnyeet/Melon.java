@@ -29,7 +29,7 @@ public class Melon extends FlingableObject implements Food {
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
     public Melon(float posX, float posY, float radius, GameScreen game) {
-        super(texture1, posX, posY, 0.6f, 0.6f, game);
+        super(texture1, posX, posY, 0.5f, 0.5f, game);
         setDensity(0.8f);
         setFriction(4.5f);
         setRestitution(0.4f);

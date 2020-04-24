@@ -215,19 +215,19 @@ public class Field extends GameObject {
                 int tempN = MathUtils.random(1,3);
 
                 if (tempN == 1) {
-                    Melon temp = new Melon(fieldPosX[index], fieldPosY[index],0.1f, game);
+                    Melon temp = new Melon(fieldPosX[index], fieldPosY[index],0.3f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
                     fieldObjectArray[index] = temp;
                 }
                 else if (tempN == 2) {
-                    Tomato temp = new Tomato(fieldPosX[index], fieldPosY[index],0.1f, game);
+                    Tomato temp = new Tomato(fieldPosX[index], fieldPosY[index],0.3f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
                     fieldObjectArray[index] = temp;
                 }
                 else if (tempN == 3) {
-                    Carrot temp = new Carrot(fieldPosX[index], fieldPosY[index],0.1f, game);
+                    Carrot temp = new Carrot(fieldPosX[index], fieldPosY[index],0.3f, game);
                     temp.ignorePlayerCollision();
                     temp.body.setGravityScale(0f);
                     fieldObjectArray[index] = temp;

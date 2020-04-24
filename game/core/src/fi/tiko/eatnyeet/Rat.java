@@ -158,7 +158,7 @@ public class Rat extends GameObject {
 
         if (isCarryingFlingable) {
             float xModif = -0.4f;
-            float yModif = 0.2f;
+            float yModif = -0.1f;
             if (isRight) {
                 xModif = 0.4f;
             }
