@@ -1,11 +1,19 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
+
+
 public class CompostHitArea extends GameObject {
+
+    public Sound sound;
+
     public CompostHitArea(float width, float height, Body body , GameScreen game) {
         super(width,height, body, game);
 
@@ -15,6 +23,7 @@ public class CompostHitArea extends GameObject {
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
+        sound = audio.newSound(files.internal("HitWall.mp3"));
     }
 
     @Override
@@ -38,8 +47,7 @@ public class CompostHitArea extends GameObject {
                 game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
                 game.player.characterCombo += 1;
             }
-
-
+            sound.play();
         }
 
     }

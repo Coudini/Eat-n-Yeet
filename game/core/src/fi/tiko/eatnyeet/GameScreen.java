@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +26,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
 
 public class GameScreen implements Screen {
     SpriteBatch batch;
@@ -74,6 +78,9 @@ public class GameScreen implements Screen {
     String langScore;
     String langCombo;
 
+    public boolean sounds = true;
+    Music song;
+
     public GameScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
@@ -114,8 +121,13 @@ public class GameScreen implements Screen {
         Compost.fill4 = new Texture("compost_stage4.png");
         Field.empty = new Texture("field_empty.png");
         PauseButton.pauseButtonTexture = new Texture("pause.png");
-
         Heart.texture = new Texture("heart.png");
+        song = audio.newMusic(files.internal("farmerinPaansarky.mp3"));
+        song.setVolume(0.5f);
+        song.setLooping(true);
+        if (sounds) {
+            song.play();
+        }
 
         /*
         camera = new OrthographicCamera();
@@ -383,6 +395,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        song.dispose();
         world.dispose();
         score.dispose();
         combo.dispose();

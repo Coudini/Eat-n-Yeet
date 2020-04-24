@@ -1,5 +1,6 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
@@ -7,6 +8,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 import java.util.ArrayList;
+
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
 
 public class Field extends GameObject {
 
@@ -21,6 +25,7 @@ public class Field extends GameObject {
     private float [] fieldPosX;
     private float [] fieldPosY;
 
+    Sound sound;
 
     public Field(float width, float height, Body body , GameScreen game) {
         super(empty, width,height, body, game);
@@ -32,6 +37,7 @@ public class Field extends GameObject {
         fillLevel = maxFill;
         growRandomFood(maxFill);
 
+        sound = audio.newSound(files.internal("HitWall.mp3"));
     }
 
     @Override
@@ -193,7 +199,7 @@ public class Field extends GameObject {
                 game.player.characterCombo += 1;
                 growRandomFood(((CompostWaste)other).getFillAmount());
             }
-
+            sound.play();
         }
 
 

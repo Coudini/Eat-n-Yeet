@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,6 +18,9 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
 
 public class Character extends GameObject {
     // Limit for mobile accelerometer
@@ -63,6 +67,8 @@ public class Character extends GameObject {
     public float meter3y;
     public InputAdapter characterInput;
 
+    public Sound pick;
+    public Sound yeet;
 
     public Character(float posX, float posY, GameScreen game) {
         super(posX, posY, 1.9f, 1.9f, game);
@@ -71,6 +77,8 @@ public class Character extends GameObject {
         body = createBody(posX,posY,0.95f);
         allowPlayerCollision();
 
+        pick = audio.newSound(files.internal("PickUp.mp3"));
+        yeet = audio.newSound(files.internal("Yeet1.mp3"));
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
 
 
@@ -152,6 +160,9 @@ public class Character extends GameObject {
 
                 if (isCarryingFlingable && startPosSet) {
                     throwObjectToCarry(speedX,speedY);
+                    if (game.sounds) {
+                        yeet.play();
+                    }
                 }
                 meterStart = false;
                 ForceMeter.show(false);
@@ -274,6 +285,9 @@ public class Character extends GameObject {
                 // when colliding mask waste to ignore player collision
                 ignorePlayerCollision();
                 objectToCarry.ignorePlayerCollision();
+                if (game.sounds) {
+                    pick.play();
+                }
             }
         }
     }

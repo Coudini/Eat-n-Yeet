@@ -1,5 +1,6 @@
 package fi.tiko.eatnyeet;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 
 public class VolumeSwapButton extends Button {
@@ -28,13 +29,16 @@ public class VolumeSwapButton extends Button {
             if (index == 0) {
                 setTexture(textureArr[1]);
                 index = 1;
+                mainGame.gameScreen.sounds = false;
             } else if (index == 1) {
                 setTexture(textureArr[0]);
                 index = 0;
+                mainGame.gameScreen.sounds = true;
             } else {
                 System.out.println("texture swap error");
                 // put default just in case
                 setTexture(volumeOnTexture);
+                mainGame.gameScreen.sounds = true;
             }
             // highscore screenhere
             System.out.println("volume swap");
