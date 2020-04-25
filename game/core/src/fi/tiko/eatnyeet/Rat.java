@@ -165,7 +165,9 @@ public class Rat extends GameObject {
                 // when colliding mask waste to ignore player collision
                 ignorePlayerCollision();
                 objectToCarry.ignorePlayerCollision();
-                sound.play(0.1f);
+                if (game.sounds) {
+                    sound.play(0.1f);
+                }
             }
         }
     }

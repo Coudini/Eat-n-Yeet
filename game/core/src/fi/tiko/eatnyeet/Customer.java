@@ -179,7 +179,9 @@ public class Customer extends GameObject {
                 //stopMove(2f);
                 return null;
             });
-            field.play(0.3f);
+            if (game.sounds) {
+                field.play(0.3f);
+            }
         }
     }
     private void stopMove(float timeSeconds) {
@@ -217,7 +219,9 @@ public class Customer extends GameObject {
         objectToCarry.isJustThrown = true;
 
         objectToCarry = null;
-        yeet.play(0.3f);
+        if (game.sounds) {
+            yeet.play(0.3f);
+        }
     }
 
 }

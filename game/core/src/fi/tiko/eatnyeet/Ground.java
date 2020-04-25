@@ -28,7 +28,9 @@ public class Ground extends GameObject {
             ((FlingableObject) other).isOnFloor = true;
             game.player.resetCombo();
             game.player.resetScoreHandlers();
-            sound.play();
+            if (game.sounds) {
+                sound.play();
+            }
         }
     }
     @Override
