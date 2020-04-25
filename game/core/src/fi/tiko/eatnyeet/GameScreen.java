@@ -102,8 +102,8 @@ public class GameScreen implements Screen {
         Field.empty = new Texture("field_empty.png");
         PauseButton.pauseButtonTexture = new Texture("pause.png");
         Heart.texture = new Texture("heart.png");
-        song = audio.newMusic(files.internal("music2.mp3"));
-        song.setVolume(0.3f);
+        song = audio.newMusic(files.internal("music3.mp3"));
+        song.setVolume(0.4f);
         song.setLooping(true);
         sounds = mainGame.useSounds;
         if (sounds) {

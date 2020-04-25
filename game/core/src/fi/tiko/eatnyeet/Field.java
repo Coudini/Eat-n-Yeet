@@ -204,7 +204,7 @@ public class Field extends GameObject {
                 growRandomFood(((CompostWaste)other).getFillAmount());
             }
             if (game.sounds) {
-                sound.play(0.3f);
+                sound.play(0.2f);
             }
 
         }

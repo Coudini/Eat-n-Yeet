@@ -52,7 +52,7 @@ public class CompostHitArea extends GameObject {
                 game.player.characterCombo += 1;
             }
             if (game.sounds) {
-                sound.play(0.3f);
+                sound.play(0.2f);
             }
         }
 
