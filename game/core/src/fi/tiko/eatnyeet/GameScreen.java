@@ -1,32 +1,22 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
-
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.concurrent.Callable;
-
 import static com.badlogic.gdx.Gdx.audio;
 import static com.badlogic.gdx.Gdx.files;
 
@@ -34,13 +24,7 @@ public class GameScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
 
-    // window height and width in meters
-    //private final float WINDOW_WIDTH = 16f;
-    //private final float WINDOW_HEIGHT = 9f;
-
     private Box2DDebugRenderer debugRenderer;
-    //protected OrthographicCamera camera;
-    //protected OrthographicCamera fontCamera;
     protected boolean isPaused = false;
     public GameWorld gameWorld;
     public World world;
@@ -49,7 +33,6 @@ public class GameScreen implements Screen {
     public ArrayList<GraphicObject> graphicObjects;
     public ArrayList <Callable<Void>> functionsToBeCalled;
     public ArrayList<Button> buttons;
-    //public Array<Body> bodies;
     private boolean gameOver = false;
     Character player;
 
@@ -61,7 +44,6 @@ public class GameScreen implements Screen {
     Cloud cloud;
     Sun sun;
     PauseButton pauseButton;
-    //FreeTypeFontGenerator generator;
 
     BitmapFont score;
     BitmapFont combo;
@@ -73,12 +55,10 @@ public class GameScreen implements Screen {
     // Alternate for ArrayList
     HashSet<GameObject> toBeDeleted;
 
-    //localization
-
     String langScore;
     String langCombo;
 
-    public boolean sounds = true;
+    public boolean sounds;
     Music song;
 
     public GameScreen (SpriteBatch batch, MainGame mainGame) {
@@ -125,25 +105,16 @@ public class GameScreen implements Screen {
         song = audio.newMusic(files.internal("farmerinPaansarky.mp3"));
         song.setVolume(0.5f);
         song.setLooping(true);
+        sounds = mainGame.useSounds;
         if (sounds) {
             song.play();
         }
 
-        /*
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.GAME_CAM_WIDTH, game.GAME_CAM_HEIGHT);
 
-        fontCamera = new OrthographicCamera();
-        fontCamera.setToOrtho(false, game.FONT_CAM_WIDTH, game.FONT_CAM_HEIGHT);
-
-         */
-
-
-
-        gameObjects = new ArrayList<GameObject>();
-        customers = new ArrayList<GameObject>();
-        graphicObjects = new ArrayList<GraphicObject>();
-        functionsToBeCalled = new ArrayList<Callable<Void>>();
+        gameObjects = new ArrayList<>();
+        customers = new ArrayList<>();
+        graphicObjects = new ArrayList<>();
+        functionsToBeCalled = new ArrayList<>();
         buttons = new ArrayList<>();
         // gameworld  must be created before spawning anything else
         gameWorld = new GameWorld(this);
@@ -179,16 +150,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        // temp solution to resume game
-        if (isPaused && Gdx.input.justTouched()) {
-            resume();
-        }
+
         if (player.healthPoints <= 0) {
             mainGame.gameOverScreen = new GameOverScreen(batch, mainGame, player.characterScore);
             mainGame.setScreen(mainGame.gameOverScreen);
-            // TODO save scores etc
             gameOver = true;
-
+            song.stop();
         }
         if (!gameOver) {
             batch.setProjectionMatrix(mainGame.camera.combined);
@@ -214,7 +181,6 @@ public class GameScreen implements Screen {
             batch.begin();
             score.draw(batch, langScore + player.getScore(), 200, 700);
             combo.draw(batch, langCombo + player.getCombo(), 700, 700);
-            //health.draw(batch, "Health " + player.healthPoints, 400,600);
             batch.end();
         }
         if (gameOver) {
@@ -223,15 +189,12 @@ public class GameScreen implements Screen {
 
     }
     public void moveCamera() {
-        //camera.position.x = player.body.getPosition().x;
         mainGame.camera.update();
     }
     public void spawnDefaultObjects() {
         this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
         System.out.println(player.healthPoints);
-
-
 
         //sun
         this.sun = new Sun(mainGame);
@@ -302,7 +265,7 @@ public class GameScreen implements Screen {
             try {
                 callable.call();
             } catch (Exception e) {
-                //ystem.out.println("penis");
+                System.out.println("Error when calling callables");
             }
         }
         functionsToBeCalled.clear();
@@ -318,15 +281,35 @@ public class GameScreen implements Screen {
 
     /**
      * Spawns customer every 5 seconds, uses player lifetime as caluclation value
+     * Speed up when player score increases
      */
     float customerSpawnTimer = 0f;
-    float randTime = MathUtils.random(4f,8f);
+    float minTime = 4f;
+    float maxTime = 8f;
+    float randTime = MathUtils.random(minTime,maxTime);
     public void spawnCustomers () {
         if (Field.getFillLevel() > 0) {
             if (player.lifeTime - customerSpawnTimer > randTime) {
                 customers.add(new Customer(this));
                 customerSpawnTimer = player.lifeTime;
-                randTime = MathUtils.random(4f, 8f);
+
+                minTime = minTime - (float)player.characterScore * 0.001f;
+                maxTime = maxTime - (float)player.characterScore * 0.001f;
+
+                // limit how fast customers can possibly spawn
+                if (minTime < 1.8f) {
+                    minTime = 1.8f;
+                }
+                if (maxTime < 3f) {
+                    maxTime = 3f;
+                }
+                System.out.println("mintim" + minTime);
+                System.out.println("maxTim" + maxTime);
+                randTime = MathUtils.random(minTime, maxTime);
+
+                minTime = 4f;
+                maxTime =8f;
+
             }
         }
     }
@@ -395,10 +378,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        song.dispose();
         world.dispose();
         score.dispose();
         combo.dispose();
+        song.dispose();
         for (GameObject obj: gameObjects) {
             if (obj.getTexture()!=null) {
                 obj.getTexture().dispose();

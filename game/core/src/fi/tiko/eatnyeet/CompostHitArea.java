@@ -44,10 +44,16 @@ public class CompostHitArea extends GameObject {
                 System.out.println("Field already full!!");
             } else {
                 game.compost.fillLevel += ((FlingableObject) other).getFillAmount();
-                game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
+                if (game.player.characterCombo == 0) {
+                    game.player.characterScore += 1;
+                } else {
+                    game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
+                }
                 game.player.characterCombo += 1;
             }
-            sound.play();
+            if (game.sounds) {
+                sound.play();
+            }
         }
 
     }

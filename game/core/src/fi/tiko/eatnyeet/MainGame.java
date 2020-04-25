@@ -28,9 +28,6 @@ import java.util.concurrent.Callable;
  * */
 public class MainGame extends Game  {
 	public Locale locale = Locale.getDefault();
-	//public static Locale locale = new Locale("fi","FI");
-	//public static Locale locale = new Locale("us","US");
-	//public static Locale locale = new Locale("");
 
 	SpriteBatch batch;
 
@@ -41,6 +38,7 @@ public class MainGame extends Game  {
 
 	protected String playerName = "Player";
 	protected int highestScore = 0;
+	protected boolean useSounds = true;
 
 	protected final float FONT_CAM_WIDTH = 1280f;
 	protected final float FONT_CAM_HEIGHT = 720f;
@@ -50,9 +48,6 @@ public class MainGame extends Game  {
 	protected OrthographicCamera camera;
 	protected OrthographicCamera fontCamera;
 
-
-
-	// overide might not be needed
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -73,11 +68,6 @@ public class MainGame extends Game  {
 		}
 
 		setScreen(startScreen);
-
-		// set up font generator for all classes
-
-		//locale = Locale.getDefault();
-
 
 
 	}

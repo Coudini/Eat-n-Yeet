@@ -195,11 +195,18 @@ public class Field extends GameObject {
                 System.out.println("field already full");
             } else {
                 fillLevel += ((CompostWaste) other).getFillAmount();
-                game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
+                if (game.player.characterCombo == 0) {
+                    game.player.characterScore += 1;
+                } else {
+                    game.player.characterScore += (int) ((CompostWaste) other).flyTime * game.player.characterCombo;
+                }
                 game.player.characterCombo += 1;
                 growRandomFood(((CompostWaste)other).getFillAmount());
             }
-            sound.play();
+            if (game.sounds) {
+                sound.play();
+            }
+
         }
 
 

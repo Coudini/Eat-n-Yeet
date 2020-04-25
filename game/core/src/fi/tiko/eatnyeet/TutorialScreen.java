@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class TutorialScreen implements Screen {
     SpriteBatch batch;
@@ -29,9 +28,6 @@ public class TutorialScreen implements Screen {
     ArrayList<Button> buttons;
     Button arrowLeft;
     Button arrowRight;
-
-    //localization
-    Locale locale = Locale.getDefault();
 
     String langBack;
     String langTutorial1;
