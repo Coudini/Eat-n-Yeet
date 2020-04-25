@@ -40,7 +40,7 @@ public class CompostCollectPoint extends GameObject {
                 });
             }
             if (game.sounds){
-                game.player.pick.play();
+                game.player.pick.play(0.4f);
             }
 
         }

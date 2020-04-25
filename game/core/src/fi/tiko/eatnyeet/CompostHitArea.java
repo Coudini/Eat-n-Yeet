@@ -23,7 +23,7 @@ public class CompostHitArea extends GameObject {
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
-        sound = audio.newSound(files.internal("HitWall.mp3"));
+        sound = audio.newSound(files.internal("score.mp3"));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CompostHitArea extends GameObject {
                 game.player.characterCombo += 1;
             }
             if (game.sounds) {
-                sound.play();
+                sound.play(0.3f);
             }
         }
 

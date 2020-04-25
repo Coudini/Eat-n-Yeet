@@ -1,6 +1,7 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,6 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
 
 public class Rat extends GameObject {
 
@@ -26,6 +30,8 @@ public class Rat extends GameObject {
     protected FlingableObject objectToCarry;
     protected boolean isCarryingFlingable = false;
 
+    Sound sound;
+
     public Rat (float posX, float posY, GameScreen game) {
         super(posX, posY, 1f, 0.5f, game);
         ratRun = Util.createTextureAnimation(6,1, run);
@@ -34,6 +40,7 @@ public class Rat extends GameObject {
 
         allowPlayerCollision();
         //ignorePlayerCollision();
+        sound = audio.newSound(files.internal("rat.mp3"));
 
     }
 
@@ -158,6 +165,7 @@ public class Rat extends GameObject {
                 // when colliding mask waste to ignore player collision
                 ignorePlayerCollision();
                 objectToCarry.ignorePlayerCollision();
+                sound.play(0.3f);
             }
         }
     }

@@ -2,6 +2,7 @@ package fi.tiko.eatnyeet;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+
+import static com.badlogic.gdx.Gdx.audio;
+import static com.badlogic.gdx.Gdx.files;
 
 public class Customer extends GameObject {
 
@@ -33,6 +37,9 @@ public class Customer extends GameObject {
     public static Texture customerRun3;
 
     Animation<TextureRegion> run;
+
+    Sound field;
+    Sound yeet;
 
 
     public Customer(GameScreen game) {
@@ -58,6 +65,8 @@ public class Customer extends GameObject {
         for (Fixture fix: body.getFixtureList()) {
             fix.setFilterData(filter);
         }
+        field = audio.newSound(files.internal("field.mp3"));
+        yeet = audio.newSound(files.internal("bite.mp3"));
     }
 
     @Override
@@ -170,6 +179,7 @@ public class Customer extends GameObject {
                 //stopMove(2f);
                 return null;
             });
+            field.play(0.3f);
         }
     }
     private void stopMove(float timeSeconds) {
@@ -207,6 +217,7 @@ public class Customer extends GameObject {
         objectToCarry.isJustThrown = true;
 
         objectToCarry = null;
+        yeet.play(0.3f);
     }
 
 }

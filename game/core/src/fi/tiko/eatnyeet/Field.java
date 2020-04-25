@@ -37,7 +37,7 @@ public class Field extends GameObject {
         fillLevel = maxFill;
         growRandomFood(maxFill);
 
-        sound = audio.newSound(files.internal("HitWall.mp3"));
+        sound = audio.newSound(files.internal("score.mp3"));
     }
 
     @Override
@@ -204,7 +204,7 @@ public class Field extends GameObject {
                 growRandomFood(((CompostWaste)other).getFillAmount());
             }
             if (game.sounds) {
-                sound.play();
+                sound.play(0.3f);
             }
 
         }
