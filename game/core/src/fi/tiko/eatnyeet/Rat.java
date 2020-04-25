@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 public class Rat extends GameObject {
 
     private final float WINDOW_WIDTH = 16f;
+    private float speed = 1f;
     private  float FLOOR;
 
     boolean isRight = true;
@@ -30,8 +31,6 @@ public class Rat extends GameObject {
         ratRun = Util.createTextureAnimation(6,1, run);
 
         body = createBody(posX,posY,0.3f);
-
-        //body.setGravityScale(-80f);
 
         allowPlayerCollision();
         //ignorePlayerCollision();
@@ -59,10 +58,10 @@ public class Rat extends GameObject {
     }
 
     public void killYourSelf() {
-
-        // add healthbar--; here
+        // ui healthbar
         game.healthbar.reduce();
 
+        // delete rat
         game.toBeDeleted.add(this);
         game.toBeDeleted.add(objectToCarry);
         game.player.healthPoints--;
@@ -82,22 +81,23 @@ public class Rat extends GameObject {
 
     private float tempX = MathUtils.random (1.3f,(WINDOW_WIDTH - 1.3f));
     public void move() {
-        //System.out.println("*tips fedora");
 
-        //add moving towards veggies here
-
-            //temporal movement
+        speed = speed + (float)game.player.characterScore * 0.006f;
+        // speed limit to 3f
+        if (speed > 3f) {
+            speed = 3f;
+        }
         if (getX() < WINDOW_WIDTH / 2 && getX() >  1.3f) {
             if (isRight) {
-                body.setLinearVelocity(1f, body.getLinearVelocity().y);
+                body.setLinearVelocity(speed, body.getLinearVelocity().y);
             } else {
-                body.setLinearVelocity(-1f, body.getLinearVelocity().y);
+                body.setLinearVelocity(-speed, body.getLinearVelocity().y);
             }
         } else if(getX() > WINDOW_WIDTH / 2 && getX() < WINDOW_WIDTH - 1.3f) {
             if (isRight) {
-                body.setLinearVelocity(1f, body.getLinearVelocity().y);
+                body.setLinearVelocity(speed, body.getLinearVelocity().y);
             } else {
-                body.setLinearVelocity(-1f, body.getLinearVelocity().y);
+                body.setLinearVelocity(-speed, body.getLinearVelocity().y);
             }
         } else {
             float temp = MathUtils.random(-1f,1f);
@@ -124,6 +124,7 @@ public class Rat extends GameObject {
         //}
 
         currentAnimation = ratRun;
+        speed = 1f;
 
         /**
         // If character is moving use characterRun animation
@@ -137,6 +138,13 @@ public class Rat extends GameObject {
         }
          */
     }
+
+    /***
+     * Finds collisions with food that also implements flinable object
+     * When collision is detected, attach the object to rat
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
         if (other != null && other instanceof FlingableObject &&  other instanceof Food) {

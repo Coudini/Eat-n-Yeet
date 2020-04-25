@@ -10,71 +10,53 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
 
-public class TutorialScreen implements Screen {
+
+public class InfoScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
-    public static Texture arrowLeftTexture;
-    public static Texture arrowRightTexture;
-
-    private ArrayList<Texture> tutorialImages;
-    private static Texture tut1;
-    private static Texture tut2;
-    private int index = 0;
-    private int tutImgPrintX;
-    private int tutImgPrintY;
-
 
     ArrayList<Button> buttons;
-    Button arrowLeft;
-    Button arrowRight;
+    ArrayList<GraphicObject> logos;
 
     String langBack;
-    String langTutorial1;
-    String langTutorial2;
+    String langTiko;
+    String langTamk;
 
 
-
-    public TutorialScreen (SpriteBatch batch, MainGame mainGame) {
+    public InfoScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
         I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
         startScreenBackGround = new Texture("menu_background.png");
-        arrowLeftTexture = new Texture("arrow_left.png");
-        arrowRightTexture = new Texture("arrow_right.png");
+
 
         langBack = lang.get("back");
-        langTutorial1 = lang.get("tutorial1");
-        langTutorial2 = lang.get("tutorial2");
-        tut1 = new Texture(langTutorial1);
-        tut2 = new Texture(langTutorial2);
-
-        // refresh these values if adding more tutorial images that are not same size as tut1!
-        tutImgPrintX = (int)mainGame.FONT_CAM_WIDTH / 2 - tut1.getWidth() / 2;
-        tutImgPrintY = (int)mainGame.FONT_CAM_HEIGHT / 2 - tut1.getHeight() / 2;
-
-        tutorialImages = new ArrayList<>();
-        tutorialImages.add(tut1);
-        tutorialImages.add(tut2);
+        langTamk = lang.get("tamk");
+        langTiko = lang.get("tiko");
 
         BackToMainMenuButton.backButtonTexture = new Texture(langBack);
 
         buttons = new ArrayList<>();
+        buttons.add(new BackToMainMenuButton(mainGame));
+
+        logos = new ArrayList<>();
+        GraphicObject oras = new GraphicObject(new Texture("oras.png"),mainGame);
+        oras.setPosition(mainGame.FONT_CAM_WIDTH / 2 - oras.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 250f);
+        oras.setScale(0.7f);
+        logos.add(oras);
+
+        GraphicObject tamk = new GraphicObject(new Texture(langTamk),mainGame);
+        tamk.setPosition(mainGame.FONT_CAM_WIDTH / 2 - tamk.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 500f);
+        tamk.setScale(0.7f);
+        logos.add(tamk);
+
+        GraphicObject tiko = new GraphicObject(new Texture(langTiko),mainGame);
+        tiko.setPosition(mainGame.FONT_CAM_WIDTH / 2 - tiko.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 700f);
+        tiko.setScale(0.7f);
+        logos.add(tiko);
 
 
-
-        float posX = mainGame.FONT_CAM_WIDTH / 2f - BackToMainMenuButton.backButtonTexture.getWidth() / 2;
-        float poxY = 50f;
-
-        buttons.add(new BackToMainMenuButton(mainGame,posX,poxY));
-
-        posX = 50f;
-        arrowLeft = new ArrowButton(mainGame,arrowLeftTexture, posX,poxY);
-        posX = mainGame.FONT_CAM_WIDTH - 50f - arrowRightTexture.getWidth() * 0.7f;
-        arrowRight = new ArrowButton(mainGame,arrowRightTexture,posX,poxY);
-
-        buttons.add(arrowRight);
-        buttons.add(arrowLeft);
 
 
         // all startscreen inputs are handled in here
@@ -90,33 +72,16 @@ public class TutorialScreen implements Screen {
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(mainGame.fontCamera.combined);
-        updateButtons();
-        arrowClickChecker();
+        updateObjects();
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
-        batch.draw(tutorialImages.get(index),tutImgPrintX,tutImgPrintY);
-        renderButtons(batch);
+        renderObjects(batch);
         batch.end();
-    }
-
-    private void arrowClickChecker() {
-        if (arrowRight.isClicked) {
-            arrowRight.isClicked = false;
-            if (index < tutorialImages.size()-1) {
-                index++;
-            }
-        } else if (arrowLeft.isClicked) {
-            arrowLeft.isClicked = false;
-            if (index > 0) {
-                index--;
-            }
-        }
-
     }
 
 
     /**
-     * Startscreen inputs are handled here
+     * inputs are handled here
      * Scales button up if user holds down it and scales down after not holding it down anymore
      * Sets button value isClicked to true if click was successfully pressed on proper location
      */
@@ -158,13 +123,19 @@ public class TutorialScreen implements Screen {
             }
         });
     }
-    public void updateButtons() {
+    public void updateObjects() {
         for (Button obj: buttons) {
             obj.update();
         }
+        for (GraphicObject obj: logos) {
+            obj.update();
+        }
     }
-    public void renderButtons(SpriteBatch batch) {
+    public void renderObjects(SpriteBatch batch) {
         for (Button obj: buttons) {
+            obj.render(batch);
+        }
+        for (GraphicObject obj: logos) {
             obj.render(batch);
         }
     }
@@ -198,7 +169,6 @@ public class TutorialScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("Tutorial dispose complete");
+        System.out.println("Info dispose complete");
     }
-
 }

@@ -14,6 +14,12 @@ public class VolumeSwapButton extends Button {
     public VolumeSwapButton (MainGame mainGame) {
         super(volumeOnTexture,volumeOnTexture.getWidth() * 0.8f,volumeOnTexture.getHeight() * 0.8f,mainGame);
         setPosition(mainGame.FONT_CAM_WIDTH * 0.1f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 100f - getHeight() / 2f);
+        if (mainGame.useSounds) {
+            index = 0;
+        } else {
+            index = 1;
+        }
+        setTexture(textureArr[index]);
         xStart = getX();
         xEnd = getX() + getWidth();
         yStart = getY();
@@ -29,16 +35,16 @@ public class VolumeSwapButton extends Button {
             if (index == 0) {
                 setTexture(textureArr[1]);
                 index = 1;
-                mainGame.gameScreen.sounds = false;
+                mainGame.useSounds = false;
             } else if (index == 1) {
                 setTexture(textureArr[0]);
                 index = 0;
-                mainGame.gameScreen.sounds = true;
+                mainGame.useSounds = true;
             } else {
                 System.out.println("texture swap error");
                 // put default just in case
                 setTexture(volumeOnTexture);
-                mainGame.gameScreen.sounds = true;
+                mainGame.useSounds = true;
             }
             // highscore screenhere
             System.out.println("volume swap");

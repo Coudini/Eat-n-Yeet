@@ -24,12 +24,15 @@ public class QuitToMainMenuButton extends Button {
 
         // when clicked play button start game
         if (isClicked) {
-            // highscore screenhere
-            System.out.println("?");
-            isClicked = false;
-            //mainGame.gameScreen.dispose();
-            //mainGame.startScreen.dispose();
+            try {
+                if (mainGame.gameScreen.song.isPlaying()) {
+                    mainGame.gameScreen.song.stop();
+                }
+            } catch (Exception e) {
+                System.out.println("There is no gamescreen created");
+            }
 
+            isClicked = false;
             mainGame.startScreen = new StartScreen(mainGame.batch,mainGame);
             mainGame.setScreen(mainGame.startScreen);
         }

@@ -48,6 +48,7 @@ public class StartScreen implements Screen {
         LanguageSwapButton.buttonTexture = new Texture(langSwapIcon);
         VolumeSwapButton.volumeOnTexture = new Texture("volume_on.png");
         VolumeSwapButton.volumeOffTexture = new Texture("volume_off.png");
+        InfoButton.buttonTexture = new Texture("infobutton.png");
 
         buttons = new ArrayList<>();
 
@@ -57,6 +58,7 @@ public class StartScreen implements Screen {
         buttons.add(new QuitButton(mainGame));
         buttons.add(new LanguageSwapButton(mainGame));
         buttons.add(new VolumeSwapButton(mainGame));
+        buttons.add(new InfoButton(mainGame));
 
 
         // all startscreen inputs are handled in here
