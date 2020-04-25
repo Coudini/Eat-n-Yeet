@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -10,55 +9,54 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class StartScreen implements Screen {
 
+public class InfoScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
-    public static Texture logo;
 
     ArrayList<Button> buttons;
+    ArrayList<GraphicObject> logos;
 
-    //localization
+    String langBack;
+    String langTiko;
+    String langTamk;
 
 
-    String langTutorial;
-    String langPlay;
-    String langHighScore;
-    String langQuit;
-    String langSwapIcon;
-
-    public StartScreen (SpriteBatch batch, MainGame mainGame) {
+    public InfoScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
         I18NBundle lang = I18NBundle.createBundle(Gdx.files.internal("lang"), mainGame.locale);
-        logo = new Texture(("text_logo.png"));
         startScreenBackGround = new Texture("menu_background.png");
-        langTutorial = lang.get("tutorial");
-        langPlay = lang.get("play");
-        langHighScore = lang.get("highscore");
-        langQuit = lang.get("quit");
-        langSwapIcon = lang.get("languageIcon");
-        TutorialButton.tutorialButtonTexture = new Texture(langTutorial);
-        PlayButton.playButtonTexture = new Texture(langPlay);
-        HighscoreButton.highscoreButtonTexture = new Texture(langHighScore);
-        QuitButton.quitButtonTexture = new Texture(langQuit);
-        LanguageSwapButton.buttonTexture = new Texture(langSwapIcon);
-        VolumeSwapButton.volumeOnTexture = new Texture("volume_on.png");
-        VolumeSwapButton.volumeOffTexture = new Texture("volume_off.png");
-        InfoButton.buttonTexture = new Texture("infobutton.png");
+
+
+        langBack = lang.get("back");
+        langTamk = lang.get("tamk");
+        langTiko = lang.get("tiko");
+
+        BackToMainMenuButton.backButtonTexture = new Texture(langBack);
 
         buttons = new ArrayList<>();
+        buttons.add(new BackToMainMenuButton(mainGame));
 
-        buttons.add(new PlayButton(mainGame));
-        buttons.add(new TutorialButton(mainGame));
-        buttons.add(new HighscoreButton(mainGame));
-        buttons.add(new QuitButton(mainGame));
-        buttons.add(new LanguageSwapButton(mainGame));
-        buttons.add(new VolumeSwapButton(mainGame));
-        buttons.add(new InfoButton(mainGame));
+        logos = new ArrayList<>();
+        GraphicObject oras = new GraphicObject(new Texture("oras.png"),mainGame);
+        oras.setPosition(mainGame.FONT_CAM_WIDTH / 2 - oras.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 250f);
+        oras.setScale(0.7f);
+        logos.add(oras);
+
+        GraphicObject tamk = new GraphicObject(new Texture(langTamk),mainGame);
+        tamk.setPosition(mainGame.FONT_CAM_WIDTH / 2 - tamk.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 500f);
+        tamk.setScale(0.7f);
+        logos.add(tamk);
+
+        GraphicObject tiko = new GraphicObject(new Texture(langTiko),mainGame);
+        tiko.setPosition(mainGame.FONT_CAM_WIDTH / 2 - tiko.getWidth() / 2,mainGame.FONT_CAM_HEIGHT - 700f);
+        tiko.setScale(0.7f);
+        logos.add(tiko);
+
+
 
 
         // all startscreen inputs are handled in here
@@ -74,17 +72,16 @@ public class StartScreen implements Screen {
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(mainGame.fontCamera.combined);
-        updateButtons();
+        updateObjects();
         batch.begin();
         batch.draw(startScreenBackGround,0f,0f);
-        batch.draw(logo,mainGame.FONT_CAM_WIDTH / 2f - logo.getWidth() / 2f, 500f);
-        renderButtons(batch);
+        renderObjects(batch);
         batch.end();
     }
 
 
     /**
-     * Startscreen inputs are handled here
+     * inputs are handled here
      * Scales button up if user holds down it and scales down after not holding it down anymore
      * Sets button value isClicked to true if click was successfully pressed on proper location
      */
@@ -126,13 +123,19 @@ public class StartScreen implements Screen {
             }
         });
     }
-    public void updateButtons() {
+    public void updateObjects() {
         for (Button obj: buttons) {
             obj.update();
         }
+        for (GraphicObject obj: logos) {
+            obj.update();
+        }
     }
-    public void renderButtons(SpriteBatch batch) {
+    public void renderObjects(SpriteBatch batch) {
         for (Button obj: buttons) {
+            obj.render(batch);
+        }
+        for (GraphicObject obj: logos) {
             obj.render(batch);
         }
     }
@@ -166,6 +169,6 @@ public class StartScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("StartScreen dispose complete");
+        System.out.println("Info dispose complete");
     }
 }
