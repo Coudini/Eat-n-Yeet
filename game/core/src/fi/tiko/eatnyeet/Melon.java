@@ -26,7 +26,6 @@ public class Melon extends FlingableObject implements Food {
         body = createBody(posX,posY,0.3f);
         allowPlayerCollision();
         eaten = false;
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
     public Melon(float posX, float posY, float radius, GameScreen game) {
         super(texture1, posX, posY, 0.5f, 0.5f, game);
@@ -38,8 +37,6 @@ public class Melon extends FlingableObject implements Food {
         melon = Util.createTextureAnimation(4,1, melonNoDisco);
         discoMelon = Util.createTextureAnimation(10,1,melonDisco);
         eaten = false;
-        
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 
 

@@ -177,6 +177,5 @@ public class GameOverScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("Gameover screen dispose complete");
     }
 }

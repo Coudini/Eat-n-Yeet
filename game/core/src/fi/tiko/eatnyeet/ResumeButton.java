@@ -19,9 +19,7 @@ public class ResumeButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-            System.out.println("Resume");
             mainGame.gameScreen.resume();
             isClicked = false;
             mainGame.setScreen(mainGame.gameScreen);

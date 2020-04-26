@@ -19,7 +19,6 @@ public class UpdateNameButton extends Button {
     public void update () {
         super.update();
         if (isClicked) {
-            System.out.println("name updated and score sent");
             isClicked = false;
             mainGame.highScoreScreen.createNewScore();
         }

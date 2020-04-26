@@ -41,13 +41,10 @@ public class VolumeSwapButton extends Button {
                 index = 0;
                 mainGame.useSounds = true;
             } else {
-                System.out.println("texture swap error");
                 // put default just in case
                 setTexture(volumeOnTexture);
                 mainGame.useSounds = true;
             }
-            // highscore screenhere
-            System.out.println("volume swap");
             isClicked = false;
         }
     }

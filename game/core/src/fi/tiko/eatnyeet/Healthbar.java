@@ -1,9 +1,6 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Healthbar extends GraphicObject {

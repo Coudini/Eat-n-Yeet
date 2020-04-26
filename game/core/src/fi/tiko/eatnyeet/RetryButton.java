@@ -19,15 +19,10 @@ public class RetryButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-            // highscore screenhere
-            System.out.println("retry");
             isClicked = false;
             mainGame.gameScreen = new GameScreen(mainGame.batch,mainGame);
             mainGame.setScreen(mainGame.gameScreen);
-            //mainGame.gameScreen.dispose();
-            //mainGame.startScreen.dispose();
         }
     }
 }

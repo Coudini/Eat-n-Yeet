@@ -2,7 +2,6 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
@@ -43,61 +42,4 @@ public class Compost extends GameObject {
         }
     }
 
-    /**
-     * When two bodies collides first time onCollision will be called. Many if checkers to do spesifc tasks based on two colliding classes.
-     *
-     * When colliding with food which is also flingable object, compost tries to get filled by the object fill amount and the colliding object will be added to delete list.
-     * When colliding with Character, compost releases all the compost waste and creates compostWaste object.
-     * @param contact
-     * @param other is gameObject gotten from body userdata, can check from this if the object is also flingableObject
-     */
-
-   /* @Override
-    public void onCollision(Contact contact, GameObject other) {
-
-        if (other != null && other instanceof Food && other instanceof FlingableObject) {
-            game.toBeDeleted.add(other);
-            // if character carries the object to compost this will reset character object reference and booleans
-            if (((FlingableObject) other).isBeingCarried) {
-                callAfterPhysicsStep(() -> {
-                    ((FlingableObject) other).isBeingCarried = false;
-                    game.player.resetObjectToCarry();
-                    return null;
-                });
-            }
-
-            if (fillLevel >= maxFill) {
-                System.out.println("Field already full!!");
-            } else {
-                fillLevel += ((FlingableObject) other).getFillAmount();
-                game.player.characterScore += (int) ((FlingableObject) other).flyTime * game.player.characterCombo;
-                game.player.characterCombo += 1;
-            }
-
-
-            //System.out.println("Compost filllevel = " +  fillLevel);
-        }
-
-        if (other != null && other instanceof Character && fillLevel > 0f) {
-            //System.out.println("character detected");
-
-            // cannot add object during physics steps so it will be added later
-           callAfterPhysicsStep(() -> {
-               float posX = game.player.body.getPosition().x;
-               float posY = game.player.body.getPosition().y + 1f;
-               float fill = fillLevel;
-
-               if (fillLevel >= maxFill) {
-                   fill = maxFill;
-               }
-
-               CompostWaste temp = new CompostWaste(posX,posY,fill, game);
-               game.gameObjects.add(temp);
-               fillLevel = 0f;
-               return null;
-           });
-        }
-    }
-
-    */
 }

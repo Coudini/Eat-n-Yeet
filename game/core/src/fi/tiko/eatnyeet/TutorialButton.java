@@ -19,9 +19,7 @@ public class TutorialButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-                // swap to tutorial screen
             isClicked = false;
             TutorialScreen tutScreen = new TutorialScreen(mainGame.batch,mainGame);
             mainGame.setScreen(tutScreen);

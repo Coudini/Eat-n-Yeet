@@ -62,7 +62,6 @@ public class MainGame extends Game  {
 
 		//probably useless
 		String tmp = locale.getLanguage();
-		System.out.println(tmp);
 		if (!(tmp.equals("en") || tmp.equals("fi"))) {
 			locale = new Locale("fi", "FI");
 		}
@@ -74,7 +73,6 @@ public class MainGame extends Game  {
 
 	public  void changeLocale() {
 		String tmp = locale.getLanguage();
-		System.out.println(locale.getLanguage());
 
 		if (tmp.equals("en")) {
 			locale = new Locale("fi","FI");

@@ -150,7 +150,6 @@ public class PauseScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("pausescreen dispose complete");
     }
 }
 

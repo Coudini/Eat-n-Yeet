@@ -68,34 +68,6 @@ public class GameObject extends Sprite {
     }
 
 
-
-
-   /* // This can be used if sprite only has one texture animation, otherwise use the version that returns Animation<TextureRegion>
-    public void createTextureAnimation(int cols, int rows) {
-
-        // Calculate the tile width from the sheet
-        int tileWidth = this.getTexture().getWidth() / cols;
-
-        // Calculate the tile height from the sheet
-        int tileHeight = this.getTexture().getHeight() / rows;
-
-        // Create 2D array from the texture (REGIONS of a TEXTURE).
-        TextureRegion[][] tmp = TextureRegion.split(this.getTexture(), tileWidth, tileHeight);
-
-        // Transform the 2D array to 1D
-        TextureRegion[] allFrames = toTextureArray( tmp, cols, rows );
-
-        textureAnimation = new Animation(6 / 60f, allFrames);
-
-        currentFrameTexture = textureAnimation.getKeyFrame(stateTime, true);
-    }
-
-    */
-
-
-
-
-
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
@@ -193,6 +165,11 @@ public class GameObject extends Sprite {
 
     }
 
+    /**
+     * Saves callable methods or tasks program need to run later on. Purpose is to avoid conflicts with physicsStep so you can use this to make your program do the tasks after it.
+     * Good example is deleting bodies from world, that must be done after physicsstep
+     * @param toBeCalled Method / code that will run after physic step
+     */
     public void callAfterPhysicsStep (Callable<Void> toBeCalled) {
         game.functionsToBeCalled.add(toBeCalled);
     }

@@ -192,7 +192,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			 name = nameField.getText();
 			 mainGame.playerName = name;
 		} catch (Exception e) {
-			System.out.println("No text");
+			// could give out message for user that field cannot be empty
 		}
 
 		int score = mainGame.highestScore;

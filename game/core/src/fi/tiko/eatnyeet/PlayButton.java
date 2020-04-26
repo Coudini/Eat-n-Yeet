@@ -19,7 +19,6 @@ public class PlayButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
             mainGame.gameScreen = new GameScreen(mainGame.batch,mainGame);
             mainGame.setScreen(mainGame.gameScreen);

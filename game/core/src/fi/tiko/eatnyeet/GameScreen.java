@@ -194,7 +194,6 @@ public class GameScreen implements Screen {
     public void spawnDefaultObjects() {
         this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
-        System.out.println(player.healthPoints);
 
         //sun
         this.sun = new Sun(mainGame);
@@ -204,7 +203,6 @@ public class GameScreen implements Screen {
 
         //clouds
         for (int i = 0; i < 3; i++) {
-            System.out.println(i);
             if (i==0) {
                 this.cloud = new Cloud(Cloud.texture1, mainGame);
                 graphicObjects.add(cloud);
@@ -303,8 +301,6 @@ public class GameScreen implements Screen {
                 if (maxTime < 3f) {
                     maxTime = 3f;
                 }
-                System.out.println("mintim" + minTime);
-                System.out.println("maxTim" + maxTime);
                 randTime = MathUtils.random(minTime, maxTime);
 
                 minTime = 4f;
@@ -366,7 +362,6 @@ public class GameScreen implements Screen {
     }
     @Override
     public void resume () {
-        System.out.println("resume");
         isPaused = false;
     }
 

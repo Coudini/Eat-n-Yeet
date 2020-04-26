@@ -56,9 +56,6 @@ public class InfoScreen implements Screen {
         tiko.setScale(0.7f);
         logos.add(tiko);
 
-
-
-
         // all startscreen inputs are handled in here
         createInputProcessor();
 
@@ -169,6 +166,5 @@ public class InfoScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("Info dispose complete");
     }
 }

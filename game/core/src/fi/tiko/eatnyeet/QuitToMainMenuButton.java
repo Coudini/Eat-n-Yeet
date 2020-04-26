@@ -1,7 +1,5 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class QuitToMainMenuButton extends Button {
@@ -18,12 +16,13 @@ public class QuitToMainMenuButton extends Button {
 
     }
 
+
     @Override
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
+            // check if there is gamescreen created, if is stop the music
             try {
                 if (mainGame.gameScreen.song.isPlaying()) {
                     mainGame.gameScreen.song.stop();

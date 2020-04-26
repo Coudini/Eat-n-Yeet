@@ -126,25 +126,9 @@ public class Rat extends GameObject {
             tempX = MathUtils.random (1.3f,(WINDOW_WIDTH - 1.3f));
         }
 
-        //for random jittery jumps, can't get gravity working. rat falls too slow
-        //if (getX() > tempX - 0.3f && getX() < tempX + 0.3f) {
-        //    body.applyLinearImpulse(new Vector2(0f,1f), body.getWorldCenter(), true);
-        //}
-
         currentAnimation = ratRun;
         speed = 1f;
 
-        /**
-        // If character is moving use characterRun animation
-        if (body.getLinearVelocity().x != 0) {
-            currentAnimation = characterRun;
-        }
-        // if not moving use idle animation
-        else {
-            currentAnimation = characterIdle;
-
-        }
-         */
     }
 
     public void seek() {

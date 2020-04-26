@@ -41,7 +41,7 @@ public class CompostHitArea extends GameObject {
             }
 
             if (game.compost.fillLevel >= game.compost.maxFill) {
-                System.out.println("Field already full!!");
+                // field full, could add feature to notify user about it
             } else {
                 game.compost.fillLevel += ((FlingableObject) other).getFillAmount();
                 if (game.player.characterCombo == 0) {

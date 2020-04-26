@@ -188,11 +188,9 @@ public class Character extends GameObject {
     }
     public void updateScoreAndCombo() {
         if (characterScore != previousScore) {
-            //System.out.println("Current score = " + characterScore);
             previousScore = characterScore;
         }
         if (characterCombo != previousCombo) {
-            //System.out.println("Current combo = " + characterCombo);
             previousCombo = characterCombo;
         }
     }

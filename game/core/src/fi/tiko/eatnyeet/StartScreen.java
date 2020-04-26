@@ -21,9 +21,6 @@ public class StartScreen implements Screen {
 
     ArrayList<Button> buttons;
 
-    //localization
-
-
     String langTutorial;
     String langPlay;
     String langHighScore;
@@ -166,6 +163,5 @@ public class StartScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("StartScreen dispose complete");
     }
 }

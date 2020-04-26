@@ -16,7 +16,6 @@ public class ForceMeter extends GraphicObject {
     public ForceMeter(MainGame mainGame) {
         super(texture, width, height, mainGame);
         setOriginCenter();
-        System.out.println("meter made");
         show = false;
     }
 

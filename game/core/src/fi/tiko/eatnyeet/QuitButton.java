@@ -1,7 +1,6 @@
 package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class QuitButton extends Button {
@@ -30,13 +29,8 @@ public class QuitButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-            // highscore screenhere
-            System.out.println("quit");
             isClicked = false;
-            //mainGame.gameScreen.dispose();
-            //mainGame.startScreen.dispose();
             Gdx.app.exit();
         }
     }

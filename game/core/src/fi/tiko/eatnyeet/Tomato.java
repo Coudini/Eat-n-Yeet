@@ -28,9 +28,6 @@ public class Tomato extends FlingableObject implements Food {
         allowPlayerCollision();
         eaten = false;
 
-
-
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
     public Tomato(float posX, float posY, float radius, GameScreen game) {
         super(texture1, posX, posY, 0.6f, 0.6f, game);
@@ -42,7 +39,6 @@ public class Tomato extends FlingableObject implements Food {
         tomato = Util.createTextureAnimation(4,1, tomatoNoDisco);
         discoTomato = Util.createTextureAnimation(9,1,tomatoDisco);
         eaten = false;
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 
     @Override

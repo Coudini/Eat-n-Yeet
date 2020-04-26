@@ -198,7 +198,6 @@ public class TutorialScreen implements Screen {
         for (Button btn : buttons) {
             btn.getTexture().dispose();
         }
-        System.out.println("Tutorial dispose complete");
     }
 
 }

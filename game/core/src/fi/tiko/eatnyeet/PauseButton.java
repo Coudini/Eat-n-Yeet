@@ -18,9 +18,7 @@ public class PauseButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-            System.out.println("Pause");
             mainGame.gameScreen.pause();
             isClicked = false;
             PauseScreen temp = new PauseScreen(mainGame.batch,mainGame);

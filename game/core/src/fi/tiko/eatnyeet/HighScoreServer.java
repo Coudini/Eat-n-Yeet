@@ -66,8 +66,6 @@ public class HighScoreServer {
                     HighScoreEntry score = new HighScoreEntry(
                             jsonObject.get(i).get(0).asString(),
                             jsonObject.get(i).get(1).asInt());
-                    //System.out.println(jsonObject.get(i).get(0).asString());
-                    //System.out.println(jsonObject.get(i).get(1).asInt());
                     highScores.add(score);
                 }
                 if (verbose)

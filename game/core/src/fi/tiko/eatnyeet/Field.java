@@ -106,11 +106,7 @@ public class Field extends GameObject {
         
         if (lifeTime - timeWhenPreviousCrop > 5f) {
             timeWhenPreviousCrop = lifeTime;
-            //fillLevel -= 1f;
-            //throwObject();
-            System.out.println(fillLevel);
-            //temporal rat spawn
-                // purkka maanantain demoa varten:D
+
                 boolean spawnrat = true;
                 for (GameObject obj : game.gameObjects) {
                     if (obj instanceof Rat) {
@@ -127,9 +123,7 @@ public class Field extends GameObject {
             float posY = 1f;
             float posX = 2f;
 
-
             Rat temp = new Rat(posX, posY, game);
-            //temp.body.setLinearVelocity(randX,randY);
             game.gameObjects.add(temp);
 
             return null;
@@ -192,7 +186,7 @@ public class Field extends GameObject {
             }
             if (fillLevel >= maxFill) {
                 fillLevel = maxFill;
-                System.out.println("field already full");
+                // could add message that informs user about field is full
             } else {
                 fillLevel += ((CompostWaste) other).getFillAmount();
                 if (game.player.characterCombo == 0) {

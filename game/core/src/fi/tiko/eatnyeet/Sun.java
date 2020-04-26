@@ -26,7 +26,7 @@ public class Sun extends GraphicObject {
     }
     public void checkDisco() {
         // discomode based on combo-points
-        if (mainGame.gameScreen.player.characterCombo > 1) {
+        if (mainGame.gameScreen.player.characterCombo > 2) {
             currentAnimation = discoSun;
         } else {
             currentAnimation = sun;

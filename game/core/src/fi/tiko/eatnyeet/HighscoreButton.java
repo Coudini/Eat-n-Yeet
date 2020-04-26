@@ -18,12 +18,9 @@ public class HighscoreButton extends Button {
     public void update () {
         super.update();
 
-        // when clicked play button start game
         if (isClicked) {
-            // highscore screenhere
             mainGame.highScoreScreen = new HighScoreScreen(mainGame.batch, mainGame);
             mainGame.setScreen(mainGame.highScoreScreen);
-            System.out.println("highscore");
             isClicked = false;
         }
     }

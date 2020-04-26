@@ -112,7 +112,6 @@ public class Customer extends GameObject {
                 fix.setFilterData(filter);
             }
             spawnComplete =true;
-            System.out.println("customer collision added");
         }
     }
     private void move () {
@@ -124,7 +123,6 @@ public class Customer extends GameObject {
                 moveTowardsPoint(moveAwayPoint);
             }
         }
-        // stopmove ends here
         else if (lifeTime - timeWhenStopped > waitTime) {
             allowMove = true;
         }
@@ -133,11 +131,11 @@ public class Customer extends GameObject {
     public void killYourSelf () {
         game.toBeDeleted.add(this);
     }
+
     private void moveTowardsPoint(Vector2 point) {
 
             float delta = Gdx.graphics.getDeltaTime();
             //Target position in world coordinates
-
 
             //target speed
             float speedToUse = speed * delta;
@@ -159,7 +157,6 @@ public class Customer extends GameObject {
 
             Vector2 force = new Vector2(changeInVelocity.scl(body.getMass() *60f));
 
-            //body.applyForce(force, body.getWorldCenter(), true);
             body.applyForceToCenter(force,true);
 
     }
@@ -176,7 +173,6 @@ public class Customer extends GameObject {
                 objectToCarry.isBeingCarried = true;
                 objectToCarry.body.setGravityScale(0.3f);
                 timeWhenPickedUp = lifeTime;
-                //stopMove(2f);
                 return null;
             });
             if (game.sounds) {
@@ -184,6 +180,11 @@ public class Customer extends GameObject {
             }
         }
     }
+
+    /**
+     * Stops customer for set amount of time
+     * @param timeSeconds
+     */
     private void stopMove(float timeSeconds) {
         timeWhenStopped = lifeTime;
         allowMove = false;
@@ -195,12 +196,6 @@ public class Customer extends GameObject {
         if (isCarryingFlingable) {
             float xModif = -0.37f;
             float yModif = 0.045f;
-
-            /*if (isRight) {
-                xModif = 0.37f;
-            }
-
-             */
 
             // set body location to player body location -+ x and y modifiers
             objectToCarry.body.setTransform(this.body.getPosition().x + xModif,this.body.getPosition().y + yModif,0f);

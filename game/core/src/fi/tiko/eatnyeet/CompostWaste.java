@@ -1,7 +1,5 @@
 package fi.tiko.eatnyeet;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 
 public class CompostWaste extends FlingableObject {
