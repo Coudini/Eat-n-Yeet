@@ -16,25 +16,24 @@ public class TutorialScreen implements Screen {
     public static Texture startScreenBackGround;
     public static Texture arrowLeftTexture;
     public static Texture arrowRightTexture;
-
     private ArrayList<Texture> tutorialImages;
     private static Texture tut1;
     private static Texture tut2;
     private int index = 0;
     private int tutImgPrintX;
     private int tutImgPrintY;
-
-
     ArrayList<Button> buttons;
     Button arrowLeft;
     Button arrowRight;
-
     String langBack;
     String langTutorial1;
     String langTutorial2;
 
-
-
+    /**
+     * Constructor, shows tutorial images to user. The images shown are chosen by localization and language chosen by the user
+     * @param batch saved for rendering
+     * @param mainGame saved to be able access other classes and information
+     */
     public TutorialScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
@@ -42,45 +41,30 @@ public class TutorialScreen implements Screen {
         startScreenBackGround = new Texture("menu_background.png");
         arrowLeftTexture = new Texture("arrow_left.png");
         arrowRightTexture = new Texture("arrow_right.png");
-
         langBack = lang.get("back");
         langTutorial1 = lang.get("tutorial1");
         langTutorial2 = lang.get("tutorial2");
         tut1 = new Texture(langTutorial1);
         tut2 = new Texture(langTutorial2);
-
         // refresh these values if adding more tutorial images that are not same size as tut1!
         tutImgPrintX = (int)mainGame.FONT_CAM_WIDTH / 2 - tut1.getWidth() / 2;
         tutImgPrintY = (int)mainGame.FONT_CAM_HEIGHT / 2 - tut1.getHeight() / 2;
-
         tutorialImages = new ArrayList<>();
         tutorialImages.add(tut1);
         tutorialImages.add(tut2);
-
         BackToMainMenuButton.backButtonTexture = new Texture(langBack);
-
         buttons = new ArrayList<>();
-
-
-
         float posX = mainGame.FONT_CAM_WIDTH / 2f - BackToMainMenuButton.backButtonTexture.getWidth() / 2;
         float poxY = 50f;
-
         buttons.add(new BackToMainMenuButton(mainGame,posX,poxY));
-
         posX = 50f;
         arrowLeft = new ArrowButton(mainGame,arrowLeftTexture, posX,poxY);
         posX = mainGame.FONT_CAM_WIDTH - 50f - arrowRightTexture.getWidth() * 0.7f;
         arrowRight = new ArrowButton(mainGame,arrowRightTexture,posX,poxY);
-
         buttons.add(arrowRight);
         buttons.add(arrowLeft);
-
-
         // all startscreen inputs are handled in here
         createInputProcessor();
-
-
     }
     @Override
     public void show() {
@@ -99,6 +83,9 @@ public class TutorialScreen implements Screen {
         batch.end();
     }
 
+    /**
+     * Sets left and right arrows to clicked and changes the value of index
+     */
     private void arrowClickChecker() {
         if (arrowRight.isClicked) {
             arrowRight.isClicked = false;
@@ -113,7 +100,6 @@ public class TutorialScreen implements Screen {
         }
 
     }
-
 
     /**
      * Startscreen inputs are handled here
@@ -158,38 +144,40 @@ public class TutorialScreen implements Screen {
             }
         });
     }
+
+    /**
+     * Updates all buttons
+     */
     public void updateButtons() {
         for (Button obj: buttons) {
             obj.update();
         }
     }
+
+    /**
+     * Renders all buttons
+     * @param batch saved for rendering
+     */
     public void renderButtons(SpriteBatch batch) {
         for (Button obj: buttons) {
             obj.render(batch);
         }
     }
 
-
-
-
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -199,5 +187,4 @@ public class TutorialScreen implements Screen {
             btn.getTexture().dispose();
         }
     }
-
 }

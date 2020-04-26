@@ -34,27 +34,23 @@ import java.util.Locale;
 public class HighScoreScreen implements HighScoreListener, Screen {
 	private Stage stage;
 	private Skin skin;
-
-	//localization
-
-
 	String langName;
 	String langHighscores;
 	String langUpdateButton;
 	String langBackButton;
-
 	InputMultiplexer multiplexer;
 	InputAdapter gameUiInputs;
 	public ArrayList<Button> buttons;
-
-
 	private Table content;
-
 	public static Texture startScreenBackGround;
 	SpriteBatch batch;
 	MainGame mainGame;
 
-
+	/**
+	 * Constructor. Shows images to user. The images shown are chosen by localization and language chosen by the user.
+	 * @param batch saved for rendering
+	 * @param mainGame saved to be able access other classes and information
+	 */
     public HighScoreScreen (SpriteBatch batch, MainGame mainGame) {
 		this.batch = batch;
 		this.mainGame = mainGame;
@@ -68,9 +64,7 @@ public class HighScoreScreen implements HighScoreListener, Screen {
         HighScoreServer.readConfig("highscore.config");
         HighScoreServer.setVerbose(true);
         HighScoreServer.fetchHighScores(this);
-
 		startScreenBackGround = new Texture("menu_background.png");
-
 		buttons = new ArrayList<>();
 		buttons.add(new BackToMainMenuButton(mainGame));
 		buttons.add(new UpdateNameButton(mainGame));
@@ -102,14 +96,20 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	}
 
-
-
+	/**
+	 * Method which calls for updateScores method and passes HighsScoreEntry-List as an argument
+	 * @param highScores the loaded highScoreEntry data in a List
+	 */
 	@Override
 	public void receiveHighScore(List<HighScoreEntry> highScores) {
 		Gdx.app.log("HighScoreScreen", "Received new high scores successfully");
 		updateScores(highScores);
 	}
 
+	/**
+	 * Method which fetches HighScores
+	 * @param httpResponse
+	 */
 	@Override
 	public void receiveSendReply(Net.HttpResponse httpResponse) {
 		Gdx.app.log("HighScoreScreen", "Received response from server: "
@@ -129,17 +129,18 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 				"Something went wrong while sending a high scoreField entry", t);
 	}
 
+	/**
+	 * Sets up the json skin. Calls for other methods in class
+	 */
 	private void otherSetup() {
 		skin = new Skin();
 		skin = new Skin (Gdx.files.internal("uiskin.json"));
 		stage = new Stage();
-
 		multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(stage);
 		createGameUiInputs();
 		multiplexer.addProcessor(gameUiInputs);
 		Gdx.input.setInputProcessor(multiplexer);
-
 		content = new Table();
 		createTable();
 		stage.addActor(content);
@@ -147,6 +148,10 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	private ArrayList<Label> scoreLabels;
 
+	/**
+	 * Updates highscores
+	 * @param scores List of highscores
+	 */
 	private void updateScores(List<HighScoreEntry> scores) {
 		int i = 0;
 		for (HighScoreEntry e : scores) {
@@ -158,40 +163,37 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	private TextField nameField;
 
+	/**
+	 * Creates a table
+	 */
 	private void createTable() {
 		content.setFillParent(true);
-
 		nameField = new TextField(mainGame.playerName, skin);
-
 		content.add(new Label(" ", skin));
 		content.row();
 		content.add(nameField);
 		content.row();
 		content.add(new Label(langHighscores, skin)).colspan(2);
-
 		scoreLabels = new ArrayList<>();
-
-
-
-
 		for (int n = 0; n < 10; n++) {
 			content.row();
 			Label l = new Label("", skin);
 			content.add(l).colspan(2);
 			scoreLabels.add(l);
 		}
-
 		content.row();
-
-
-
-
 	}
 
+	/**
+	 * Fetches HighScores
+	 */
 	private void fetchHighScores() {
 		HighScoreServer.fetchHighScores(this);
 	}
 
+	/**
+	 * Sends new highscores
+	 */
 	protected void createNewScore() {
 		String name = mainGame.playerName;
 		try {
@@ -263,11 +265,20 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 			}
 		};
 	}
+
+	/**
+	 * Updates all buttons
+	 */
 	public void updateButtons() {
 		for (fi.tiko.eatnyeet.Button obj: buttons) {
 			obj.update();
 		}
 	}
+
+	/**
+	 * Renders all buttons
+	 * @param batch saved for rendering
+	 */
 	public void renderButtons(SpriteBatch batch) {
 		for (Button obj: buttons) {
 			obj.render(batch);

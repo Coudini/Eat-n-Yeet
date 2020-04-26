@@ -20,8 +20,8 @@ public class Carrot extends FlingableObject implements Food {
     public static Texture carrotEaten;
 
 
-    /***
-     * Constuctor with ability to set position
+    /**
+     * Constructor with ability to set position
      * @param posX position
      * @param posY position
      * @param game needed to save to superclass
@@ -38,7 +38,7 @@ public class Carrot extends FlingableObject implements Food {
 
     }
 
-    /***
+    /**
      * Constructor with ability set position and radius
      * @param posX position
      * @param posY position
@@ -59,7 +59,7 @@ public class Carrot extends FlingableObject implements Food {
     }
 
     /**
-     * Called on every iteration, overides superclass version, but superclass version is called in the function.
+     * Called on every iteration, overrides superclass version, but superclass version is called in the function.
      * Used to call methods and do if checking on every frame.
      */
     @Override

@@ -24,84 +24,80 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 
 /**
- * This file will start when opening the game, by default it will set screen to be MainMenuScreen
+ * This file will start when opening the game, by default it will set screen to be StartScreen
  * */
 public class MainGame extends Game  {
 	public Locale locale = Locale.getDefault();
-
 	SpriteBatch batch;
-
 	GameScreen gameScreen;
 	StartScreen startScreen;
 	GameOverScreen gameOverScreen;
 	HighScoreScreen highScoreScreen;
-
 	protected String playerName = "Player";
 	protected int highestScore = 0;
 	protected boolean useSounds = true;
-
 	protected final float FONT_CAM_WIDTH = 1280f;
 	protected final float FONT_CAM_HEIGHT = 720f;
 	protected final float GAME_CAM_WIDTH = 16f;
 	protected final float GAME_CAM_HEIGHT = 9f;
-
 	protected OrthographicCamera camera;
 	protected OrthographicCamera fontCamera;
 
+	/**
+	 * Handles localization, creates SpriteBatch, sets camera.
+	 */
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, GAME_CAM_WIDTH, GAME_CAM_HEIGHT);
-
 		fontCamera = new OrthographicCamera();
 		fontCamera.setToOrtho(false, FONT_CAM_WIDTH, FONT_CAM_HEIGHT);
-
 		startScreen = new StartScreen(batch,this);
-
-
-		//probably useless
 		String tmp = locale.getLanguage();
 		System.out.println(tmp);
 		if (!tmp.equals("fi")) {
 			locale = new Locale("us", "US");
 		}
-
 		setScreen(startScreen);
-
-
 	}
 
+	/**
+	 * Sets locale based on user's language settings on device
+	 */
 	public  void changeLocale() {
 		String tmp = locale.getLanguage();
-
 		if (tmp.equals("us")) {
 			locale = new Locale("fi","FI");
 		}
 		else if (tmp.equals("fi")) {
 			locale = new Locale("us","US");
-
 		}
 	}
+
+	/**
+	 * Generates font to be used
+	 * @param size size of the font
+	 * @param borderWidth border-size of the font
+	 * @return generated BitmapFont
+	 */
 	public BitmapFont generateFont(int size, int borderWidth) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = size;
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = borderWidth;
-
 	    BitmapFont temp = generator.generateFont(parameter);
 	    return temp;
     }
+
 	@Override
 	public void render () {
 		super.render();
 	}
 
-
 	@Override
 	public void pause() {
-
 	}
 
 	@Override
@@ -111,6 +107,5 @@ public class MainGame extends Game  {
 	@Override
 	public void dispose () {
 		batch.dispose();
-
 	}
 }

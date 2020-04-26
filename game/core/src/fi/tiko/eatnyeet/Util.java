@@ -6,6 +6,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Util {
     // Use this to create many different animations for same object
+
+    /**
+     * Creates an Animation from an image file by dividing it into columns and rows
+     * @param cols
+     * @param rows
+     * @param texture
+     * @return animation created from image file
+     */
     public static Animation<TextureRegion> createTextureAnimation(int cols, int rows, Texture texture) {
         Animation<TextureRegion> temp;
 
@@ -25,7 +33,13 @@ public class Util {
         return  temp;
     }
 
-    // TODO not in use yet
+    /**
+     * Transforms 2 dimensional array into 1 dimensional array containing frames of an animation
+     * @param tr 2 dimensional TextureRegion array
+     * @param cols
+     * @param rows
+     * @return 1 dimensional array
+     */
     public static TextureRegion[] toTextureArray( TextureRegion [][]tr, int cols, int rows ) {
         TextureRegion [] frames = new TextureRegion[cols * rows];
         int index = 0;
@@ -37,8 +51,10 @@ public class Util {
         return frames;
     }
 
-
-
+    /**
+     * Flips the animation around when for example Sprite turns around to indicate it visually
+     * @param animation
+     */
     public static void flip(Animation<TextureRegion> animation) {
         TextureRegion[] regions = animation.getKeyFrames();
         for(TextureRegion r : regions) {
@@ -49,7 +65,7 @@ public class Util {
     /**
      * Transforms two dimensonal array to one dimensional, NOTE it only works when columns are same size
      * @param twoDimArr
-     * @return
+     * @return one dimensional array
      */
     public static float [] toOneDimensonalArray(float [][] twoDimArr) {
         float temp [] = new float[twoDimArr.length * twoDimArr[0].length];

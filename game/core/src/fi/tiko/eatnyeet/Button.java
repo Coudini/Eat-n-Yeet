@@ -49,7 +49,7 @@ public class Button extends GraphicObject {
         yEnd = getY() + getHeight();
     }
 
-    /***
+    /**
      * Default update for button, methods that all buttons need to call will be added here. Calling superclass update is a must.
      */
     @Override

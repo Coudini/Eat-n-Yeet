@@ -1,6 +1,5 @@
 package fi.tiko.eatnyeet;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 
 public class VolumeSwapButton extends Button {
@@ -11,6 +10,11 @@ public class VolumeSwapButton extends Button {
     private Texture [] textureArr = {volumeOnTexture,volumeOffTexture};
     private int index = 0;
 
+    /**
+     * Constructor, creates button with default settings
+     * Sets volume on or off
+     * @param mainGame saved to button superclass
+     */
     public VolumeSwapButton (MainGame mainGame) {
         super(volumeOnTexture,volumeOnTexture.getWidth() * 0.8f,volumeOnTexture.getHeight() * 0.8f,mainGame);
         setPosition(mainGame.FONT_CAM_WIDTH * 0.1f - getWidth() / 2f, mainGame.FONT_CAM_HEIGHT  - 100f - getHeight() / 2f);
@@ -27,10 +31,12 @@ public class VolumeSwapButton extends Button {
 
     }
 
+    /**
+     * Default update for buttons, methods that all buttons need to call will be added here. Calling superclass update is a must.
+     */
     @Override
     public void update () {
         super.update();
-
         if (isClicked) {
             if (index == 0) {
                 setTexture(textureArr[1]);

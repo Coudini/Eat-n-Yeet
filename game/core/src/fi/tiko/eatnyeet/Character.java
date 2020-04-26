@@ -85,25 +85,18 @@ public class Character extends GameObject {
         characterIdle = Util.createTextureAnimation(4,1,idle);
         body = createBody(posX,posY,0.95f);
         allowPlayerCollision();
-
         pick = audio.newSound(files.internal("PickUp.mp3"));
         yeet = audio.newSound(files.internal("Yeet1.mp3"));
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
-
-
         // save input to inputadapter for multiplexing purposes
         characterInput = new InputAdapter() {
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
-
                 if (!startPosSet) {
                     touchPosDrag = new Vector3(screenX, screenY, 0);
                     // :D
                     game.mainGame.camera.unproject(touchPosDrag);
                     startPosSet = true;
-
                 }
-
                 //ForceMeter
                 if (!meterStart) {
                     //starting coordinates
@@ -117,17 +110,17 @@ public class Character extends GameObject {
                 meter2y = screenY;
                 //distance and angles between coordinates
                 if (meter1x > meter2x) {
-                    meter3x = (meter1x - meter2x) * 0.8f;
+                    meter3x = (meter1x - meter2x) * 0.6f;
                     meterX = (getX() + 0.66f) - (meter3x / 150f);
                 } else {
-                    meter3x = (meter2x - meter1x) * 0.8f;
+                    meter3x = (meter2x - meter1x) * 0.6f;
                     meterX = (getX() + 0.66f) + (meter3x / 150f);
                 }
                 if (meter1y > meter2y) {
-                    meter3y = (meter1y - meter2y) * 0.8f;
+                    meter3y = (meter1y - meter2y) * 0.6f;
                     meterY = getY() + (meter3y / 150f);
                 } else {
-                    meter3y = (meter2y - meter1y) * 0.8f;
+                    meter3y = (meter2y - meter1y) * 0.6f;
                     meterY = getY() - (meter3y / 150f);
                 }
                 angleX = meter2x - meter1x;
@@ -140,7 +133,6 @@ public class Character extends GameObject {
                 }
                 angle = Math.toDegrees(angle);
                 setXYA(meterX, meterY, angle);
-
                 return false;
             }
             @Override
@@ -334,7 +326,7 @@ public class Character extends GameObject {
     }
 
 
-    /***
+    /**
      * Keeps the object that is being carried at character "hand"
      */
     private void updateObjectToCarry () {
