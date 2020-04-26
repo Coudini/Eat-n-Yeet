@@ -87,7 +87,7 @@ public class Field extends GameObject {
      * @param batch
      */
     public void renderFieldObjects(Batch batch) {
-        for (int i = 0; i < fieldObjectArray.length; i++) {
+        for (int i = fieldObjectArray.length-1; i >= 0; i--) {
             if (fieldObjectArray[i] == null) {
 
             } else {
