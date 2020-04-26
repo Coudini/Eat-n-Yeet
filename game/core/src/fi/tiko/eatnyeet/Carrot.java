@@ -20,6 +20,12 @@ public class Carrot extends FlingableObject implements Food {
     public static Texture carrotEaten;
 
 
+    /***
+     * Constuctor with ability to set position
+     * @param posX position
+     * @param posY position
+     * @param game needed to save to superclass
+     */
     public Carrot(float posX, float posY, GameScreen game) {
         super(texture1, posX, posY, 0.3f, 0.3f, game);
         setSize(0.6f,0.6f);
@@ -30,8 +36,15 @@ public class Carrot extends FlingableObject implements Food {
         allowPlayerCollision();
         eaten = false;
 
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
+
+    /***
+     * Constructor with ability set position and radius
+     * @param posX position
+     * @param posY position
+     * @param radius radius
+     * @param game needed to save to superclass
+     */
     public Carrot(float posX, float posY,float radius, GameScreen game) {
         super(texture1, posX, posY, 0.6f, 0.6f, game);
         setDensity(0.8f);
@@ -43,9 +56,12 @@ public class Carrot extends FlingableObject implements Food {
         discoCarrot = Util.createTextureAnimation(4,1,carrotDisco);
         eaten = false;
 
-        //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
     }
 
+    /**
+     * Called on every iteration, overides superclass version, but superclass version is called in the function.
+     * Used to call methods and do if checking on every frame.
+     */
     @Override
     public void update() {
         super.update();
@@ -61,6 +77,9 @@ public class Carrot extends FlingableObject implements Food {
         }
     }
 
+    /**
+     * Checks if discomode needs to be activated. Sets new textures based on results.
+     */
     public void checkDisco(){
         if (game.player.characterCombo > 1) {
             currentAnimation = discoCarrot;

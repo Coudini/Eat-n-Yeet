@@ -14,6 +14,13 @@ public class Compost extends GameObject {
     float fillLevel;
     float maxFill = 10f;
 
+    /**
+     * "Default constructor" for the class, uses default values since it should be only created only one time in the program.
+     * @param width size
+     * @param height size
+     * @param body saved to superclass for collision detection
+     * @param game saved to superclass
+     */
     public Compost(float width, float height,Body body , GameScreen game) {
         super(fill4, width,height, body, game);
         fillLevel = 0f;
@@ -25,6 +32,9 @@ public class Compost extends GameObject {
         }
     }
 
+    /**
+     * Called on every iteration, calls methods and does if checking needed for the class.
+     */
     @Override
     public void update () {
         super.update();

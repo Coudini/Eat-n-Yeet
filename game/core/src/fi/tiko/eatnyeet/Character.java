@@ -22,6 +22,9 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import static com.badlogic.gdx.Gdx.audio;
 import static com.badlogic.gdx.Gdx.files;
 
+/***
+ * Main character for the game, only create one of these.
+ */
 public class Character extends GameObject {
     // Limit for mobile accelerometer
     private final float DEAD_ZONE = 10f;
@@ -34,7 +37,6 @@ public class Character extends GameObject {
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
-    //boolean jump = false;
     private float maxStr = 14f;
 
     public static Texture run;
@@ -70,6 +72,12 @@ public class Character extends GameObject {
     public Sound pick;
     public Sound yeet;
 
+    /***
+     * Constructor to spawn main character.
+     * @param posX position
+     * @param posY position
+     * @param game needed to save to superclass
+     */
     public Character(float posX, float posY, GameScreen game) {
         super(posX, posY, 1.9f, 1.9f, game);
         characterRun = Util.createTextureAnimation(4,2, run);
@@ -82,6 +90,7 @@ public class Character extends GameObject {
         //soundEffect = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
 
 
+        // save input to inputadapter for multiplexing purposes
         characterInput = new InputAdapter() {
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -172,20 +181,32 @@ public class Character extends GameObject {
         };
     }
 
-
+    /**
+     * Update is called on every iteration, calls method and does if checking that is needed on each iteration.
+     */
+    @Override
     public void update () {
         super.update();
         move();
-        //flingListener();
         updateObjectToCarry();
         updateScoreAndCombo();
     }
 
 
+    /**
+     * Set values to forcemeter visuals
+     * @param X position
+     * @param Y position
+     * @param A angle
+     */
     public void setXYA(float X, float Y, double A){
         ForceMeter.setXY(X, Y);
         ForceMeter.setRotate(A);
     }
+
+    /**
+     * Updates scores and combo when values is changed
+     */
     public void updateScoreAndCombo() {
         if (characterScore != previousScore) {
             previousScore = characterScore;
@@ -194,16 +215,28 @@ public class Character extends GameObject {
             previousCombo = characterCombo;
         }
     }
+
+    /***
+     * Resets scorehandling helper variables
+     */
     public void resetScoreHandlers() {
         previousCombo = 0;
         previousScore = 0;
     }
+
+    /**
+     * Resets combo to 0
+     */
     public void resetCombo() {
         characterCombo = 0;
     }
 
 
-
+    /**
+     * Throws the object that character is carrying.
+     * @param speedX x speed value
+     * @param speedY y speed value
+     */
     public void throwObjectToCarry (float speedX,float speedY) {
         objectToCarry.body.setLinearVelocity(speedX, speedY);
         objectToCarry.body.applyAngularImpulse(Math.signum(speedX) * -0.1f, true);
@@ -220,6 +253,9 @@ public class Character extends GameObject {
         }
     }
 
+    /**
+     * Moves character, this is called in update and checks user inputs. Both mobile and keyboard support.
+     */
     public void move() {
 
         float accY = Gdx.input.getAccelerometerY();
@@ -272,6 +308,12 @@ public class Character extends GameObject {
         }
      }
 
+    /**
+     * When 2 bodies collides, onCollision is automatically called. Overide onCollision to do class spesific tasks.
+     * When character collides with object, it checks if its something it should pick up, if not then it will not do anything.
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
         if (other != null && other instanceof FlingableObject) {
@@ -291,6 +333,9 @@ public class Character extends GameObject {
     }
 
 
+    /***
+     * Keeps the object that is being carried at character "hand"
+     */
     private void updateObjectToCarry () {
 
         if (isCarryingFlingable) {
@@ -304,6 +349,10 @@ public class Character extends GameObject {
             objectToCarry.body.setTransform(this.body.getPosition().x + xModif,this.body.getPosition().y + yModif,0f);
         }
     }
+
+    /**
+     * Can be used to ignore collision with everything else than default objects
+     */
     public void ignorePlayerCollision() {
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
@@ -312,6 +361,10 @@ public class Character extends GameObject {
             fix.setFilterData(filter);
         }
     }
+
+    /**
+     * Returns default collision settings and makes character collide with everything except rat
+     */
     public void allowPlayerCollision(){
         Filter filter = new Filter();
         filter.categoryBits = PLAYER_BITS;
@@ -322,7 +375,7 @@ public class Character extends GameObject {
     }
 
     /**
-     * called when manually carrying objects to compost
+     * called when manually carrying objects to compost, deletes the object from hand.
      */
     protected void resetObjectToCarry() {
        isCarryingFlingable = false;

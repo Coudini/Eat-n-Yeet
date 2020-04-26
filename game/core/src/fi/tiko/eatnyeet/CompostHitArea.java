@@ -14,6 +14,13 @@ public class CompostHitArea extends GameObject {
 
     public Sound sound;
 
+    /**
+     * Constructor, values should be generated from tilemap. Tho it can be created manually, but loses easy replacement ability.
+     * @param width size
+     * @param height size
+     * @param body body for supesclass to save, collision detection.
+     * @param game saved to superclass
+     */
     public CompostHitArea(float width, float height, Body body , GameScreen game) {
         super(width,height, body, game);
 
@@ -26,6 +33,11 @@ public class CompostHitArea extends GameObject {
         sound = audio.newSound(files.internal("score.mp3"));
     }
 
+    /**
+     * Checks if flingablle object has touched this object, if is do set tasks.
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
 

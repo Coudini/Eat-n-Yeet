@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import static com.badlogic.gdx.Gdx.audio;
 import static com.badlogic.gdx.Gdx.files;
 
+/**
+ * Field for the crops to grow, only one should be created
+ */
 public class Field extends GameObject {
 
     public static Texture empty;
@@ -27,6 +30,13 @@ public class Field extends GameObject {
 
     Sound sound;
 
+    /**
+     * Default constructor with default values, values are generated from tilemap for easy scaling.
+     * @param width size from tilemap
+     * @param height size from tilemap
+     * @param body body for collision detection
+     * @param game needed for superclass
+     */
     public Field(float width, float height, Body body , GameScreen game) {
         super(empty, width,height, body, game);
         timeWhenPreviousCrop = 0f;
@@ -40,15 +50,21 @@ public class Field extends GameObject {
         sound = audio.newSound(files.internal("score.mp3"));
     }
 
+    /**
+     * Called on every iteration, calls method and does if checking for the object.
+     */
     @Override
     public void update () {
         super.update();
         updateFieldObjects();
         float currentPercent = fillLevel / maxFill;
 
+        /*
         if (currentPercent > 0.05f) {
             cropCrops();
         }
+
+         */
 
 
 
@@ -99,9 +115,8 @@ public class Field extends GameObject {
         fieldPosY = Util.toOneDimensonalArray(fieldPositionsY);
     }
 
-    /**
-     * Placeholder for customer, keeps track of time and throws object every 5 second
-     */
+
+    /*
     public void cropCrops() {
         
         if (lifeTime - timeWhenPreviousCrop > 5f) {
@@ -129,6 +144,8 @@ public class Field extends GameObject {
             return null;
         });
     }
+
+     */
 
     /**
      * Throws object based on what object got removed from field
@@ -169,6 +186,12 @@ public class Field extends GameObject {
             }
             return null;
     }
+
+    /**
+     * When 2 bodies collides, onCollision is automatically called. Overide onCollision to do class spesific tasks
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
 

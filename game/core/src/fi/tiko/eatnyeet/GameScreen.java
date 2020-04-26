@@ -195,6 +195,8 @@ public class GameScreen implements Screen {
         this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
 
+        gameObjects.add(new Rat(1f,2f,this));
+
         //sun
         this.sun = new Sun(mainGame);
         graphicObjects.add(sun);

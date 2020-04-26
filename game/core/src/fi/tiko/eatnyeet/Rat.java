@@ -74,6 +74,20 @@ public class Rat extends GameObject {
         game.toBeDeleted.add(objectToCarry);
         game.player.healthPoints--;
 
+        // spawn new after previous dies
+        spawnRat();
+
+    }
+    public void spawnRat() {
+        callAfterPhysicsStep(() -> {
+            float posY = 1f;
+            float posX = 2f;
+
+            Rat temp = new Rat(posX, posY, game);
+            game.gameObjects.add(temp);
+
+            return null;
+        });
     }
     public void throwObjectToCarry (float speedX,float speedY) {
         objectToCarry.body.setLinearVelocity(speedX, speedY);

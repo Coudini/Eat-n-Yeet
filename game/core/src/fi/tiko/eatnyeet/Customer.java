@@ -15,6 +15,9 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import static com.badlogic.gdx.Gdx.audio;
 import static com.badlogic.gdx.Gdx.files;
 
+/**
+ * Autopiloted customers for the game, that picks up food, eats and throws them away.
+ */
 public class Customer extends GameObject {
 
     protected FlingableObject objectToCarry;
@@ -41,7 +44,10 @@ public class Customer extends GameObject {
     Sound field;
     Sound yeet;
 
-
+    /**
+     * Default constructor for spawning customer, since they are autopiloted most of the time default one will do.
+     * @param game saved to superclass
+     */
     public Customer(GameScreen game) {
         super(customerTexture, 15f,5f,1.5f,1.5f,game);
         int temp = MathUtils.random(0,2);
@@ -69,6 +75,9 @@ public class Customer extends GameObject {
         yeet = audio.newSound(files.internal("bite.mp3"));
     }
 
+    /**
+     * Called on every iteration, calls methods and does if checking needed for the class.
+     */
     @Override
     public void update() {
         super.update();
@@ -76,13 +85,6 @@ public class Customer extends GameObject {
         move();
         updateObjectToCarry();
 
-        // stop move for 2s before throwing
-        /*
-        if (lifeTime - timeWhenPickedUp > randomThrowTime - 1f && isCarryingFlingable) {
-            stopMove(1.5f);
-        }
-
-         */
         if (lifeTime - timeWhenPickedUp > randomThrowTime && isCarryingFlingable) {
             if (objectToCarry instanceof Carrot) {
 
@@ -114,6 +116,10 @@ public class Customer extends GameObject {
             spawnComplete =true;
         }
     }
+
+    /**
+     * Moves the customer
+     */
     private void move () {
 
         if (allowMove) {
@@ -128,10 +134,18 @@ public class Customer extends GameObject {
         }
 
     }
+
+    /**
+     * Deletes customer, called when it needs to be deleted which is usually when it reaches its end destination aka outside of the screen.
+     */
     public void killYourSelf () {
         game.toBeDeleted.add(this);
     }
 
+    /**
+     * Moves customer toward point
+     * @param point carries information where customer needs to walk to
+     */
     private void moveTowardsPoint(Vector2 point) {
 
             float delta = Gdx.graphics.getDeltaTime();
@@ -160,6 +174,12 @@ public class Customer extends GameObject {
             body.applyForceToCenter(force,true);
 
     }
+
+    /**
+     * When 2 bodies collides, onCollision is automatically called. Overide onCollision to do class spesific tasks.
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
@@ -191,6 +211,10 @@ public class Customer extends GameObject {
         waitTime = timeSeconds;
         body.setLinearVelocity(0f,0f);
     }
+
+    /**
+     * When customer is holding object, this keeps the object in their "hand". Call it on every iteration.
+     */
     private void updateObjectToCarry () {
 
         if (isCarryingFlingable) {
@@ -201,6 +225,10 @@ public class Customer extends GameObject {
             objectToCarry.body.setTransform(this.body.getPosition().x + xModif,this.body.getPosition().y + yModif,0f);
         }
     }
+
+    /**
+     * Throws the object from hand to random direction with random force.
+     */
     public void throwObjectToCarry () {
         float speedX = MathUtils.random(3f,-3f);
         float speedY = MathUtils.random(5f,7f);
