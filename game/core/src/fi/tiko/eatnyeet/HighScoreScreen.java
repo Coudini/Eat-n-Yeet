@@ -160,9 +160,18 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 
 	private void createTable() {
 		content.setFillParent(true);
+
+		nameField = new TextField(mainGame.playerName, skin);
+
+		content.add(new Label(" ", skin));
+		content.row();
+		content.add(nameField);
+		content.row();
 		content.add(new Label(langHighscores, skin)).colspan(2);
 
 		scoreLabels = new ArrayList<>();
+
+
 
 
 		for (int n = 0; n < 10; n++) {
@@ -173,12 +182,9 @@ public class HighScoreScreen implements HighScoreListener, Screen {
 		}
 
 		content.row();
-		content.add(new Label(langName, skin));
-		content.row();
 
-		nameField = new TextField(mainGame.playerName, skin);
 
-		content.add(nameField);
+
 
 	}
 

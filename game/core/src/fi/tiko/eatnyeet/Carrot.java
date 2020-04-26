@@ -28,7 +28,7 @@ public class Carrot extends FlingableObject implements Food {
      */
     public Carrot(float posX, float posY, GameScreen game) {
         super(texture1, posX, posY, 0.3f, 0.3f, game);
-        setSize(0.6f,0.6f);
+        setSize(0.9f,0.6f);
         setDensity(0.8f);
         setFriction(4.5f);
         setRestitution(0.6f);

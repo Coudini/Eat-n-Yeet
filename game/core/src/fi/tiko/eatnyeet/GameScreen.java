@@ -85,7 +85,7 @@ public class GameScreen implements Screen {
         Melon.melonDisco =  new Texture("MelonParty.png");
         Carrot.texture1 = new Texture("carrotboi.png");
         Carrot.texture2 = new Texture("carrotdisco.png");
-        Carrot.carrotNoDisco = new Texture("carrot.png");
+        Carrot.carrotNoDisco = new Texture("carrot_no_disco.png");
         Carrot.carrotDisco = new Texture("carrot_disco.png");
         Tomato.texture1 = new Texture("tomatoboi_NoShadow.png");
         Tomato.texture2 = new Texture("tomatodisco.png"); //no discotomato yet
