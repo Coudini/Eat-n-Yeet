@@ -23,6 +23,9 @@ public class ResumeButton extends Button {
         if (isClicked) {
             System.out.println("Resume");
             mainGame.gameScreen.resume();
+            if (mainGame.gameScreen.sounds) {
+                mainGame.gameScreen.song.play();
+            }
             isClicked = false;
             mainGame.setScreen(mainGame.gameScreen);
             // add gamescreen input prosessor again in use
