@@ -2,6 +2,9 @@ package fi.tiko.eatnyeet;
 
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * Visual for force dragged to shoop object
+ */
 public class ForceMeter extends GraphicObject {
 
     public static Texture texture;
@@ -13,16 +16,22 @@ public class ForceMeter extends GraphicObject {
     public static double rotation;
     public static float angular;
 
+    /**
+     * Default constructor
+     * @param mainGame passed to superclass
+     */
     public ForceMeter(MainGame mainGame) {
         super(texture, width, height, mainGame);
         setOriginCenter();
         show = false;
     }
 
+    /**
+     * Called on every iteration, calls methods and does if handling
+     */
+    @Override
     public void update () {
         super.update();
-
-        //add an additional if() for less texture calls
         if (show) {
             setMeter();
             setTexture(texture);
@@ -31,6 +40,9 @@ public class ForceMeter extends GraphicObject {
         }
     }
 
+    /**
+     * Set meter values, those are set beforehand.
+     */
     public void setMeter() {
         setR();
         setA();

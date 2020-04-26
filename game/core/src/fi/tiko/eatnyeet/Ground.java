@@ -13,13 +13,24 @@ public class Ground extends GameObject {
     Sound sound;
 
 
+    /**
+     * Consructor
+     * @param width size
+     * @param height size
+     * @param body body
+     * @param game gamescreen whichs needs to be passed to superclass
+     */
     public Ground (float width,float height, Body body, GameScreen game) {
         super(width,height,body,game);
         sound = audio.newSound(files.internal("HitWall.mp3"));
     }
 
 
-
+    /**
+     *  When 2 bodies collides, onCollision is automatically called. Overide onCollision to do class spesific tasks
+     * @param contact
+     * @param other can be used to check what class it is colliding with
+     */
     @Override
     public void onCollision(Contact contact, GameObject other) {
 
@@ -33,6 +44,12 @@ public class Ground extends GameObject {
             }
         }
     }
+
+    /**
+     *  When 2 bodies collideing ends, endCollision is automatically called. Overide endCollision to do class spesific tasks
+     * @param contact
+     * @param other can be used to check what class it was colliding with
+     */
     @Override
     public void endCollision (Contact contact, GameObject other) {
         if (other != null && other instanceof FlingableObject) {

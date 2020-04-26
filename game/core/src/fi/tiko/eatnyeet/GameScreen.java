@@ -20,6 +20,9 @@ import java.util.concurrent.Callable;
 import static com.badlogic.gdx.Gdx.audio;
 import static com.badlogic.gdx.Gdx.files;
 
+/**
+ * Game screen, aka the screen where use plays the game.
+ */
 public class GameScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
@@ -61,6 +64,11 @@ public class GameScreen implements Screen {
     public boolean sounds;
     Music song;
 
+    /**
+     * Constructor, calls and creates all the default values for the game.
+     * @param batch saved for rendering
+     * @param mainGame saved to be able access other classes and information
+     */
     public GameScreen (SpriteBatch batch, MainGame mainGame) {
         this.batch = batch;
         this.mainGame = mainGame;
@@ -148,6 +156,10 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Main render which updates and renders all the object game has
+     * @param delta time from previous frame
+     */
     @Override
     public void render(float delta) {
 
@@ -188,9 +200,17 @@ public class GameScreen implements Screen {
         }
 
     }
+
+    /**
+     * updates camera position
+     */
     public void moveCamera() {
         mainGame.camera.update();
     }
+
+    /**
+     * Spawns all the objects to the game that is needed immediately on launch
+     */
     public void spawnDefaultObjects() {
         this.player = new Character(mainGame.GAME_CAM_WIDTH / 2, 2f, this);
         gameObjects.add(player);
@@ -228,6 +248,9 @@ public class GameScreen implements Screen {
         graphicObjects.add(meter);
     }
 
+    /**
+     * Goes throuhg all render lists
+     */
     public void renderObjects () {
         for (GraphicObject obj : graphicObjects) {
             obj.render(batch);
@@ -244,6 +267,10 @@ public class GameScreen implements Screen {
 
 
     }
+
+    /**
+     * Goes through all update lists
+     */
     public void updateObjects () {
         for (GraphicObject obj : graphicObjects) {
             obj.update();
@@ -260,6 +287,10 @@ public class GameScreen implements Screen {
         }
 
     }
+
+    /**
+     * Calls the methods or does the tasks that were supposed to do after physicsStep
+     */
     public void callCallables () {
         for (Callable<Void> callable: functionsToBeCalled) {
             try {
@@ -270,6 +301,10 @@ public class GameScreen implements Screen {
         }
         functionsToBeCalled.clear();
     }
+
+    /**
+     * Delete objects that has been added to toBeDeleted list
+     */
     public void deleteDeletables () {
         for (GameObject obj: toBeDeleted) {
             world.destroyBody(obj.body);
@@ -280,7 +315,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Spawns customer every 5 seconds, uses player lifetime as caluclation value
+     * Spawns customer after random amount of time uses player lifetime as caluclation value
      * Speed up when player score increases
      */
     float customerSpawnTimer = 0f;
@@ -312,6 +347,9 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Input prosessor created for being able to interact with ui
+     */
     public void createGameUiInputs() {
         gameUiInputs = new InputAdapter() {
             @Override

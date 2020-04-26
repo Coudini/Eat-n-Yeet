@@ -17,11 +17,23 @@ public class FlingableObject extends GameObject {
     // fillvalue related variables
     protected float fillAmount = 1f;
 
+    /**
+     * Default constructor, passes information to superclass
+     * @param texture texture
+     * @param x position
+     * @param y position
+     * @param width size
+     * @param height size
+     * @param game saved to superclass
+     */
     public FlingableObject (Texture texture, float x, float y, float width, float height, GameScreen game) {
         super(texture, x, y, width, height, game);
     }
 
 
+    /**
+     * Called on every iteration, calls methods and does if checking.
+     */
     @Override
     public void update() {
         super.update();
@@ -48,6 +60,10 @@ public class FlingableObject extends GameObject {
             fix.setFilterData(filter);
         }
     }
+
+    /**
+     * Ignores collision with eveything else than other flingable objects, even allows going through walls.
+     */
     public void ignoreGroundCollision() {
         Filter filter = new Filter();
         filter.categoryBits = FLINGABLE_BITS;

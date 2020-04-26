@@ -57,25 +57,21 @@ public class Field extends GameObject {
     public void update () {
         super.update();
         updateFieldObjects();
-        float currentPercent = fillLevel / maxFill;
-
-        /*
-        if (currentPercent > 0.05f) {
-            cropCrops();
-        }
-
-         */
-
-
-
-
     }
+
+    /**
+     * Class spesific render because fieldobjects needs special attention.
+     * @param batch
+     */
     @Override
     public void render(Batch batch) {
         super.render(batch);
         renderFieldObjects(batch);
     }
 
+    /**
+     * Updates crops from the field
+     */
     public void updateFieldObjects() {
         for (int i = 0; i < fieldObjectArray.length; i++) {
             if (fieldObjectArray[i] == null) {
@@ -85,6 +81,11 @@ public class Field extends GameObject {
             }
         }
     }
+
+    /**
+     * Renders crops from the field
+     * @param batch
+     */
     public void renderFieldObjects(Batch batch) {
         for (int i = 0; i < fieldObjectArray.length; i++) {
             if (fieldObjectArray[i] == null) {
@@ -95,6 +96,10 @@ public class Field extends GameObject {
 
         }
     }
+
+    /**
+     * Called in constructor to create positions for field objects, basially calculates the field to become 3 x 3 slot area
+     */
     public void defineFielPos() {
         float startX;
         float startY = this.getY() - this.getHeight()/3f/2f;
@@ -116,36 +121,6 @@ public class Field extends GameObject {
     }
 
 
-    /*
-    public void cropCrops() {
-        
-        if (lifeTime - timeWhenPreviousCrop > 5f) {
-            timeWhenPreviousCrop = lifeTime;
-
-                boolean spawnrat = true;
-                for (GameObject obj : game.gameObjects) {
-                    if (obj instanceof Rat) {
-                        spawnrat = false;
-                    }
-                }
-                if (spawnrat) {
-                    spawnRat();
-                }
-        }
-    }
-    public void spawnRat() {
-        callAfterPhysicsStep(() -> {
-            float posY = 1f;
-            float posX = 2f;
-
-            Rat temp = new Rat(posX, posY, game);
-            game.gameObjects.add(temp);
-
-            return null;
-        });
-    }
-
-     */
 
     /**
      * Throws object based on what object got removed from field
@@ -267,6 +242,12 @@ public class Field extends GameObject {
             return null;
         });
     }
+
+
+    /**
+     * Checks free spots from field, and stores them to array which is used to randomize the crop spawn
+     * @return arraylist of free spots
+     */
     private ArrayList<Integer> checkFreeIndexOfObjectArray() {
         ArrayList<Integer> temp = new ArrayList<>();
 
@@ -277,6 +258,11 @@ public class Field extends GameObject {
         }
         return temp;
     }
+
+    /**
+     * Checks which slots are in use from field
+     * @return arraylist of thos slots
+     */
     private ArrayList<Integer> checkUsedIndexOfObjectArray() {
         ArrayList<Integer> temp = new ArrayList<>();
         for (int i = 0; i < fieldObjectArray.length; i++) {

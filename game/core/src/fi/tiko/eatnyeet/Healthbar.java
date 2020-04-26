@@ -9,6 +9,11 @@ public class Healthbar extends GraphicObject {
     public ArrayList<GraphicObject> hearts;
 
 
+    /**
+     * Constructor
+     * @param mainGame saved to superclass
+     * @param lifes amount of life textures
+     */
     public Healthbar (MainGame mainGame, int lifes) {
         super(mainGame);
         hearts = new ArrayList<>();
@@ -19,10 +24,17 @@ public class Healthbar extends GraphicObject {
         }
     }
 
+    /**
+     * Reduces health amount aka one texture off
+     */
     public void reduce() {
         hearts.remove(hearts.size()-1);
     }
 
+    /**
+     * Renders all health textures
+     * @param batch
+     */
     @Override
     public void render (Batch batch) {
         for (GraphicObject obj : hearts) {

@@ -21,12 +21,20 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Hidden part of the game, world, bodies etc.
+ */
 public class GameWorld  {
 
     public TiledMap tiledMap;
     public TiledMapRenderer tiledMapRenderer;
     public float UNIT_SCALE = 100f;
     private GameScreen game;
+
+    /**
+     * Constructor to create world for the game, transforms walls to bodies etc.
+     * @param game saved to be able access gameScreen
+     */
     public GameWorld (GameScreen game) {
         this.game = game;
         game.world = new World(new Vector2(0f, -10.8f), true);
@@ -114,11 +122,20 @@ public class GameWorld  {
     }
 
 
+    /**
+     * World render
+     * @param camera camera
+     */
     public void render(OrthographicCamera camera) {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
     }
 
+    /**
+     * Transforms tilemap walls into game bodies
+     * @param layer from which layer
+     * @param userData userata
+     */
     public void transformWallsToBodies(String layer, String userData) {
         MapLayer collisionObjectLayer = tiledMap.getLayers().get(layer);
 
@@ -155,6 +172,12 @@ public class GameWorld  {
         }
     }
 
+    /**
+     * Creates static body, aka non moving body.
+     * @param rect area where body is created
+     * @param userData that is added to body
+     * @return complete body
+     */
     public Body createStaticBody(Rectangle rect, String userData) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.StaticBody;
@@ -188,6 +211,12 @@ public class GameWorld  {
     }
 
 
+    /**
+     * Scales rectangle to world settings
+     * @param r rectangle
+     * @param scale scale amount
+     * @return scaled rectangle
+     */
     private Rectangle scaleRect(Rectangle r, float scale) {
         Rectangle rectangle = new Rectangle();
         rectangle.x      = r.x * scale;
@@ -200,6 +229,10 @@ public class GameWorld  {
     private double accumulator = 0;
     private float TIME_STEP = 1 / 60f;
 
+    /**
+     * Calculates bodies movement etc in world
+     * @param deltaTime
+     */
     public void doPhysicsStep(float deltaTime) {
 
         float frameTime = deltaTime;

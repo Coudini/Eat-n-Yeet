@@ -17,6 +17,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import java.util.concurrent.Callable;
 
+/**
+ * Important class for the game, all of the objects that has body or needs to have body extends this class.
+ */
 public class GameObject extends Sprite {
     Sound soundEffect;
     Animation<TextureRegion> currentAnimation;
@@ -39,6 +42,15 @@ public class GameObject extends Sprite {
     protected static final short FLINGABLE_BITS = 0x0004;
     protected static final short OTHER_BITS = 0x0008;
 
+    /**
+     * Constuctor that gets all of the value except body as argument
+     * @param texture texture
+     * @param x position
+     * @param y position
+     * @param width size
+     * @param height size
+     * @param game gamescreen so objects can access mainclass
+     */
     public GameObject(Texture texture, float x, float y, float width, float height, GameScreen game) {
         super(texture);
         this.game = game;
@@ -46,6 +58,15 @@ public class GameObject extends Sprite {
         this.setCenter(x,y);
         this.setOriginCenter();
     }
+
+    /**
+     * Constructor that gets all values exepct poisiton as agrument, position is calculated from body.
+     * @param texture texture
+     * @param width size
+     * @param height size
+     * @param body body + position
+     * @param game gamescreen so objects can access mainclass
+     */
     public GameObject(Texture texture,float width, float height, Body body, GameScreen game) {
         super(texture);
         this.game = game;
@@ -55,12 +76,29 @@ public class GameObject extends Sprite {
         this.setCenter(body.getPosition().x,body.getPosition().y);
         this.setOriginCenter();
     }
+
+    /**
+     * Constructor that gets most values as agrument, missing texture and body.
+     * @param x position
+     * @param y position
+     * @param width size
+     * @param height size
+     * @param game gamescreen so objects can access mainclass
+     */
     public GameObject( float x, float y, float width, float height, GameScreen game) {
         this.game = game;
         this.setSize(width,height);
         this.setCenter(x,y);
         this.setOriginCenter();
     }
+
+    /**
+     * Constructor that gets size, body and Gamescreen as argument
+     * @param width size
+     * @param height size
+     * @param body body
+     * @param game gamescreen so objects can access mainclass
+     */
     public GameObject(float width, float height, Body body, GameScreen game) {
         this.game = game;
         this.body = body;
@@ -68,6 +106,9 @@ public class GameObject extends Sprite {
     }
 
 
+    /**
+     * Called on every iteration, classes that extends gameobject should override this, but also call this so their lifetime and statetime gets updated.
+     */
     public void update () {
         float delta = Gdx.graphics.getDeltaTime();
         lifeTime += delta;
@@ -75,6 +116,10 @@ public class GameObject extends Sprite {
     }
 
 
+    /**
+     * Default render which works for most gameobjects, overide if class needs special attention
+     * @param batch
+     */
     public void render(Batch batch) {
 
         if (getTexture() == null && currentAnimation == null ) {
@@ -94,6 +139,14 @@ public class GameObject extends Sprite {
 
     }
 
+    /**
+     * If body is not created before, gameobject can create it for you with x and y and radius value
+     * it calls couple other methods to create the body
+     * @param x position
+     * @param y position
+     * @param radius size
+     * @return complete body
+     */
     public Body createBody(float x, float y, float radius) {
         Body tempBody = game.world.createBody(getDefinitionOfBody(x, y));
 
@@ -103,6 +156,12 @@ public class GameObject extends Sprite {
         return tempBody;
     }
 
+    /**
+     * When creating body call this and pass x and y value to it
+     * @param x
+     * @param y
+     * @return bodyDef
+     */
     protected BodyDef getDefinitionOfBody(float x, float y) {
         // Body Definition
         BodyDef myBodyDef = new BodyDef();
@@ -118,6 +177,11 @@ public class GameObject extends Sprite {
     }
 
 
+    /***
+     * When creating bodu, call this and pass radius to this
+     * @param radius
+     * @return fixtureDef
+     */
     private FixtureDef getFixtureDefinition(float radius) {
         FixtureDef playerFixtureDef = new FixtureDef();
 

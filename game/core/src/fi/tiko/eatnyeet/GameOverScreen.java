@@ -10,32 +10,30 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class GameOverScreen implements Screen {
     SpriteBatch batch;
     MainGame mainGame;
     public static Texture startScreenBackGround;
 
-    //localization
-
-
     String langGameOver;
     String langScore;
     String langQuit;
     String langRetry;
 
-    //protected String gameOverMessage = "Game over!";
     protected int gameOverMessageLength;
-    //protected String scoreMessage = "Your score was ";
     protected int scoreLenght;
     protected int fontSize = 48;
     ArrayList<Button> buttons;
 
     BitmapFont messageAndScore;
 
-
-
+    /**
+     * Constructor for creating gameOverScreen
+     * @param batch from mainGame
+     * @param mainGame saved so everyclass can access it and other classes
+     * @param score score that user had when game ended
+     */
     public GameOverScreen (SpriteBatch batch, MainGame mainGame, int score) {
         this.batch = batch;
         this.mainGame = mainGame;
@@ -81,6 +79,10 @@ public class GameOverScreen implements Screen {
 
     }
 
+    /**
+     * Renders all the stuff on the screen
+     * @param delta deltatime, not used here but comes from the screen implementation
+     */
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(mainGame.fontCamera.combined);
@@ -137,11 +139,20 @@ public class GameOverScreen implements Screen {
             }
         });
     }
+
+    /**
+     * Updates all buttons
+     */
     public void updateButtons() {
         for (Button obj: buttons) {
             obj.update();
         }
     }
+
+    /**
+     * Renders all buttons
+     * @param batch needed to pass on so button can use the render
+     */
     public void renderButtons(SpriteBatch batch) {
         for (Button obj: buttons) {
             obj.render(batch);
