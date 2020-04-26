@@ -75,11 +75,11 @@ public class MainGame extends Game  {
 	public  void changeLocale() {
 		String tmp = locale.getLanguage();
 
-		if (tmp.equals("en")) {
+		if (tmp.equals("us")) {
 			locale = new Locale("fi","FI");
 		}
 		else if (tmp.equals("fi")) {
-			locale = new Locale("en","US");
+			locale = new Locale("us","US");
 
 		}
 	}
