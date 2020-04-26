@@ -47,6 +47,7 @@ public class Rat extends GameObject {
     public void update () {
         super.update();
         move();
+        seek();
         //flingListener();
         updateObjectToCarry();
         if(isCarryingFlingable) {
@@ -144,6 +145,72 @@ public class Rat extends GameObject {
 
         }
          */
+    }
+
+    public void seek() {
+        if (!isCarryingFlingable) {
+            float distance = 50f;
+            float right = distance;
+            float left = distance;
+            int i = 0;
+            float tempRight = 0f;
+            float tempLeft = 0f;
+            for (GameObject obj : game.gameObjects) {
+                if (obj != null && obj instanceof FlingableObject &&  obj instanceof Food && ((FlingableObject) obj).isOnFloor) {
+                    if (obj.getX() > getX() && (obj.getX() - getX()) < distance) {
+                        if (i == 0) {
+                            right = obj.getX() - getX();
+                        } else {
+                            tempRight = obj.getX() - getX();
+                            if (tempRight < right) {
+                                right = tempRight;
+                            }
+                        }
+                    }
+                    if (obj.getX() < getX() && (getX() - obj.getX()) < distance) {
+                        if (i == 0) {
+                            left = getX() - obj.getX();
+                        } else {
+                            tempLeft = getX() - obj.getX();
+                            if (tempLeft < left) {
+                                left = tempLeft;
+                            }
+                        }
+                    }
+                }
+                i++;
+            }
+            if (left > right) {
+                if (!isRight) {
+                    body.setLinearVelocity(speed, body.getLinearVelocity().y);
+                    if (body.getLinearVelocity().x > 0) {
+                        Util.flip(ratRun);
+                        isRight = true;
+                    }
+                } else {
+                    body.setLinearVelocity(speed, body.getLinearVelocity().y);
+                    if (body.getLinearVelocity().x < 0) {
+                        Util.flip(ratRun);
+                        isRight = false;
+                    }
+                }
+            }
+            else if (left < right) {
+                if (isRight) {
+                    body.setLinearVelocity(-speed, body.getLinearVelocity().y);
+                    if (body.getLinearVelocity().x < 0) {
+                        Util.flip(ratRun);
+                        isRight = false;
+                    }
+                } else {
+                    body.setLinearVelocity(-speed, body.getLinearVelocity().y);
+                    if (body.getLinearVelocity().x > 0) {
+                        Util.flip(ratRun);
+                        isRight = true;
+                    }
+                }
+            }
+        }
     }
 
     /***
