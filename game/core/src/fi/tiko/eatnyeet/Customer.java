@@ -87,7 +87,7 @@ public class Customer extends GameObject {
             if (objectToCarry instanceof Carrot) {
 
                 objectToCarry.setTexture(((Carrot) objectToCarry).carrotEaten);
-                objectToCarry.setSize(0.3f,0.3f);
+                objectToCarry.setSize(0.4f,0.4f);
 
             }
             else if (objectToCarry instanceof Tomato) {

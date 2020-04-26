@@ -22,7 +22,7 @@ public class Melon extends FlingableObject implements Food {
         setSize(0.6f,0.6f);
         setDensity(0.8f);
         setFriction(4.5f);
-        setRestitution(0.4f);
+        setRestitution(0.6f);
         body = createBody(posX,posY,0.3f);
         allowPlayerCollision();
         eaten = false;
@@ -32,7 +32,7 @@ public class Melon extends FlingableObject implements Food {
         super(texture1, posX, posY, 0.5f, 0.5f, game);
         setDensity(0.8f);
         setFriction(4.5f);
-        setRestitution(0.4f);
+        setRestitution(0.6f);
         body = createBody(posX,posY,radius);
         allowPlayerCollision();
         melon = Util.createTextureAnimation(4,1, melonNoDisco);
