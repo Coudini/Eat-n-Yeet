@@ -37,7 +37,6 @@ public class Character extends GameObject {
     // used to keep track and flipping textures to right direction
     boolean isRight = true;
 
-    private float maxStr = 14f;
 
     public static Texture run;
     public static Texture idle;

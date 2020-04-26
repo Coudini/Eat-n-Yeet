@@ -59,12 +59,7 @@ public class MainGame extends Game  {
 
 		startScreen = new StartScreen(batch,this);
 
-
-		//probably useless
-		String tmp = locale.getLanguage();
-		if (!(tmp.equals("en") || tmp.equals("fi"))) {
-			locale = new Locale("fi", "FI");
-		}
+		
 
 		setScreen(startScreen);
 
