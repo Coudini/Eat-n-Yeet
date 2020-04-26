@@ -35,7 +35,7 @@ public class Character extends GameObject {
     boolean isRight = true;
 
     //boolean jump = false;
-    private float maxStr = 14f;
+    private float maxStr = 9.3f;
 
     public static Texture run;
     public static Texture idle;
