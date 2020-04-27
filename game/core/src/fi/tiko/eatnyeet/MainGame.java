@@ -25,6 +25,7 @@ import java.util.concurrent.Callable;
 
 /**
  * This file will start when opening the game, by default it will set screen to be StartScreen
+ * @author Henri Hietala, Toni Salminen
  * */
 public class MainGame extends Game  {
 	public Locale locale = Locale.getDefault();
@@ -55,7 +56,6 @@ public class MainGame extends Game  {
 		fontCamera.setToOrtho(false, FONT_CAM_WIDTH, FONT_CAM_HEIGHT);
 		startScreen = new StartScreen(batch,this);
 		String tmp = locale.getLanguage();
-		System.out.println(tmp);
 		if (!tmp.equals("fi")) {
 			locale = new Locale("us", "US");
 		}
